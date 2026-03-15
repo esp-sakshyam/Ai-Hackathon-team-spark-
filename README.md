@@ -8,6 +8,7 @@ hs inbuilt auto routing Ai which helps for assisting humans to find perfetxc rou
 
 
 #hardware we used 
+esp32 cam 
 Esp 32 
 gps moduele 
 oled dislplay
@@ -18,4 +19,8 @@ buzzer
 technical specification -
 power draw of 10ma in sleep 
 power draw of peak 150ma under use / expect to work for 1month continuously with a 5000mah lipo pack 
+
+human detection using esp32 cam 
+this tiny device detects the human presence so that we kanow that the bus is occupied or not which wuill result in much efficient transport of passsenger and with the help of this w
+
 
