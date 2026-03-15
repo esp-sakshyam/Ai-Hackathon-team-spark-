@@ -208,6 +208,13 @@ h1, h2, h3, h4, h5, h6 {
     border-radius: var(--radius-md);
     object-fit: contain;
     flex-shrink: 0;
+    transition: opacity .3s ease;
+}
+
+.nav-logo-white { display: block; }
+.nav-logo-black { display: none; }
+.site-header.scrolled .nav-logo-white { display: none; }
+.site-header.scrolled .nav-logo-black { display: block; }
     transition: transform .2s var(--ease-spring);
 }
 
