@@ -82,38 +82,6 @@ $groqApiKey = $env['GROQ_API_KEY'] ?? '';
             </div>
         </section>
 
-        <!-- ==================== STATS BAR ==================== -->
-        <section class="stats-bar reveal">
-            <div class="stat">
-                <img src="gallery/sajha.jpg" alt="Sajha" class="stat-img" loading="lazy" />
-                <div>
-                    <strong>50+</strong>
-                    <span>Transit Routes</span>
-                </div>
-            </div>
-            <div class="stat">
-                <img src="gallery/mayur.jpg" alt="Mayur" class="stat-img" loading="lazy" />
-                <div>
-                    <strong>500+</strong>
-                    <span>Bus Stops</span>
-                </div>
-            </div>
-            <div class="stat">
-                <img src="gallery/tempo.jpg" alt="Tempo" class="stat-img" loading="lazy" />
-                <div>
-                    <strong>3</strong>
-                    <span>Districts Covered</span>
-                </div>
-            </div>
-            <div class="stat">
-                <img src="gallery/nilo-micro.jpg" alt="Micro" class="stat-img" loading="lazy" />
-                <div>
-                    <strong>AI</strong>
-                    <span>Powered Search</span>
-                </div>
-            </div>
-        </section>
-
         <!-- ==================== ABOUT ==================== -->
         <section id="about" class="section reveal">
             <div class="section-header">
