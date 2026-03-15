@@ -1,6 +1,61 @@
 (function () {
     'use strict';
 
+    function initParticles() {
+        const layer = document.getElementById('particle-layer');
+        if (!layer) {
+            return;
+        }
+
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reduceMotion) {
+            return;
+        }
+
+        const particleCount = window.innerWidth > 900 ? 44 : 22;
+        for (let i = 0; i < particleCount; i += 1) {
+            const dot = document.createElement('span');
+            dot.className = 'particle';
+
+            const size = 2 + Math.random() * 5;
+            const left = Math.random() * 100;
+            const delay = Math.random() * 18;
+            const duration = 10 + Math.random() * 20;
+            const drift = (Math.random() * 80 - 40).toFixed(2) + 'px';
+
+            dot.style.width = `${size}px`;
+            dot.style.height = `${size}px`;
+            dot.style.left = `${left}%`;
+            dot.style.bottom = `${-10 - Math.random() * 20}px`;
+            dot.style.animationDelay = `${delay}s`;
+            dot.style.animationDuration = `${duration}s`;
+            dot.style.setProperty('--drift-x', drift);
+
+            layer.appendChild(dot);
+        }
+    }
+
+    function initReveal() {
+        const revealSections = document.querySelectorAll('.section-reveal');
+        if (!revealSections.length) {
+            return;
+        }
+
+        const observer = new IntersectionObserver(function (entries, obs) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    obs.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.14 });
+
+        revealSections.forEach(function (section, index) {
+            section.style.transitionDelay = `${Math.min(index * 70, 420)}ms`;
+            observer.observe(section);
+        });
+    }
+
     const chatLog = document.getElementById('chat-log');
     const chatForm = document.getElementById('chat-form');
     const chatInput = document.getElementById('chat-input');
@@ -135,6 +190,8 @@ Guidelines:
             }
             sendMessage(text);
         });
+
+        chatInput.focus();
     }
 
     const suggestForm = document.getElementById('suggest-form');
@@ -207,4 +264,7 @@ Guidelines:
             suggestFeedback.style.display = 'none';
         }, 8000);
     }
+
+    initParticles();
+    initReveal();
 })();
