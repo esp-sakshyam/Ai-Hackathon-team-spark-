@@ -22,6 +22,15 @@
 
     <title>Sawari — Smart Public Transit for Nepal</title>
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../logo-icon.png">
+
+    <!-- Canonical -->
+    <link rel="canonical" href="https://sawari.com.np">
+
+    <!-- Preload LCP image -->
+    <link rel="preload" as="image" href="../gallery/sajha-bus-EV.jpg" fetchpriority="high">
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,6 +41,41 @@
 
     <!-- Stylesheet -->
     <link rel="stylesheet" href="css/style.css">
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Sawari",
+        "url": "https://sawari.com.np",
+        "description": "Navigate Nepal's public transport with real-time GPS tracking, smart route finding, and live fare estimation for Kathmandu Valley.",
+        "applicationCategory": "TravelApplication",
+        "operatingSystem": "Any (Web-based)",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "NPR"
+        },
+        "author": {
+            "@type": "Organization",
+            "name": "Sawari Pvt. Ltd.",
+            "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Kathmandu",
+                "addressCountry": "NP"
+            }
+        }
+    }
+    </script>
+
+    <!-- Noscript fallback -->
+    <noscript>
+        <style>
+            .reveal { opacity: 1; transform: none; }
+            .scroll-progress { display: none; }
+        </style>
+    </noscript>
 </head>
 <body>
 
@@ -44,7 +88,7 @@
     <header class="site-header" id="siteHeader">
         <nav class="nav-container">
             <a href="#hero" class="nav-logo" aria-label="Sawari Home">
-                <div class="nav-logo-mark">S</div>
+                <img src="../logo-icon.png" alt="Sawari" class="nav-logo-img">
                 <span>Sawari</span>
             </a>
 
@@ -55,6 +99,7 @@
                 <li><a href="#need" class="nav-link">Why It's Needed</a></li>
                 <li><a href="#perspectives" class="nav-link">Perspectives</a></li>
                 <li><a href="#gallery" class="nav-link">Gallery</a></li>
+                <li><a href="#suggestions" class="nav-link">Feedback</a></li>
             </ul>
 
             <div class="nav-actions">
@@ -721,6 +766,82 @@
     </div>
 
     <!-- ================================================================
+         COMMUNITY SUGGESTIONS — Feedback section
+         ================================================================ -->
+    <section class="section suggestions-section" id="suggestions">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-tag">Community</span>
+                <h2 class="section-title">Help Us Improve</h2>
+                <p class="section-subtitle">
+                    Spotted a wrong route? A missing stop? A fare issue? Your feedback directly shapes Sawari's transit data.
+                </p>
+            </div>
+
+            <div class="suggestions-grid">
+                <div class="suggestion-info reveal">
+                    <div class="suggestion-step">
+                        <div class="suggestion-step-icon">
+                            <i data-feather="message-square"></i>
+                        </div>
+                        <div>
+                            <h3>Submit a Suggestion</h3>
+                            <p>Report any transit issue — a wrong route, a missing stop, an incorrect fare, or a new bus service you've spotted.</p>
+                        </div>
+                    </div>
+                    <div class="suggestion-step">
+                        <div class="suggestion-step-icon suggestion-step-icon--sky">
+                            <i data-feather="cpu"></i>
+                        </div>
+                        <div>
+                            <h3>AI Processes It</h3>
+                            <p>Our AI reads your message and extracts a specific, actionable task — like "add Kalanki stop to the Basundhara–RNAC route."</p>
+                        </div>
+                    </div>
+                    <div class="suggestion-step">
+                        <div class="suggestion-step-icon suggestion-step-icon--emerald">
+                            <i data-feather="check-square"></i>
+                        </div>
+                        <div>
+                            <h3>Admin Approves</h3>
+                            <p>The extracted task appears in the admin dashboard for one-click approval. Transit data updates automatically.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="suggestion-form-card reveal">
+                    <h3>Send a Suggestion</h3>
+                    <form class="suggestion-form" id="suggestionForm">
+                        <div class="form-group">
+                            <label for="suggestName">Your Name</label>
+                            <input type="text" id="suggestName" name="name" placeholder="Ram Sharma" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="suggestType">Category</label>
+                            <select id="suggestType" name="type" required>
+                                <option value="" disabled selected>Select a category</option>
+                                <option value="wrong-route">Wrong Route Info</option>
+                                <option value="missing-stop">Missing Stop</option>
+                                <option value="fare-issue">Fare Issue</option>
+                                <option value="new-route">New Bus/Route</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="suggestMessage">Your Message</label>
+                            <textarea id="suggestMessage" name="message" rows="4" placeholder="Describe the issue or suggestion..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-accent btn-lg suggestion-submit">
+                            <i data-feather="send"></i>
+                            Submit Suggestion
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================================
          CTA — Final call to action
          ================================================================ -->
     <section class="section cta-section" id="cta">
@@ -755,7 +876,7 @@
             <div class="footer-grid">
                 <div class="footer-brand">
                     <a href="#hero" class="footer-logo">
-                        <div class="footer-logo-mark">S</div>
+                        <img src="../logo-icon.png" alt="Sawari" class="footer-logo-img">
                         <span>Sawari</span>
                     </a>
                     <p class="footer-about">
@@ -773,49 +894,33 @@
                     </div>
                 </div>
                 <div class="footer-col">
-                    <h4>Services</h4>
+                    <h4>Navigate</h4>
                     <ul>
-                        <li><a href="pages/map.php">Bus Finder</a></li>
-                        <li><a href="#">Flight Booking</a></li>
-                        <li><a href="#">Bus Ticketing</a></li>
-                        <li><a href="#">Vehicle Reservation</a></li>
-                        <li><a href="#">Cable Car Booking</a></li>
-                        <li><a href="#">Adventure Sports</a></li>
+                        <li><a href="pages/map.php">Route Finder</a></li>
+                        <li><a href="#what">Features</a></li>
+                        <li><a href="#how">How It Works</a></li>
+                        <li><a href="#gallery">Gallery</a></li>
+                        <li><a href="#suggestions">Give Feedback</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
-                    <h4>Useful Links</h4>
+                    <h4>About</h4>
                     <ul>
-                        <li><a href="#">Popular Places</a></li>
-                        <li><a href="#">Destinations</a></li>
-                        <li><a href="#">Culture</a></li>
-                        <li><a href="#">Trekking</a></li>
-                        <li><a href="#">Food</a></li>
+                        <li><a href="#why">Why Sawari</a></li>
+                        <li><a href="#need">Our Impact</a></li>
+                        <li><a href="#perspectives">For Commuters</a></li>
+                        <li><a href="#perspectives">For Operators</a></li>
                     </ul>
                 </div>
-                <div class="footer-col footer-download">
-                    <h4>Download App</h4>
-                    <p class="download-copy">Explore Nepal more efficiently with the Sawari mobile app.</p>
-                    <p class="download-cta">Let's explore Nepal with us.</p>
-                    <div class="download-grid">
-                        <div class="qr-wrap">
-                            <p>Scan to Download</p>
-                            <div class="qr-code" role="img" aria-label="QR code for app download">
-                                <span class="qr-dot"></span>
-                            </div>
-                        </div>
-                        <div class="store-wrap">
-                            <p>Download on</p>
-                            <a href="#" class="store-btn" aria-label="Get it on Google Play">
-                                <i data-feather="play-circle"></i>
-                                <span>Google Play</span>
-                            </a>
-                            <a href="#" class="store-btn" aria-label="Download on the App Store">
-                                <i data-feather="smartphone"></i>
-                                <span>App Store</span>
-                            </a>
-                        </div>
-                    </div>
+                <div class="footer-col">
+                    <h4>Technology</h4>
+                    <ul>
+                        <li><a href="#what">Live GPS Tracking</a></li>
+                        <li><a href="#what">AI Route Finding</a></li>
+                        <li><a href="#what">Fare Calculator</a></li>
+                        <li><a href="#what">Transfer Planning</a></li>
+                        <li><a href="#suggestions">Community Reports</a></li>
+                    </ul>
                 </div>
             </div>
             <div class="footer-bottom">
@@ -823,6 +928,11 @@
             </div>
         </div>
     </footer>
+
+    <!-- Back to Top -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+        <i data-feather="arrow-up"></i>
+    </button>
 
     <script src="js/script.js"></script>
 </body>
