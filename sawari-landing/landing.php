@@ -43,8 +43,8 @@ $groqApiKey = $env['GROQ_API_KEY'] ?? '';
     <header class="navbar" id="top">
         <div class="navbar-inner">
             <a href="#top" class="logo">
-                <i class="fa-solid fa-bus-simple"></i>
-                <span>Sawari</span>
+                <img src="../logo/logo-white.png" alt="Sawari" class="logo-white" />
+                <img src="../logo/logo-black.png" alt="Sawari" class="logo-black" />
             </a>
             <nav class="nav-links" id="nav-links">
                 <a href="#about">About</a>
@@ -396,7 +396,7 @@ $groqApiKey = $env['GROQ_API_KEY'] ?? '';
     <footer class="footer">
         <div class="footer-inner">
             <div class="footer-brand">
-                <span class="logo"><i class="fa-solid fa-bus-simple"></i> Sawari</span>
+                <span class="logo"><img src="../logo/logo-white.png" alt="Sawari" class="logo-white" /></span>
                 <p>Navigating Kathmandu Valley, together.</p>
             </div>
             <div class="footer-links">
