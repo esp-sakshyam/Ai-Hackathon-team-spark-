@@ -64,49 +64,104 @@ $groqApiKey = $env['GROQ_API_KEY'] ?? '';
     <main>
         <!-- ==================== HERO ==================== -->
         <section class="hero reveal" id="hero">
-            <div class="hero-bg">
-                <img src="gallery/landing.jpg" alt="Kathmandu transit" />
-            </div>
-            <div class="hero-overlay"></div>
-            <div class="hero-content">
-                <div class="hero-text">
+            <!-- Rounded hero image container -->
+            <div class="hero-frame">
+                <div class="hero-bg">
+                    <img src="gallery/landing.jpg" alt="Kathmandu transit" />
+                </div>
+                <div class="hero-overlay"></div>
+
+                <!-- Glow orbs -->
+                <div class="hero-orb hero-orb-1" aria-hidden="true"></div>
+                <div class="hero-orb hero-orb-2" aria-hidden="true"></div>
+
+                <!-- Main centered text block -->
+                <div class="hero-center">
                     <div class="hero-badge">
-                        <i class="fa-solid fa-location-dot"></i> Kathmandu Valley Transit Companion
+                        <span class="hero-badge-dot"></span>
+                        Kathmandu Valley Transit
                     </div>
-                    <h1>Local transit,<br><span class="text-gradient">beautifully mapped.</span></h1>
+                    <h1>
+                        <span class="hero-line-1">Local transit,</span>
+                        <span class="hero-line-2">beautifully <em>mapped.</em></span>
+                    </h1>
                     <p class="hero-desc">
-                        Plan your bus journey with practical route guidance, transfer intelligence, fare estimates,
-                        and nearby stop discovery built around how Kathmandu actually moves.
+                        Plan your bus journey with practical route guidance, transfer intelligence,
+                        fare estimates, and nearby stop discovery.
                     </p>
                     <div class="hero-actions">
-                        <a class="btn-primary" href="../app/index.php">
+                        <a class="btn-hero" href="../app/index.php">
                             <i class="fa-solid fa-route"></i> Plan a Journey
                         </a>
-                        <a class="btn-outline" href="#how">
-                            Explore the System <i class="fa-solid fa-chevron-down"></i>
+                        <a class="btn-hero-ghost" href="#how">
+                            Explore <i class="fa-solid fa-arrow-down"></i>
                         </a>
                     </div>
-                    <div class="hero-tags">
-                        <span><i class="fa-solid fa-route"></i> Route planner</span>
-                        <span><i class="fa-solid fa-bus"></i> Local operators</span>
-                        <span><i class="fa-solid fa-map-location-dot"></i> Nearby stops</span>
+                </div>
+
+                <!-- Floating glass route-finder widget -->
+                <div class="hero-glass-widget">
+                    <div class="glass-widget-header">
+                        <i class="fa-solid fa-compass"></i>
+                        <span>Quick Route Finder</span>
+                    </div>
+                    <div class="glass-widget-body">
+                        <div class="glass-widget-row">
+                            <span class="gw-dot gw-dot-green"></span>
+                            <span>Kalanki</span>
+                        </div>
+                        <div class="glass-widget-divider"></div>
+                        <div class="glass-widget-row">
+                            <span class="gw-dot gw-dot-orange"></span>
+                            <span>Chabahil</span>
+                        </div>
+                    </div>
+                    <div class="glass-widget-footer">
+                        <span><i class="fa-solid fa-bus"></i> 3 routes</span>
+                        <span><i class="fa-solid fa-clock"></i> ~35 min</span>
                     </div>
                 </div>
-                <div class="hero-mosaic">
-                    <div class="mosaic-large">
-                        <img src="gallery/sajha-bus-EV.jpg" alt="Electric Sajha bus" loading="lazy" />
+
+                <!-- Floating transit image thumbnails -->
+                <div class="hero-float hero-float-1">
+                    <img src="gallery/sajha-bus-EV.jpg" alt="Sajha EV Bus" />
+                </div>
+                <div class="hero-float hero-float-2">
+                    <img src="gallery/hiace.webp" alt="Hiace Microbus" />
+                </div>
+                <div class="hero-float hero-float-3">
+                    <img src="gallery/mahanagar.jpg" alt="Mahanagar Bus" />
+                </div>
+
+                <!-- Bottom image strip inside hero -->
+                <div class="hero-bottom-strip">
+                    <div class="hero-strip-item">
+                        <img src="gallery/sajha1.jpg" alt="Sajha" />
+                        <span>Sajha Yatayat</span>
                     </div>
-                    <div class="mosaic-stack">
-                        <img src="gallery/hiace.webp" alt="Hiace microbus" loading="lazy" />
-                        <img src="gallery/mahanagar.jpg" alt="Mahanagar bus" loading="lazy" />
+                    <div class="hero-strip-item">
+                        <img src="gallery/mayur.jpg" alt="Mayur" />
+                        <span>Mayur Yatayat</span>
                     </div>
-                    <div class="mosaic-wide">
-                        <img src="gallery/digo-yatayat.jpg" alt="Digo yatayat" loading="lazy" />
+                    <div class="hero-strip-item">
+                        <img src="gallery/digo-yatayat.jpg" alt="Digo" />
+                        <span>Digo Yatayat</span>
+                    </div>
+                    <div class="hero-strip-item">
+                        <img src="gallery/tempo.jpg" alt="Tempo" />
+                        <span>Tempo</span>
+                    </div>
+                    <div class="hero-strip-item hero-strip-hide-mobile">
+                        <img src="gallery/nilo-micro.jpg" alt="Micro" />
+                        <span>Microbus</span>
                     </div>
                 </div>
-            </div>
-            <div class="hero-scroll-hint">
-                <i class="fa-solid fa-chevron-down"></i>
+
+                <!-- Scroll indicator -->
+                <div class="hero-scroll-hint">
+                    <div class="scroll-line"></div>
+                    <span>Scroll</span>
+                </div>
             </div>
         </section>
 
