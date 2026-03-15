@@ -76,16 +76,35 @@ textarea {
     left: 0;
     right: 0;
     z-index: 100;
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(20px) saturate(1.8);
-    border-bottom: 1px solid var(--line);
-    transition: background var(--transition), box-shadow var(--transition);
+    background: transparent;
+    border-bottom: 1px solid transparent;
+    transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
 }
 
 .navbar.scrolled {
     background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px) saturate(1.8);
+    border-bottom-color: var(--line);
     box-shadow: var(--shadow-sm);
 }
+
+/* When on hero (not scrolled), all nav text is white */
+.navbar .logo { color: #fff; }
+.navbar .logo i { color: #fff; }
+.navbar .nav-links a { color: rgba(255, 255, 255, 0.8); }
+.navbar .nav-links a:hover { color: #fff; }
+.navbar .btn-cta-nav { background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.3); color: #fff; }
+.navbar .btn-cta-nav:hover { background: rgba(255, 255, 255, 0.25); }
+.navbar .mobile-toggle { color: #fff; }
+
+/* When scrolled, revert to dark text */
+.navbar.scrolled .logo { color: var(--ink); }
+.navbar.scrolled .logo i { color: var(--accent); }
+.navbar.scrolled .nav-links a { color: var(--ink-light); }
+.navbar.scrolled .nav-links a:hover { color: var(--accent); }
+.navbar.scrolled .btn-cta-nav { background: var(--accent); border-color: var(--accent); color: #fff; }
+.navbar.scrolled .btn-cta-nav:hover { background: var(--accent-hover); transform: translateY(-1px); box-shadow: var(--shadow-glow); }
+.navbar.scrolled .mobile-toggle { color: var(--ink); }
 
 .navbar-inner {
     width: var(--container);
@@ -103,12 +122,12 @@ textarea {
     gap: 0.5rem;
     font-family: var(--font-heading);
     font-size: 1.5rem;
-    color: var(--ink);
+    transition: color var(--transition);
 }
 
 .logo i {
-    color: var(--accent);
     font-size: 1.25rem;
+    transition: color var(--transition);
 }
 
 .nav-links {
@@ -120,7 +139,6 @@ textarea {
 }
 
 .nav-links a {
-    color: var(--ink-light);
     transition: color var(--transition);
     position: relative;
 }
@@ -136,10 +154,6 @@ textarea {
     transition: width var(--transition);
 }
 
-.nav-links a:hover {
-    color: var(--accent);
-}
-
 .nav-links a:hover::after {
     width: 100%;
 }
@@ -148,19 +162,11 @@ textarea {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    background: var(--accent);
-    color: #fff;
     padding: 0.6rem 1.2rem;
     border-radius: 999px;
     font-size: 0.88rem;
     font-weight: 600;
-    transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
-}
-
-.btn-cta-nav:hover {
-    background: var(--accent-hover);
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-glow);
+    transition: all var(--transition);
 }
 
 .mobile-toggle {
@@ -169,7 +175,7 @@ textarea {
     border: none;
     font-size: 1.3rem;
     cursor: pointer;
-    color: var(--ink);
+    transition: color var(--transition);
 }
 
 /* ===== HERO ===== */
