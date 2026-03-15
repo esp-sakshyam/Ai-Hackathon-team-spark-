@@ -20,6 +20,7 @@
  *   - TinyGPSPlus        by Mikal Hart
  *   - U8g2               by Oliver Kraus
  *   - WiFiManager        by tzapu (ESP32 branch)
+ *   - ArduinoJson        by Benoit Blanchon (v7+)
  *   - LittleFS_esp32     (built-in with ESP32 Arduino Core 2.x+)
  *
  * BOARD SETTINGS:
@@ -142,11 +143,6 @@ void setup() {
     Serial.println(F("  SAWARI Bus Telemetry Device v2.0.0"));
     Serial.println(F("  ESP32 Dev Module"));
     Serial.println(F("========================================"));
-    Serial.print(F("  Bus ID:  "));
-    Serial.println(BUS_ID);
-    Serial.print(F("  API:     "));
-    Serial.println(API_ENDPOINT);
-    Serial.println(F("========================================"));
     Serial.println();
 
     // --- 2. LEDs ---
@@ -184,6 +180,14 @@ void setup() {
 
     bool wifiConnected = networkInit();
     ledSetWiFi(wifiConnected);
+
+    // Log active configuration (loaded from LittleFS by networkInit)
+    Serial.println(F("========================================"));
+    Serial.print(F("  Bus ID:  "));
+    Serial.println(networkGetBusId());
+    Serial.print(F("  API:     "));
+    Serial.println(networkGetApiEndpoint());
+    Serial.println(F("========================================"));
 
     if (wifiConnected) {
         isOfflineMode = false;

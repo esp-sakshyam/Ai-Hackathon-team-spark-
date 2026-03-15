@@ -8,6 +8,8 @@
  * Features:
  *   - Auto-connect to saved credentials on boot
  *   - On-demand captive portal via button press (non-blocking)
+ *   - Custom portal parameters: API Endpoint URL and Bus ID
+ *   - Portal-configured values saved to /config.json on LittleFS
  *   - Auto-close portal when WiFi connects
  *   - 10-second WiFi availability check interval
  *   - Offline mode fallback with automatic reconnection
@@ -20,6 +22,8 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
 #include <WiFiManager.h>
+#include <LittleFS.h>
+#include <ArduinoJson.h>
 
 // --- WiFiManager instance (persistent for on-demand portal) ---
 static WiFiManager _wm;
@@ -29,15 +33,144 @@ static unsigned long _lastReconnectAttempt = 0;
 static bool _wasConnected = false;
 static bool _portalActive = false;
 
+// --- Portal-configurable parameters (persisted to LittleFS) ---
+static char _apiEndpoint[API_ENDPOINT_MAX_LEN] = "";
+static char _busIdStr[8] = "";
+static int  _busId = DEFAULT_BUS_ID;
+
+// WiFiManager custom parameter objects
+static WiFiManagerParameter* _paramApi   = nullptr;
+static WiFiManagerParameter* _paramBusId = nullptr;
+
+// ============================================================================
+// Configuration persistence (LittleFS JSON)
+// ============================================================================
+
+/**
+ * Load API endpoint and Bus ID from /config.json on LittleFS.
+ * Falls back to compile-time defaults if file doesn't exist.
+ */
+static void _loadConfig() {
+    // Start with defaults
+    strncpy(_apiEndpoint, DEFAULT_API_ENDPOINT, sizeof(_apiEndpoint) - 1);
+    _apiEndpoint[sizeof(_apiEndpoint) - 1] = '\0';
+    _busId = DEFAULT_BUS_ID;
+    snprintf(_busIdStr, sizeof(_busIdStr), "%d", _busId);
+
+    if (!LittleFS.exists(CONFIG_FILE)) {
+        Serial.println(F("[NETWORK] No config file found — using defaults"));
+        return;
+    }
+
+    File f = LittleFS.open(CONFIG_FILE, "r");
+    if (!f) {
+        Serial.println(F("[NETWORK] Failed to open config file — using defaults"));
+        return;
+    }
+
+    JsonDocument doc;
+    DeserializationError err = deserializeJson(doc, f);
+    f.close();
+
+    if (err) {
+        Serial.print(F("[NETWORK] Config parse error: "));
+        Serial.println(err.c_str());
+        return;
+    }
+
+    if (doc["api_endpoint"].is<const char*>()) {
+        strncpy(_apiEndpoint, doc["api_endpoint"].as<const char*>(), sizeof(_apiEndpoint) - 1);
+        _apiEndpoint[sizeof(_apiEndpoint) - 1] = '\0';
+    }
+    if (doc["bus_id"].is<int>()) {
+        _busId = doc["bus_id"].as<int>();
+        snprintf(_busIdStr, sizeof(_busIdStr), "%d", _busId);
+    }
+
+    Serial.println(F("[NETWORK] Config loaded from LittleFS:"));
+    Serial.print(F("[NETWORK]   API: ")); Serial.println(_apiEndpoint);
+    Serial.print(F("[NETWORK]   Bus ID: ")); Serial.println(_busId);
+}
+
+/**
+ * Save current API endpoint and Bus ID to /config.json on LittleFS.
+ */
+static void _saveConfig() {
+    JsonDocument doc;
+    doc["api_endpoint"] = _apiEndpoint;
+    doc["bus_id"] = _busId;
+
+    File f = LittleFS.open(CONFIG_FILE, "w");
+    if (!f) {
+        Serial.println(F("[NETWORK] ERROR: Failed to save config file"));
+        return;
+    }
+    serializeJson(doc, f);
+    f.close();
+
+    Serial.println(F("[NETWORK] Config saved to LittleFS"));
+}
+
+/**
+ * WiFiManager save-params callback.
+ * Called when the user submits the portal form — reads custom fields and persists.
+ */
+static void _onSaveParams() {
+    if (_paramApi) {
+        strncpy(_apiEndpoint, _paramApi->getValue(), sizeof(_apiEndpoint) - 1);
+        _apiEndpoint[sizeof(_apiEndpoint) - 1] = '\0';
+    }
+    if (_paramBusId) {
+        strncpy(_busIdStr, _paramBusId->getValue(), sizeof(_busIdStr) - 1);
+        _busIdStr[sizeof(_busIdStr) - 1] = '\0';
+        _busId = atoi(_busIdStr);
+        if (_busId <= 0) _busId = DEFAULT_BUS_ID;
+        snprintf(_busIdStr, sizeof(_busIdStr), "%d", _busId);
+    }
+
+    Serial.println(F("[NETWORK] Portal parameters saved:"));
+    Serial.print(F("[NETWORK]   API: ")); Serial.println(_apiEndpoint);
+    Serial.print(F("[NETWORK]   Bus ID: ")); Serial.println(_busId);
+
+    _saveConfig();
+}
+
+// ============================================================================
+// WiFiManager setup helpers
+// ============================================================================
+
+/**
+ * Create (or recreate) the custom parameter objects and attach to WiFiManager.
+ */
+static void _setupPortalParams() {
+    // Clean up previous parameter objects if any
+    delete _paramApi;
+    delete _paramBusId;
+
+    _paramApi   = new WiFiManagerParameter("api_url", "API Endpoint URL", _apiEndpoint, API_ENDPOINT_MAX_LEN);
+    _paramBusId = new WiFiManagerParameter("bus_id",  "Bus ID",           _busIdStr,    7);
+
+    _wm.addParameter(_paramApi);
+    _wm.addParameter(_paramBusId);
+    _wm.setSaveParamsCallback(_onSaveParams);
+}
+
 /**
  * Initialize WiFi using WiFiManager with captive portal support.
+ * Loads saved config from LittleFS before connecting.
  * This call is BLOCKING during AP mode — it waits for the user to
  * configure WiFi via the captive portal, up to AP_TIMEOUT seconds.
  */
 bool networkInit() {
+    // Load persisted API / Bus ID config (or defaults)
+    _loadConfig();
+
     _wm.setConfigPortalTimeout(AP_TIMEOUT);
     _wm.setConnectTimeout(15);
     _wm.setCleanConnect(true);
+
+    // Add custom parameters to the portal form
+    _setupPortalParams();
 
     Serial.println(F("[NETWORK] Starting WiFiManager..."));
     Serial.print(F("[NETWORK] AP Name: "));
@@ -113,6 +246,9 @@ bool networkStartPortal() {
     Serial.print(F("[NETWORK] AP Name: "));
     Serial.println(AP_NAME);
 
+    // Refresh custom parameter values before showing the portal
+    _setupPortalParams();
+
     // Use non-blocking portal so GPS and other tasks continue running
     _wm.setConfigPortalBlocking(false);
     _wm.setConfigPortalTimeout(AP_TIMEOUT);
@@ -167,8 +303,8 @@ bool networkIsPortalActive() {
 }
 
 /**
- * Send a JSON payload to the API endpoint via HTTP POST.
- * Includes retry logic for transient failures and detailed error logging.
+ * Send a JSON payload to the configured API endpoint via HTTP POST.
+ * Uses the portal-configured API URL (saved in LittleFS).
  *
  * @param json  The JSON string to POST
  * @return true if server responded with HTTP 2xx
@@ -180,12 +316,12 @@ bool networkSendData(const String& json) {
     }
 
     HTTPClient http;
-    http.begin(API_ENDPOINT);
+    http.begin(_apiEndpoint);
     http.addHeader("Content-Type", "application/json");
     http.setTimeout(HTTP_TIMEOUT);
 
     Serial.print(F("[NETWORK] POST → "));
-    Serial.println(API_ENDPOINT);
+    Serial.println(_apiEndpoint);
     Serial.print(F("[NETWORK] Payload ("));
     Serial.print(json.length());
     Serial.println(F(" bytes)"));
@@ -216,7 +352,6 @@ bool networkSendData(const String& json) {
         Serial.print(F("[NETWORK] ✗ Connection error: "));
         Serial.println(http.errorToString(httpCode));
 
-        // Provide human-readable guidance for common errors
         switch (httpCode) {
             case HTTPC_ERROR_CONNECTION_REFUSED:
                 Serial.println(F("[NETWORK]   → Server refused connection. Check URL/port."));
@@ -275,4 +410,18 @@ String networkGetSSID() {
         return WiFi.SSID();
     }
     return "";
+}
+
+/**
+ * Get the currently configured API endpoint URL.
+ */
+const char* networkGetApiEndpoint() {
+    return _apiEndpoint;
+}
+
+/**
+ * Get the currently configured Bus ID.
+ */
+int networkGetBusId() {
+    return _busId;
 }

@@ -24,6 +24,7 @@
 
 #include "gps_handler.h"
 #include "config.h"
+#include "network_handler.h"
 #include <TinyGPSPlus.h>
 
 // --- GPS parser and serial instances ---
@@ -226,6 +227,7 @@ void gpsGetTelemetry(TelemetryData* data) {
  */
 String gpsFormatPayload(const TelemetryData* data) {
     char buffer[400];
+    int busId = networkGetBusId();
     snprintf(buffer, sizeof(buffer),
         "{\"data\":{"
         "\"bus_id\":%d,"
@@ -238,7 +240,7 @@ String gpsFormatPayload(const TelemetryData* data) {
         "\"hdop\":%.1f,"
         "\"timestamp\":\"%s\""
         "}}",
-        BUS_ID,
+        busId,
         data->latitude,
         data->longitude,
         data->speed,

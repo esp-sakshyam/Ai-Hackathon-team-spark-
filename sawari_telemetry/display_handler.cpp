@@ -20,6 +20,7 @@
 
 #include "display_handler.h"
 #include "config.h"
+#include "network_handler.h"
 #include <U8g2lib.h>
 #include <Wire.h>
 #include <math.h>
@@ -408,7 +409,7 @@ void displaySearchingGPS(int satellites, bool wifiOk, const char* wifiSSID, int 
     _display.setFont(u8g2_font_6x10_tr);
 
     // Header row: BUS ID + WiFi info + queue count
-    snprintf(_lineBuf, sizeof(_lineBuf), "BUS:%d", BUS_ID);
+    snprintf(_lineBuf, sizeof(_lineBuf), "BUS:%d", networkGetBusId());
     _display.drawStr(0, 0, _lineBuf);
 
     // WiFi SSID or OFFLINE (max 8 chars = 48px at x=34 → 82 ✓)
@@ -469,7 +470,7 @@ void displayShowStatus(const TelemetryData* data, bool wifiOk, int wifiRSSI,
     // === Row 0 (y=0): WiFi bars + BUS ID + SSID ===
     _drawWiFiBars(0, 0, wifiRSSI, wifiOk);
 
-    snprintf(_lineBuf, sizeof(_lineBuf), "BUS:%d", BUS_ID);
+    snprintf(_lineBuf, sizeof(_lineBuf), "BUS:%d", networkGetBusId());
     _display.drawStr(18, 0, _lineBuf);
 
     if (wifiOk) {

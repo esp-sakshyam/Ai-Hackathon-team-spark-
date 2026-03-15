@@ -8,7 +8,8 @@
  * 
  * Hardware: ESP32 Dev Module + NEO-8M GPS + 1.3" OLED (SH1106)
  * 
- * IMPORTANT: Update API_ENDPOINT and BUS_ID before deployment.
+ * IMPORTANT: DEFAULT_API_ENDPOINT and DEFAULT_BUS_ID can be overridden
+ *            at runtime via the WiFi configuration portal.
  * ============================================================================
  */
 
@@ -16,10 +17,16 @@
 #define CONFIG_H
 
 // ============================================================================
-// BUS IDENTIFICATION
+// BUS IDENTIFICATION (default — can be overridden via WiFi portal)
 // ============================================================================
-// Unique identifier for this bus unit. Must match the server-side record.
-#define BUS_ID              1
+// Default bus ID used on first boot before portal configuration.
+#define DEFAULT_BUS_ID      1
+
+// ============================================================================
+// CONFIGURATION FILE (LittleFS)
+// ============================================================================
+// Persistent JSON config file storing portal-configured values (API URL, Bus ID).
+#define CONFIG_FILE         "/config.json"
 
 // ============================================================================
 // PIN DEFINITIONS — GPS MODULE (NEO-8M via UART2)
@@ -67,9 +74,12 @@
 // Captive portal timeout in seconds (falls back to offline mode after this)
 #define AP_TIMEOUT          180
 
-// API endpoint for telemetry data submission
-// UPDATE THIS to your actual server URL before deploying
-#define API_ENDPOINT        "http://zenithkandel.com.np/sawari/api/gps-device.php"
+// Default API endpoint for telemetry data submission.
+// Can be changed at runtime via the WiFi configuration portal.
+#define DEFAULT_API_ENDPOINT "http://zenithkandel.com.np/sawari/api/gps-device.php"
+
+// Maximum length for API endpoint URL (portal input field)
+#define API_ENDPOINT_MAX_LEN 200
 
 // HTTP request timeout in milliseconds
 #define HTTP_TIMEOUT        5000

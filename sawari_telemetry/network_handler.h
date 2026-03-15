@@ -17,6 +17,8 @@
  * Initialize WiFi using WiFiManager.
  * On first boot (no saved credentials): starts AP with captive portal.
  * On subsequent boots: auto-connects to saved WiFi network.
+ * Custom parameters (API endpoint, Bus ID) are loaded from LittleFS
+ * and displayed on the portal for editing.
  * @return true if WiFi connected successfully, false if timed out
  */
 bool networkInit();
@@ -91,5 +93,19 @@ int networkGetRSSI();
  * @return SSID string, or "" if not connected
  */
 String networkGetSSID();
+
+/**
+ * Get the currently configured API endpoint URL.
+ * Returns the portal-configured value, or DEFAULT_API_ENDPOINT on first boot.
+ * @return API endpoint URL string
+ */
+const char* networkGetApiEndpoint();
+
+/**
+ * Get the currently configured Bus ID.
+ * Returns the portal-configured value, or DEFAULT_BUS_ID on first boot.
+ * @return Bus ID integer
+ */
+int networkGetBusId();
 
 #endif // NETWORK_HANDLER_H
