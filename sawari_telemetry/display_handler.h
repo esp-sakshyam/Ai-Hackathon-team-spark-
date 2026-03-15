@@ -17,7 +17,7 @@
 #ifndef DISPLAY_HANDLER_H
 #define DISPLAY_HANDLER_H
 
-#include <Arduino.h>
+#include <Arduino.h> 
 #include "gps_handler.h"
 
 /** Initialize the OLED display and show the boot splash screen. */
