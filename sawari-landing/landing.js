@@ -2,11 +2,15 @@
     'use strict';
 
     /* ===== NAVBAR SCROLL EFFECT ===== */
-    const navbar = document.querySelector('.navbar');
-    if (navbar) {
-        window.addEventListener('scroll', function () {
-            navbar.classList.toggle('scrolled', window.scrollY > 50);
-        }, { passive: true });
+    var navbar = document.querySelector('.navbar');
+    var hero = document.getElementById('hero');
+    if (navbar && hero) {
+        var updateNavbar = function () {
+            var heroBottom = hero.offsetHeight - 80;
+            navbar.classList.toggle('scrolled', window.scrollY > heroBottom);
+        };
+        window.addEventListener('scroll', updateNavbar, { passive: true });
+        updateNavbar();
     }
 
     /* ===== MOBILE MENU TOGGLE ===== */
