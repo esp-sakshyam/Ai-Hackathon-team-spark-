@@ -1853,8 +1853,8 @@ h1, h2, h3, h4, h5, h6 {
    ================================================================== */
 .site-footer {
     background: var(--stone-950);
-    color: var(--stone-400);
-    padding: 5rem 0 2rem;
+    color: var(--stone-300);
+    padding: 5rem 0 0;
     position: relative;
     overflow: hidden;
 }
@@ -1872,7 +1872,7 @@ h1, h2, h3, h4, h5, h6 {
 .footer-grid {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr 1fr;
-    gap: 3rem;
+    gap: 2.5rem;
     padding-bottom: 3rem;
     border-bottom: 1px solid rgba(255,255,255,.06);
 }
@@ -1884,7 +1884,7 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 800;
     font-size: var(--text-xl);
     color: #fff;
-    margin-bottom: 1rem;
+    margin-bottom: 1.25rem;
 }
 
 .footer-logo-mark {
@@ -1900,30 +1900,89 @@ h1, h2, h3, h4, h5, h6 {
     box-shadow: 0 2px 8px rgba(245,158,11,.3);
 }
 
-.footer-brand p {
+.footer-about {
     font-size: var(--text-sm);
     line-height: 1.7;
-    color: var(--stone-500);
-    max-width: 300px;
+    color: var(--stone-400);
+    max-width: 420px;
+    margin-bottom: 1.5rem;
+}
+
+.footer-contact {
+    display: grid;
+    gap: .9rem;
+    margin-bottom: 1.5rem;
+}
+
+.footer-contact li {
+    display: flex;
+    align-items: flex-start;
+    gap: .7rem;
+    color: var(--stone-400);
+    font-size: var(--text-sm);
+    line-height: 1.5;
+}
+
+.footer-contact a {
+    color: var(--stone-300);
+}
+
+.footer-contact a:hover {
+    color: var(--amber-400);
+}
+
+.footer-contact i {
+    width: 1rem;
+    height: 1rem;
+    color: var(--amber-400);
+    margin-top: .18rem;
+}
+
+.footer-social {
+    display: flex;
+    gap: .7rem;
+}
+
+.footer-social a {
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,.12);
+    background: rgba(255,255,255,.02);
+    color: var(--stone-100);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all .2s;
+}
+
+.footer-social a:hover {
+    color: var(--stone-950);
+    background: var(--amber-400);
+    border-color: var(--amber-400);
+    transform: translateY(-2px);
+}
+
+.footer-social i {
+    width: 1rem;
+    height: 1rem;
 }
 
 .footer-col h4 {
     color: #fff;
-    font-size: var(--text-sm);
+    font-size: var(--text-base);
     font-weight: 700;
-    margin-bottom: 1rem;
-    text-transform: uppercase;
-    letter-spacing: .08em;
+    margin-bottom: 1.1rem;
 }
 
 .footer-col li {
-    margin-bottom: .5rem;
+    margin-bottom: .7rem;
 }
 
 .footer-col a,
 .footer-col li {
     font-size: var(--text-sm);
-    color: var(--stone-500);
+    color: var(--stone-400);
     transition: all .2s;
 }
 
@@ -1933,17 +1992,108 @@ h1, h2, h3, h4, h5, h6 {
     display: inline-block;
 }
 
-.footer-bottom {
-    padding-top: 2rem;
+.footer-download p {
+    font-size: var(--text-sm);
+}
+
+.download-copy {
+    color: var(--stone-400);
+    line-height: 1.6;
+    margin-bottom: .25rem;
+}
+
+.download-cta {
+    color: #fff;
+    font-weight: 700;
+    margin-bottom: 1.25rem;
+}
+
+.download-grid {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 1rem;
+    align-items: start;
+}
+
+.qr-wrap p,
+.store-wrap p {
+    color: var(--stone-300);
+    font-weight: 600;
+    margin-bottom: .7rem;
+}
+
+.qr-code {
+    width: 120px;
+    height: 120px;
+    border-radius: .75rem;
+    border: 1px solid rgba(255,255,255,.1);
+    background:
+        radial-gradient(circle at 12px 12px, #fff 0 9px, #0000 10px),
+        radial-gradient(circle at 108px 12px, #fff 0 9px, #0000 10px),
+        radial-gradient(circle at 12px 108px, #fff 0 9px, #0000 10px),
+        repeating-linear-gradient(0deg, #f8f8f8 0 6px, #1a1a1a 6px 12px),
+        repeating-linear-gradient(90deg, #f8f8f8 0 6px, #1a1a1a 6px 12px);
+    position: relative;
+    overflow: hidden;
+}
+
+.qr-dot {
+    position: absolute;
+    inset: 50%;
+    transform: translate(-50%, -50%);
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--stone-950);
+    border: 2px solid var(--amber-400);
+}
+
+.store-wrap {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+}
+
+.store-btn {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    border-radius: .7rem;
+    border: 1px solid rgba(255,255,255,.15);
+    background: #f3f0e5;
+    color: #252525;
+    font-weight: 700;
+    font-size: .9rem;
+    padding: .65rem .85rem;
+    margin-bottom: .65rem;
+    transition: all .2s;
+}
+
+.store-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(0,0,0,.25);
+}
+
+.store-btn i {
+    width: 1rem;
+    height: 1rem;
+}
+
+.footer-bottom {
+    padding: 1.25rem 0;
+    display: flex;
+    justify-content: center;
     align-items: center;
     flex-wrap: wrap;
     gap: .5rem;
+    color: var(--stone-500);
+    font-size: var(--text-sm);
+    background: #070707;
+    margin: 1.6rem -2rem 0;
+    padding-left: 2rem;
+    padding-right: 2rem;
 }
 
 .footer-bottom p { font-size: var(--text-sm); }
-.footer-credits   { color: var(--stone-600); font-size: var(--text-xs) !important; }
 
 /* ==================================================================
    20. REVEAL ANIMATIONS — Premium with stagger
@@ -2040,6 +2190,9 @@ h1, h2, h3, h4, h5, h6 {
     .gallery-item--wide { grid-column: span 2; }
 
     .footer-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .footer-brand { grid-column: span 2; }
+    .footer-download { grid-column: span 2; }
+    .download-grid { grid-template-columns: 120px 1fr; max-width: 440px; }
 }
 
 /* ==================================================================
@@ -2092,7 +2245,10 @@ h1, h2, h3, h4, h5, h6 {
     .how-img-banner { height: 300px; }
 
     .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
-    .footer-bottom { flex-direction: column; text-align: center; }
+    .footer-brand,
+    .footer-download { grid-column: auto; }
+    .download-grid { grid-template-columns: 1fr; }
+    .footer-bottom { text-align: center; margin-left: -1.25rem; margin-right: -1.25rem; }
     .nav-links.mobile-active { width: 100%; }
 
     .cta-section { padding: 5rem 0; }
