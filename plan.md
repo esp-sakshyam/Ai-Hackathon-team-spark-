@@ -1,3 +1,4 @@
 Project Title: Sawari
 problem definition:
-in nepal,
+traveling in kathmandu is difficult
+ride sharing is expensive
