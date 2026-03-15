@@ -43,7 +43,7 @@ The SAWARI Telemetry Device is a ruggedized GPS tracker designed for automotive 
 | Qty | Component | Specifications | Approx. Cost |
 |-----|-----------|----------------|--------------|
 | 1 | ESP32 Dev Module | 38-pin, 4MB Flash, WiFi+BT | $5-8 |
-| 1 | NEO-6M GPS Module | UART, with ceramic antenna | $8-12 |
+| 1 | NEO-8M GPS Module | UART, multi-GNSS (GPS+GLONASS), with ceramic antenna | $10-15 |
 | 1 | 1.3" OLED Display | SH1106 or SSD1306, I2C, 128x64 | $4-6 |
 | 1 | Buck Converter | LM2596 or MP1584, 12V→5V, 3A | $2-4 |
 | 4 | LEDs (3mm or 5mm) | Green, Blue, Yellow, Red | $1 |
@@ -107,7 +107,7 @@ The SAWARI Telemetry Device is a ruggedized GPS tracker designed for automotive 
 
 
     ┌─────────────────┐                  ┌─────────────────┐
-    │   NEO-6M GPS    │                  │   1.3" OLED     │
+    │   NEO-8M GPS    │                  │   1.3" OLED     │
     │                 │                  │   (SH1106)      │
     │   VCC ──────────│── 3.3V           │                 │
     │   GND ──────────│── GND            │   VCC ──────────│── 3.3V
@@ -145,7 +145,7 @@ The SAWARI Telemetry Device is a ruggedized GPS tracker designed for automotive 
 | GPIO13 | LED Output | GPS LED (Yellow) | White |
 | GPIO14 | LED Output | Data LED (Red) | White |
 
-### GPS Module (NEO-6M) Pinout
+### GPS Module (NEO-8M) Pinout
 
 | Pin | Function | Connect To |
 |-----|----------|------------|
@@ -205,7 +205,7 @@ Vehicle GND ──────────────────────�
 | Component | Typical Current | Peak Current |
 |-----------|-----------------|--------------|
 | ESP32 (WiFi active) | 80mA | 240mA |
-| NEO-6M GPS | 35mA | 50mA |
+| NEO-8M GPS | 35mA | 50mA |
 | OLED Display | 20mA | 30mA |
 | LEDs (all on) | 40mA | 40mA |
 | **Total** | **175mA** | **360mA** |
@@ -524,7 +524,7 @@ Edit `config.h` before uploading:
 |-----------|-------|
 | Input Voltage | 9-16V DC (12V nominal) |
 | Power Consumption | 175mA typical, 360mA peak |
-| GPS Accuracy | 2.5m CEP (open sky) |
+| GPS Accuracy | 2.0m CEP (open sky, multi-GNSS) |
 | WiFi Range | ~50m indoor, ~100m outdoor |
 | Data Rate | 1 update every 2 seconds |
 | Offline Storage | 500 records (~100KB) |

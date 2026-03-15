@@ -6,7 +6,7 @@
  * Central configuration file for all hardware pins, timing constants,
  * network settings, and operational parameters.
  * 
- * Hardware: ESP32 Dev Module + NEO-6M GPS + 1.3" OLED (SH1106)
+ * Hardware: ESP32 Dev Module + NEO-8M GPS + 1.3" OLED (SH1106)
  * 
  * IMPORTANT: Update API_ENDPOINT and BUS_ID before deployment.
  * ============================================================================
@@ -22,9 +22,10 @@
 #define BUS_ID              1
 
 // ============================================================================
-// PIN DEFINITIONS — GPS MODULE (NEO-6M via UART2)
+// PIN DEFINITIONS — GPS MODULE (NEO-8M via UART2)
 // ============================================================================
 // ESP32 UART2 is used for GPS communication.
+// NEO-8M supports multi-GNSS (GPS + GLONASS) and up to 10Hz update rate.
 // Wiring: GPS TX → ESP32 GPIO16 (RX2), GPS RX → ESP32 GPIO17 (TX2)
 #define GPS_RX_PIN          16
 #define GPS_TX_PIN          17

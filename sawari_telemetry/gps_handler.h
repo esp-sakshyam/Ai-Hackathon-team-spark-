@@ -2,7 +2,7 @@
  * ============================================================================
  * SAWARI Bus Telemetry Device - GPS Handler Header
  * ============================================================================
- * Manages NEO-6M GPS module via UART2 using TinyGPSPlus.
+ * Manages NEO-8M GPS module via UART2 using TinyGPSPlus.
  * Provides parsed telemetry data and ISO 8601 timestamp generation.
  * ============================================================================
  */

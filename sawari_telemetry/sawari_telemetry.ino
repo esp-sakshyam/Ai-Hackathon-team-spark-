@@ -7,7 +7,7 @@
  *
  * HARDWARE SETUP:
  *   - ESP32 Dev Module
- *   - NEO-6M GPS Module:     TX → GPIO16, RX → GPIO17 (UART2)
+ *   - NEO-8M GPS Module:     TX → GPIO16, RX → GPIO17 (UART2)
  *   - 1.3" OLED (SH1106):    SDA → GPIO21, SCL → GPIO22 (I2C)
  *   - Power LED:              GPIO2  (built-in, always ON)
  *   - WiFi LED:               GPIO4  (ON when connected)

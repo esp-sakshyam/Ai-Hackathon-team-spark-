@@ -3,15 +3,19 @@
  * SAWARI Bus Telemetry Device - GPS Handler Implementation
  * ============================================================================
  * 
- * Interfaces with the NEO-6M GPS module over UART2 (GPIO16 RX, GPIO17 TX).
+ * Interfaces with the NEO-8M GPS module over UART2 (GPIO16 RX, GPIO17 TX).
  * Uses TinyGPSPlus for NMEA sentence parsing to extract:
  *   - Latitude / Longitude
  *   - Speed (km/h)
  *   - Course / Direction (degrees)
  *   - Altitude (meters)
- *   - Satellite count
+ *   - Satellite count (GPS + GLONASS)
  *   - HDOP (Horizontal Dilution of Precision)
  *   - UTC Timestamp (ISO 8601)
+ * 
+ * The NEO-8M is configured via UBX protocol at startup to enable multi-GNSS
+ * (GPS + GLONASS) and a 5Hz navigation update rate for improved accuracy
+ * and faster position updates compared to the NEO-6M.
  * 
  * The gpsUpdate() function must be called every loop iteration to ensure
  * no NMEA sentences are missed from the serial buffer.
@@ -26,15 +30,96 @@
 static TinyGPSPlus _gps;
 static HardwareSerial _gpsSerial(2);    // UART2
 
+// ============================================================================
+// UBX Protocol Helpers (NEO-8M Configuration)
+// ============================================================================
+
 /**
- * Initialize UART2 for GPS communication at 9600 baud.
- * NEO-6M default baud rate is 9600.
+ * Send a UBX message with auto-computed Fletcher checksum.
+ * @param payload bytes starting from class ID through end of payload
+ * @param len     number of bytes in payload
+ */
+static void ubxSend(const uint8_t* payload, size_t len) {
+    _gpsSerial.write(0xB5);  // sync char 1
+    _gpsSerial.write(0x62);  // sync char 2
+
+    uint8_t ckA = 0, ckB = 0;
+    for (size_t i = 0; i < len; i++) {
+        _gpsSerial.write(payload[i]);
+        ckA += payload[i];
+        ckB += ckA;
+    }
+    _gpsSerial.write(ckA);
+    _gpsSerial.write(ckB);
+}
+
+/**
+ * Configure NEO-8M for optimal multi-GNSS performance via UBX commands.
+ *   - Enables GPS + GLONASS constellation tracking
+ *   - Sets 5Hz navigation update rate (200ms measurement interval)
+ *   - Saves configuration to battery-backed RAM and flash
+ */
+static void gpsConfigureNeo8M() {
+    // UBX-CFG-RATE: Set measurement rate to 200ms (5Hz), navRate=1, timeRef=UTC
+    static const uint8_t cfgRate[] = {
+        0x06, 0x08, 0x06, 0x00,
+        0xC8, 0x00,   // measRate = 200ms (5Hz)
+        0x01, 0x00,   // navRate  = 1 cycle
+        0x01, 0x00    // timeRef  = UTC
+    };
+    ubxSend(cfgRate, sizeof(cfgRate));
+    delay(100);
+
+    // UBX-CFG-GNSS: Enable GPS + SBAS + GLONASS + QZSS, disable Galileo/BeiDou/IMES
+    // 7 config blocks, 32 tracking channels
+    static const uint8_t cfgGnss[] = {
+        0x06, 0x3E, 0x3C, 0x00,         // class=CFG, id=GNSS, len=60
+        0x00, 0x00, 0x20, 0x07,         // msgVer=0, numTrkChHw=0, numTrkChUse=32, numConfigBlocks=7
+        // GPS     (gnssId=0): enabled, 8 min / 16 max channels
+        0x00, 0x08, 0x10, 0x00, 0x01, 0x00, 0x01, 0x01,
+        // SBAS    (gnssId=1): enabled, 1 min / 3 max channels
+        0x01, 0x01, 0x03, 0x00, 0x01, 0x00, 0x01, 0x01,
+        // Galileo (gnssId=2): disabled
+        0x02, 0x04, 0x08, 0x00, 0x00, 0x00, 0x01, 0x01,
+        // BeiDou  (gnssId=3): disabled
+        0x03, 0x08, 0x10, 0x00, 0x00, 0x00, 0x01, 0x01,
+        // IMES    (gnssId=4): disabled
+        0x04, 0x00, 0x08, 0x00, 0x00, 0x00, 0x01, 0x03,
+        // QZSS    (gnssId=5): enabled, 0 min / 3 max channels
+        0x05, 0x00, 0x03, 0x00, 0x01, 0x00, 0x01, 0x05,
+        // GLONASS (gnssId=6): enabled, 8 min / 14 max channels
+        0x06, 0x08, 0x0E, 0x00, 0x01, 0x00, 0x01, 0x01
+    };
+    ubxSend(cfgGnss, sizeof(cfgGnss));
+    delay(100);
+
+    // UBX-CFG-CFG: Save current configuration to BBR + Flash
+    static const uint8_t cfgSave[] = {
+        0x06, 0x09, 0x0D, 0x00,
+        0x00, 0x00, 0x00, 0x00,   // clearMask  = none
+        0xFF, 0xFF, 0x00, 0x00,   // saveMask   = all sections
+        0x00, 0x00, 0x00, 0x00,   // loadMask   = none
+        0x17                      // deviceMask = BBR + Flash + EEPROM
+    };
+    ubxSend(cfgSave, sizeof(cfgSave));
+    delay(100);
+
+    Serial.println(F("[GPS] NEO-8M configured: GPS+GLONASS enabled, 5Hz update rate"));
+}
+
+/**
+ * Initialize UART2 for GPS communication and configure NEO-8M.
+ * Default baud rate is 9600 (same as NEO-6M, compatible out-of-box).
  */
 void gpsInit() {
     _gpsSerial.begin(GPS_BAUD, SERIAL_8N1, GPS_RX_PIN, GPS_TX_PIN);
-    Serial.println(F("[GPS] UART2 initialized at 9600 baud"));
+    Serial.println(F("[GPS] UART2 initialized at 9600 baud (NEO-8M)"));
     Serial.print(F("[GPS] RX pin: ")); Serial.print(GPS_RX_PIN);
     Serial.print(F(" | TX pin: ")); Serial.println(GPS_TX_PIN);
+
+    // Allow the NEO-8M to boot before sending UBX configuration
+    delay(500);
+    gpsConfigureNeo8M();
 }
 
 /**

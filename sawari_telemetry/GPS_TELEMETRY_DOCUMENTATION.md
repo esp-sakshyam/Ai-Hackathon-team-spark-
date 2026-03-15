@@ -12,23 +12,23 @@
 
 ## GPS Module Overview
 
-### Hardware: NEO-6M GPS Module
+### Hardware: NEO-8M GPS Module
 - **Manufacturer**: u-blox
-- **Chipset**: u-blox 6 positioning engine
+- **Chipset**: u-blox M8 positioning engine
 - **Communication**: UART serial (TTL level, 3.3V/5V compatible)
 - **Default Baud Rate**: 9600 bps (8N1: 8 data bits, no parity, 1 stop bit)
-- **Update Rate**: 1 Hz (default) — updates position data once per second
-- **Cold Start Time**: ~27 seconds (no stored ephemeris data)
-- **Warm Start Time**: ~27 seconds
+- **Update Rate**: 1 Hz default, configured to 5 Hz via UBX-CFG-RATE
+- **Cold Start Time**: ~26 seconds (no stored ephemeris data)
+- **Warm Start Time**: ~25 seconds
 - **Hot Start Time**: ~1 second (almanac & ephemeris still valid)
-- **Position Accuracy**: 2.5 meters CEP (Circular Error Probable)
-- **Velocity Accuracy**: 0.1 m/s
-- **Channels**: 50 (tracking multiple satellites simultaneously)
-- **Supported Systems**: GPS (no GLONASS on NEO-6M; use NEO-M8N for multi-GNSS)
+- **Position Accuracy**: 2.0 meters CEP (Circular Error Probable, multi-GNSS)
+- **Velocity Accuracy**: 0.05 m/s
+- **Channels**: 72 (tracking multiple satellites simultaneously)
+- **Supported Systems**: GPS + GLONASS (concurrent), SBAS, QZSS
 
 ### Wiring on ESP32
 ```
-NEO-6M GPS        ESP32 Dev Module
+NEO-8M GPS        ESP32 Dev Module
 -----------       ----------------
 VCC        →      5V or 3.3V (check module specs)
 GND        →      GND
@@ -45,9 +45,9 @@ RX (GPS)   →      GPIO17 (TX2, UART2)
 ### What is NMEA?
 NMEA 0183 is a standard communication protocol used by GPS receivers to transmit position, velocity, and time data as ASCII text sentences.
 
-### Example NMEA Sentences from NEO-6M
+### Example NMEA Sentences from NEO-8M
 
-The NEO-6M outputs multiple NMEA sentence types every second:
+The NEO-8M outputs multiple NMEA sentence types every update cycle:
 
 #### 1. **$GPGGA** — Global Positioning System Fix Data
 ```
@@ -127,7 +127,7 @@ The `TinyGPSPlus` library continuously reads characters from the GPS serial stre
 ### 3. **Speed** (`double`, km/h)
 - **Definition**: Speed over ground (horizontal velocity)
 - **Range**: 0 to ~1800 km/h (theoretical GPS limit)
-- **Accuracy**: ±0.1 m/s (±0.36 km/h) for NEO-6M
+- **Accuracy**: ±0.05 m/s (±0.18 km/h) for NEO-8M
 - **Example**: `34.5` = 34.5 km/h
 - **Source NMEA**: $GPRMC (originally in knots, converted by TinyGPSPlus)
 - **TinyGPSPlus**: `_gps.speed.kmph()`
@@ -144,8 +144,8 @@ The `TinyGPSPlus` library continuously reads characters from the GPS serial stre
 
 ### 5. **Altitude** (`double`, meters)
 - **Definition**: Height above mean sea level (MSL), not WGS84 ellipsoid
-- **Range**: -600m (Dead Sea) to +8848m (Mt. Everest), theoretically -500 to +18,000m for NEO-6M
-- **Accuracy**: ±15 meters vertical for NEO-6M
+- **Range**: -600m (Dead Sea) to +8848m (Mt. Everest), theoretically -500 to +50,000m for NEO-8M
+- **Accuracy**: ±10 meters vertical for NEO-8M
 - **Example**: `1350.2` = 1350.2 meters above sea level
 - **Source NMEA**: $GPGGA
 - **TinyGPSPlus**: `_gps.altitude.meters()`
@@ -153,7 +153,7 @@ The `TinyGPSPlus` library continuously reads characters from the GPS serial stre
 
 ### 6. **Satellites** (`int`, count)
 - **Definition**: Number of satellites actively used in the position fix
-- **Range**: 0 to 12+ (NEO-6M can track up to 50 channels but typically uses 4-12 for fix)
+- **Range**: 0 to 24+ (NEO-8M tracks up to 72 channels across GPS+GLONASS, typically uses 8-20 for fix)
 - **Minimum for Fix**: 
   - **3 satellites**: 2D fix (lat/lon only, no altitude)
   - **4 satellites**: 3D fix (lat/lon/altitude)
@@ -224,10 +224,10 @@ The `TinyGPSPlus` library continuously reads characters from the GPS serial stre
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
-│  NEO-6M GPS Module                                               │
-│  • Receives signals from 4-12 satellites                         │
+│  NEO-8M GPS Module                                               │
+│  • Receives signals from 8-20+ satellites (GPS + GLONASS)         │
 │  • Calculates position, velocity, time                           │
-│  • Outputs NMEA sentences at 9600 baud, 1 Hz update rate         │
+│  • Outputs NMEA sentences at 9600 baud, 5 Hz update rate         │
 └────────────────────────────┬─────────────────────────────────────┘
                              │ UART2 (GPIO16/17)
                              ▼
@@ -556,7 +556,7 @@ bool gpsHasFix() {
 
 ## References & Further Reading
 
-1. **NEO-6M Datasheet**: [u-blox NEO-6 Series](https://www.u-blox.com/en/docs/UBX-13003221)
+1. **NEO-8M Datasheet**: [u-blox NEO-M8 Series](https://www.u-blox.com/en/docs/UBX-15031086)
 2. **NMEA 0183 Protocol**: [NMEA Sentence Reference](https://www.nmea.org/Assets/20190303%20nmea%200183%20sentences%20not%20recommended%20for%20new%20designs.pdf)
 3. **TinyGPSPlus Library**: [GitHub - mikalhart/TinyGPSPlus](https://github.com/mikalhart/TinyGPSPlus)
 4. **HDOP Explanation**: [Dilution of Precision (Wikipedia)](https://en.wikipedia.org/wiki/Dilution_of_precision_(navigation))
@@ -574,5 +574,5 @@ bool gpsHasFix() {
 ---
 
 **SAWARI Bus Telemetry Device**  
-ESP32 + NEO-6M GPS + SH1106 OLED  
+ESP32 + NEO-8M GPS + SH1106 OLED  
 Firmware Version: 2.0.0
