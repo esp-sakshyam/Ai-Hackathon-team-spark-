@@ -52,7 +52,6 @@
         font-size: 14px;
         outline: none;
         background: #fff;
-        transition: border-color 0.15s;
       }
       input:focus,
       select:focus {
@@ -170,6 +169,7 @@
         padding: 3px 10px;
         display: inline-block;
         margin-top: 0.75rem;
+        font-weight: 500;
       }
       .spinner {
         display: inline-block;
@@ -212,20 +212,23 @@
       <div class="field">
         <label for="model-select">Vision model</label>
         <select id="model-select">
-          <option value="qwen/qwen2.5-vl-72b-instruct:free">
-            Qwen 2.5 VL 72B — best accuracy (recommended)
+          <option value="openrouter/free">
+            openrouter/free — auto-pick best available (recommended)
           </option>
-          <option value="qwen/qwen2.5-vl-32b-instruct:free">
-            Qwen 2.5 VL 32B — faster
+          <option value="openrouter/healer-alpha">
+            openrouter/healer-alpha — frontier vision + reasoning
           </option>
           <option value="mistralai/mistral-small-3.1-24b-instruct:free">
-            Mistral Small 3.1 24B — fallback
+            mistral-small-3.1-24b — solid vision
           </option>
           <option value="meta-llama/llama-3.2-11b-vision-instruct:free">
-            Llama 3.2 11B Vision — lightest
+            llama-3.2-11b-vision — lightweight
           </option>
-          <option value="openrouter/free">
-            openrouter/free — auto-pick any free vision model
+          <option value="moonshotai/kimi-vl-a3b-thinking:free">
+            kimi-vl-a3b-thinking — reasoning vision
+          </option>
+          <option value="google/gemma-3-27b-it:free">
+            gemma-3-27b — Google, free
           </option>
         </select>
       </div>
@@ -291,7 +294,6 @@
       let imageBase64 = null;
       let imageType = null;
 
-      // Drop zone
       dropZone.addEventListener("click", () => fileInput.click());
       dropZone.addEventListener("dragover", (e) => {
         e.preventDefault();
@@ -345,7 +347,7 @@
 
         const prompt = `Count the number of people visible in this image.
 
-Respond with ONLY a raw JSON object — no markdown fences, no explanation, nothing else:
+Respond with ONLY a raw JSON object — no markdown, no explanation, nothing else before or after the JSON:
 {
   "count": <integer>,
   "confidence": "<high|medium|low>",
@@ -354,10 +356,9 @@ Respond with ONLY a raw JSON object — no markdown fences, no explanation, noth
 }
 
 Rules:
-- count: must be an integer. Count partial bodies (a visible head or torso) as 1 person.
-- confidence: high = you are certain of the count, medium = some people may be hidden or occluded, low = very crowded, blurry, or distant.
-- visibility: clear = people are distinct and easy to count, partial = some overlap, crowded = dense crowd hard to count individually.
-- notes: brief note if image quality or crowd density affected accuracy, else empty string.`;
+- count: integer only. Count partial bodies (a visible head or torso) as 1 person.
+- confidence: high = certain, medium = some occlusion, low = very crowded or blurry.
+- visibility: clear = people distinct, partial = some overlap, crowded = dense crowd.`;
 
         try {
           const response = await fetch(
@@ -371,7 +372,7 @@ Rules:
                 "X-Title": "People Counter",
               },
               body: JSON.stringify({
-                model: model,
+                model,
                 max_tokens: 256,
                 temperature: 0,
                 messages: [
@@ -384,10 +385,7 @@ Rules:
                           url: `data:${imageType};base64,${imageBase64}`,
                         },
                       },
-                      {
-                        type: "text",
-                        text: prompt,
-                      },
+                      { type: "text", text: prompt },
                     ],
                   },
                 ],
@@ -395,19 +393,19 @@ Rules:
             },
           );
 
+          const data = await response.json();
+
           if (!response.ok) {
-            const err = await response.json().catch(() => ({}));
             throw new Error(
-              err?.error?.message || `API error ${response.status}`,
+              data?.error?.message || `API error ${response.status}`,
             );
           }
 
-          const data = await response.json();
           const raw = data.choices?.[0]?.message?.content?.trim() || "";
-          const usedModel = data.model || model;
+          const usedMod = data.model || model;
 
-          // Strip accidental markdown fences
-          const cleaned = raw
+          // Strip markdown fences if model added them
+          let cleaned = raw
             .replace(/^```[a-z]*\n?/i, "")
             .replace(/```$/, "")
             .trim();
@@ -416,11 +414,11 @@ Rules:
           try {
             result = JSON.parse(cleaned);
           } catch {
-            // Try extracting JSON from within the response if model added extra text
+            // Fallback: extract JSON block if model wrapped it in prose
             const match = cleaned.match(/\{[\s\S]*\}/);
             if (!match)
               throw new Error(
-                "Could not parse model response. Try again or switch models.",
+                `Could not parse response. Raw reply: "${raw.slice(0, 120)}"`,
               );
             result = JSON.parse(match[0]);
           }
@@ -449,7 +447,7 @@ Rules:
             notesBox.style.display = "block";
           }
 
-          modelUsed.innerHTML = `<span class="model-tag">Used: ${usedModel}</span>`;
+          modelUsed.innerHTML = `<span class="model-tag">Used: ${usedMod}</span>`;
         } catch (err) {
           showError(
             err.message ||
