@@ -65,7 +65,7 @@ $groqApiKey = $env['GROQ_API_KEY'] ?? '';
         <!-- ==================== HERO ==================== -->
         <section class="hero" id="hero">
             <div class="hero-bg">
-                <img src="sawari-landing/gallery/landing.jpg" alt="Kathmandu transit" />
+                <img src="gallery/landing.jpg" alt="Kathmandu transit" />
             </div>
             <div class="hero-gradient"></div>
             <div class="hero-content">
@@ -92,7 +92,7 @@ $groqApiKey = $env['GROQ_API_KEY'] ?? '';
             <div class="about-cards">
                 <article class="about-card">
                     <div class="about-card-img">
-                        <img src="sawari-landing/gallery/routes.jpg" alt="Kathmandu routes" loading="lazy" />
+                        <img src="gallery/routes.jpg" alt="Kathmandu routes" loading="lazy" />
                     </div>
                     <div class="about-card-body">
                         <div class="about-icon"><i class="fa-solid fa-map"></i></div>
@@ -105,7 +105,7 @@ $groqApiKey = $env['GROQ_API_KEY'] ?? '';
                 </article>
                 <article class="about-card">
                     <div class="about-card-img">
-                        <img src="sawari-landing/gallery/high-tech-buses.jpg" alt="Modern buses" loading="lazy" />
+                        <img src="gallery/high-tech-buses.jpg" alt="Modern buses" loading="lazy" />
                     </div>
                     <div class="about-card-body">
                         <div class="about-icon"><i class="fa-solid fa-globe"></i></div>
@@ -117,7 +117,7 @@ $groqApiKey = $env['GROQ_API_KEY'] ?? '';
                 </article>
                 <article class="about-card">
                     <div class="about-card-img">
-                        <img src="sawari-landing/gallery/nepal.jpg" alt="Nepal transit" loading="lazy" />
+                        <img src="gallery/nepal.jpg" alt="Nepal transit" loading="lazy" />
                     </div>
                     <div class="about-card-body">
                         <div class="about-icon"><i class="fa-solid fa-users"></i></div>
@@ -131,19 +131,16 @@ $groqApiKey = $env['GROQ_API_KEY'] ?? '';
 
             <div class="photo-strip">
                 <div class="photo-strip-track">
-                    <img src="sawari-landing/gallery/image1.jpg" alt="Transit photo 1" loading="lazy" />
-                    <img src="sawari-landing/gallery/image2.jpg" alt="Transit photo 2" loading="lazy" />
-                    <img src="sawari-landing/gallery/image3.jpg" alt="Transit photo 3" loading="lazy" />
-                    <img src="sawari-landing/gallery/image4.jpg" alt="Transit photo 4" loading="lazy" />
-                    <img src="sawari-landing/gallery/image5.jpg" alt="Transit photo 5" loading="lazy" />
-                    <img src="sawari-landing/gallery/image6.jpg" alt="Transit photo 6" loading="lazy" />
-                    <img src="sawari-landing/gallery/image7.jpg" alt="Transit photo 7" loading="lazy" />
-                    <img src="sawari-landing/gallery/image1.jpg" alt="Transit photo 1" loading="lazy"
-                        aria-hidden="true" />
-                    <img src="sawari-landing/gallery/image2.jpg" alt="Transit photo 2" loading="lazy"
-                        aria-hidden="true" />
-                    <img src="sawari-landing/gallery/image3.jpg" alt="Transit photo 3" loading="lazy"
-                        aria-hidden="true" />
+                    <img src="gallery/image1.jpg" alt="Transit photo 1" loading="lazy" />
+                    <img src="gallery/image2.jpg" alt="Transit photo 2" loading="lazy" />
+                    <img src="gallery/image3.jpg" alt="Transit photo 3" loading="lazy" />
+                    <img src="gallery/image4.jpg" alt="Transit photo 4" loading="lazy" />
+                    <img src="gallery/image5.jpg" alt="Transit photo 5" loading="lazy" />
+                    <img src="gallery/image6.jpg" alt="Transit photo 6" loading="lazy" />
+                    <img src="gallery/image7.jpg" alt="Transit photo 7" loading="lazy" />
+                    <img src="gallery/image1.jpg" alt="Transit photo 1" loading="lazy" aria-hidden="true" />
+                    <img src="gallery/image2.jpg" alt="Transit photo 2" loading="lazy" aria-hidden="true" />
+                    <img src="gallery/image3.jpg" alt="Transit photo 3" loading="lazy" aria-hidden="true" />
                 </div>
             </div>
         </section>
@@ -159,8 +156,7 @@ $groqApiKey = $env['GROQ_API_KEY'] ?? '';
                 <article class="step-card">
                     <div class="step-number">01</div>
                     <div class="step-visual">
-                        <img src="sawari-landing/gallery/SajhaBus_20220707134627.jpg" alt="Enter destination"
-                            loading="lazy" />
+                        <img src="gallery/SajhaBus_20220707134627.jpg" alt="Enter destination" loading="lazy" />
                     </div>
                     <h3>Enter origin and destination</h3>
                     <p>Use natural language or map points to start your journey query.</p>
@@ -168,7 +164,7 @@ $groqApiKey = $env['GROQ_API_KEY'] ?? '';
                 <article class="step-card">
                     <div class="step-number">02</div>
                     <div class="step-visual">
-                        <img src="sawari-landing/gallery/sajha-yatayat-kathmandu-narayangadh-shuttle-service-1758693554.jpg"
+                        <img src="gallery/sajha-yatayat-kathmandu-narayangadh-shuttle-service-1758693554.jpg"
                             alt="See routes" loading="lazy" />
                     </div>
                     <h3>See direct and transfer routes</h3>
@@ -177,8 +173,7 @@ $groqApiKey = $env['GROQ_API_KEY'] ?? '';
                 <article class="step-card">
                     <div class="step-number">03</div>
                     <div class="step-visual">
-                        <img src="sawari-landing/gallery/samakhusi-yatayat-1729569860.jpg" alt="Check fare"
-                            loading="lazy" />
+                        <img src="gallery/samakhusi-yatayat-1729569860.jpg" alt="Check fare" loading="lazy" />
                     </div>
                     <h3>Check fare and walking legs</h3>
                     <p>Fare estimates and short walk segments are shown with clear trip structure.</p>
@@ -186,7 +181,7 @@ $groqApiKey = $env['GROQ_API_KEY'] ?? '';
                 <article class="step-card">
                     <div class="step-number">04</div>
                     <div class="step-visual">
-                        <img src="sawari-landing/gallery/sajha1.jpg" alt="Track buses" loading="lazy" />
+                        <img src="gallery/sajha1.jpg" alt="Track buses" loading="lazy" />
                     </div>
                     <h3>Track nearby buses when available</h3>
                     <p>Live bus updates support better timing and boarding choices.</p>
@@ -206,42 +201,41 @@ $groqApiKey = $env['GROQ_API_KEY'] ?? '';
                     <div class="feature-icon"><i class="fa-solid fa-route"></i></div>
                     <h3>Route Planning</h3>
                     <p>Direct and transfer route discovery using stop-level matching.</p>
-                    <img src="sawari-landing/gallery/mahanagar-yatayat.png" alt="Route planning" class="feature-bg-img"
+                    <img src="gallery/mahanagar-yatayat.png" alt="Route planning" class="feature-bg-img"
                         loading="lazy" />
                 </article>
                 <article class="feature-card">
                     <div class="feature-icon"><i class="fa-solid fa-ticket"></i></div>
                     <h3>Fare Estimation</h3>
                     <p>Fare approximation aligned with local tariff logic.</p>
-                    <img src="sawari-landing/gallery/manangar-yatayat.jpg" alt="Fare estimation" class="feature-bg-img"
+                    <img src="gallery/manangar-yatayat.jpg" alt="Fare estimation" class="feature-bg-img"
                         loading="lazy" />
                 </article>
                 <article class="feature-card feature-card-accent">
                     <div class="feature-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
                     <h3>Natural Language</h3>
                     <p>Supports practical everyday phrasing from users.</p>
-                    <img src="sawari-landing/gallery/IMG-1.jpeg" alt="Natural language" class="feature-bg-img"
-                        loading="lazy" />
+                    <img src="gallery/IMG-1.jpeg" alt="Natural language" class="feature-bg-img" loading="lazy" />
                 </article>
                 <article class="feature-card">
                     <div class="feature-icon"><i class="fa-solid fa-location-arrow"></i></div>
                     <h3>GPS and Nearby Stops</h3>
                     <p>Locates surrounding stops and available passing routes.</p>
-                    <img src="sawari-landing/gallery/mayur_yatayat_XWhLImWBJm.jpg" alt="GPS stops"
-                        class="feature-bg-img" loading="lazy" />
+                    <img src="gallery/mayur_yatayat_XWhLImWBJm.jpg" alt="GPS stops" class="feature-bg-img"
+                        loading="lazy" />
                 </article>
                 <article class="feature-card feature-card-accent">
                     <div class="feature-icon"><i class="fa-solid fa-leaf"></i></div>
                     <h3>Carbon Comparison</h3>
                     <p>Displays approximate CO2 savings for public transit use.</p>
-                    <img src="sawari-landing/gallery/39089002_214055306121394_3987346834723962880_n_mmZU29H7GE.jpg"
+                    <img src="gallery/39089002_214055306121394_3987346834723962880_n_mmZU29H7GE.jpg"
                         alt="Carbon comparison" class="feature-bg-img" loading="lazy" />
                 </article>
                 <article class="feature-card">
                     <div class="feature-icon"><i class="fa-solid fa-circle-half-stroke"></i></div>
                     <h3>Dark and Light Themes</h3>
                     <p>Theme options for readability in different lighting conditions.</p>
-                    <img src="sawari-landing/gallery/81038617_2710162452340155_22013957954863104_n.jpg" alt="Themes"
+                    <img src="gallery/81038617_2710162452340155_22013957954863104_n.jpg" alt="Themes"
                         class="feature-bg-img" loading="lazy" />
                 </article>
             </div>
@@ -256,42 +250,41 @@ $groqApiKey = $env['GROQ_API_KEY'] ?? '';
             </div>
             <div class="gallery-masonry">
                 <div class="gallery-col">
-                    <img src="sawari-landing/gallery/1594641445.jpg" alt="Kathmandu road transit" loading="lazy" />
-                    <img src="sawari-landing/gallery/473749570_1355280112583010_593412764911101796_n.jpg"
-                        alt="Public bus" loading="lazy" />
-                    <img src="sawari-landing/gallery/high-tech-buses.jpg" alt="High tech buses" loading="lazy" />
-                    <img src="sawari-landing/gallery/sajha.jpg" alt="Sajha bus" loading="lazy" />
-                    <img src="sawari-landing/gallery/samakhusi-yatayat-1729569860.jpg" alt="Samakhusi route"
+                    <img src="gallery/1594641445.jpg" alt="Kathmandu road transit" loading="lazy" />
+                    <img src="gallery/473749570_1355280112583010_593412764911101796_n.jpg" alt="Public bus"
                         loading="lazy" />
+                    <img src="gallery/high-tech-buses.jpg" alt="High tech buses" loading="lazy" />
+                    <img src="gallery/sajha.jpg" alt="Sajha bus" loading="lazy" />
+                    <img src="gallery/samakhusi-yatayat-1729569860.jpg" alt="Samakhusi route" loading="lazy" />
                 </div>
                 <div class="gallery-col">
-                    <img src="sawari-landing/gallery/302216934_482557370551393_6475660738973236802_n.jpg"
-                        alt="Bus service" loading="lazy" />
-                    <img src="sawari-landing/gallery/IMG-1.jpeg" alt="Transit Kathmandu" loading="lazy" />
-                    <img src="sawari-landing/gallery/mahanagar-yatayat.png" alt="Mahanagar yatayat" loading="lazy" />
-                    <img src="sawari-landing/gallery/nepal.jpg" alt="Nepal transit" loading="lazy" />
-                    <img src="sawari-landing/gallery/routes.jpg" alt="Route board" loading="lazy" />
+                    <img src="gallery/302216934_482557370551393_6475660738973236802_n.jpg" alt="Bus service"
+                        loading="lazy" />
+                    <img src="gallery/IMG-1.jpeg" alt="Transit Kathmandu" loading="lazy" />
+                    <img src="gallery/mahanagar-yatayat.png" alt="Mahanagar yatayat" loading="lazy" />
+                    <img src="gallery/nepal.jpg" alt="Nepal transit" loading="lazy" />
+                    <img src="gallery/routes.jpg" alt="Route board" loading="lazy" />
                 </div>
                 <div class="gallery-col">
-                    <img src="sawari-landing/gallery/39089002_214055306121394_3987346834723962880_n_mmZU29H7GE.jpg"
-                        alt="Older bus" loading="lazy" />
-                    <img src="sawari-landing/gallery/481820024_656265493582501_1243983797300762177_n.jpg"
-                        alt="Modern local bus" loading="lazy" />
-                    <img src="sawari-landing/gallery/mayur.jpg" alt="Mayur bus" loading="lazy" />
-                    <img src="sawari-landing/gallery/nilo-micro.jpg" alt="Blue microbus" loading="lazy" />
-                    <img src="sawari-landing/gallery/tempo.jpg" alt="Tempo transport" loading="lazy" />
+                    <img src="gallery/39089002_214055306121394_3987346834723962880_n_mmZU29H7GE.jpg" alt="Older bus"
+                        loading="lazy" />
+                    <img src="gallery/481820024_656265493582501_1243983797300762177_n.jpg" alt="Modern local bus"
+                        loading="lazy" />
+                    <img src="gallery/mayur.jpg" alt="Mayur bus" loading="lazy" />
+                    <img src="gallery/nilo-micro.jpg" alt="Blue microbus" loading="lazy" />
+                    <img src="gallery/tempo.jpg" alt="Tempo transport" loading="lazy" />
                 </div>
                 <div class="gallery-col">
-                    <img src="sawari-landing/gallery/473783154_1062778689195922_6904992953434292580_n.jpg"
-                        alt="Transport route" loading="lazy" />
-                    <img src="sawari-landing/gallery/81038617_2710162452340155_22013957954863104_n.jpg"
-                        alt="Transit community" loading="lazy" />
-                    <img src="sawari-landing/gallery/manangar-yatayat.jpg" alt="Yatayat bus" loading="lazy" />
-                    <img src="sawari-landing/gallery/sajha1.jpg" alt="Sajha route" loading="lazy" />
-                    <img src="sawari-landing/gallery/SajhaBus_20220707134627.jpg" alt="Sajha bus" loading="lazy" />
-                    <img src="sawari-landing/gallery/sajha-yatayat-kathmandu-narayangadh-shuttle-service-1758693554.jpg"
+                    <img src="gallery/473783154_1062778689195922_6904992953434292580_n.jpg" alt="Transport route"
+                        loading="lazy" />
+                    <img src="gallery/81038617_2710162452340155_22013957954863104_n.jpg" alt="Transit community"
+                        loading="lazy" />
+                    <img src="gallery/manangar-yatayat.jpg" alt="Yatayat bus" loading="lazy" />
+                    <img src="gallery/sajha1.jpg" alt="Sajha route" loading="lazy" />
+                    <img src="gallery/SajhaBus_20220707134627.jpg" alt="Sajha bus" loading="lazy" />
+                    <img src="gallery/sajha-yatayat-kathmandu-narayangadh-shuttle-service-1758693554.jpg"
                         alt="Sajha shuttle" loading="lazy" />
-                    <img src="sawari-landing/gallery/mayur_yatayat_XWhLImWBJm.jpg" alt="Mayur yatayat" loading="lazy" />
+                    <img src="gallery/mayur_yatayat_XWhLImWBJm.jpg" alt="Mayur yatayat" loading="lazy" />
                 </div>
             </div>
         </section>
@@ -306,7 +299,7 @@ $groqApiKey = $env['GROQ_API_KEY'] ?? '';
             <div class="ask-layout">
                 <div class="ask-info">
                     <div class="ask-info-card">
-                        <img src="sawari-landing/gallery/sajha-bus-EV.jpg" alt="Sajha EV bus" loading="lazy" />
+                        <img src="gallery/sajha-bus-EV.jpg" alt="Sajha EV bus" loading="lazy" />
                         <div class="ask-info-overlay">
                             <h3>AI-Powered Transit Help</h3>
                             <p>Ask about routes, fares, or nearby stops and get instant answers powered by AI.</p>
@@ -375,7 +368,7 @@ $groqApiKey = $env['GROQ_API_KEY'] ?? '';
 
                 <aside class="contribute-aside">
                     <div class="contribute-aside-top">
-                        <img src="sawari-landing/gallery/mahanagar.jpg" alt="Bus in Kathmandu" loading="lazy" />
+                        <img src="gallery/mahanagar.jpg" alt="Bus in Kathmandu" loading="lazy" />
                     </div>
                     <div class="contribute-aside-body">
                         <h3>Review flow</h3>
