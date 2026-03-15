@@ -40,6 +40,7 @@
 #include "esp_camera.h"
 #include <WiFi.h>
 #include <HTTPClient.h>
+#include <WiFiClientSecure.h>
 
 // ─── WiFiManager (captive portal for WiFi config) ───────────────────────────
 #include <WiFiManager.h>
@@ -71,6 +72,13 @@ char cfgServerUrl[MAX_URL_LEN]  = "";
 char cfgVehicleId[MAX_VID_LEN]  = "";
 bool shouldSaveConfig           = false;        // Flag set by WiFiManager callback
 
+// Track whether portal params have been added (avoid duplicates)
+bool portalParamsAdded          = false;
+
+// Consecutive failure counter for auto-restart
+int  consecutiveFailures        = 0;
+static const int MAX_CONSECUTIVE_FAILURES = 10;
+
 // ═══════════════════════════════════════════════════════════════════════════
 //  FORWARD DECLARATIONS
 // ═══════════════════════════════════════════════════════════════════════════
@@ -87,7 +95,6 @@ void     statusLedOn();
 void     statusLedOff();
 void     flashLedOn();
 void     flashLedOff();
-void     blinkFlashLed();
 
 // ═══════════════════════════════════════════════════════════════════════════
 //  SETUP
@@ -137,6 +144,7 @@ void setup() {
     wifiManager.addParameter(&paramApiUrl);
     wifiManager.addParameter(&paramVehicle);
     wifiManager.setSaveConfigCallback(saveConfigCallback);
+    portalParamsAdded = true;
 
     // Try auto-connect with saved credentials; on first boot opens portal
     Serial.println(F("[WIFI] Connecting to saved network..."));
@@ -153,13 +161,16 @@ void setup() {
     // Save custom params if they were changed in the portal
     if (shouldSaveConfig) {
         strncpy(cfgServerUrl, paramApiUrl.getValue(), MAX_URL_LEN - 1);
+        cfgServerUrl[MAX_URL_LEN - 1] = '\0';
         strncpy(cfgVehicleId, paramVehicle.getValue(), MAX_VID_LEN - 1);
+        cfgVehicleId[MAX_VID_LEN - 1] = '\0';
         saveConfig();
         Serial.println(F("[CFG] New settings saved to SPIFFS"));
     }
 
     Serial.print(F("[WIFI] Connected — IP: "));
     Serial.println(WiFi.localIP());
+    Serial.printf("[WIFI] Signal strength: %d dBm\n", WiFi.RSSI());
 
     // Quick double-blink to signal "ready"
     for (int i = 0; i < 2; i++) {
@@ -281,23 +292,49 @@ bool initCamera() {
 // ═══════════════════════════════════════════════════════════════════════════
 
 void captureAndUpload() {
+    // Guard: don't attempt upload if URL is empty
+    if (strlen(cfgServerUrl) == 0) {
+        Serial.println(F("[SKIP] No API URL configured — hold BOOT 3s to configure"));
+        return;
+    }
+
     Serial.println(F("[CAP] Capturing image..."));
 
     camera_fb_t *fb = esp_camera_fb_get();
     if (!fb) {
-        Serial.println(F("[CAP] Capture failed"));
+        Serial.println(F("[CAP] Capture failed — camera may need restart"));
+        consecutiveFailures++;
+        if (consecutiveFailures >= MAX_CONSECUTIVE_FAILURES) {
+            Serial.println(F("[ERROR] Too many failures — restarting ESP32"));
+            delay(1000);
+            ESP.restart();
+        }
         return;
     }
 
     Serial.printf("[CAP] Image captured — %u bytes\n", fb->len);
+
+    // Sanity check: image should be at least a few KB for a valid JPEG
+    if (fb->len < 1000) {
+        Serial.println(F("[CAP] Image too small — likely corrupt, discarding"));
+        esp_camera_fb_return(fb);
+        return;
+    }
 
     bool ok = uploadImage(fb);
     esp_camera_fb_return(fb);
 
     if (ok) {
         Serial.println(F("[UPLOAD] Success"));
+        consecutiveFailures = 0;
     } else {
         Serial.println(F("[UPLOAD] Failed"));
+        consecutiveFailures++;
+        if (consecutiveFailures >= MAX_CONSECUTIVE_FAILURES) {
+            Serial.println(F("[ERROR] Too many consecutive failures — restarting ESP32"));
+            delay(1000);
+            ESP.restart();
+        }
     }
 
     flashLedOff();   // Ensure LED is off after upload
@@ -311,10 +348,32 @@ void captureAndUpload() {
 bool uploadImage(camera_fb_t *fb) {
     if (!fb || fb->len == 0) return false;
 
-    Serial.println(F("[UPLOAD] Starting upload..."));
+    Serial.printf("[UPLOAD] Starting upload to %s\n", cfgServerUrl);
+    Serial.printf("[UPLOAD] Vehicle ID: %s, Image size: %u bytes\n", cfgVehicleId, fb->len);
+
+    // Determine if we need HTTPS
+    bool useHttps = (strncmp(cfgServerUrl, "https", 5) == 0);
 
     HTTPClient http;
-    http.begin(cfgServerUrl);
+
+    WiFiClientSecure secureClient;
+    WiFiClient       plainClient;
+
+    if (useHttps) {
+        // Skip certificate verification (ESP32-CAM has limited storage for certs)
+        // For production, consider adding the specific server's root CA
+        secureClient.setInsecure();
+        if (!http.begin(secureClient, cfgServerUrl)) {
+            Serial.println(F("[UPLOAD] Failed to begin HTTPS connection"));
+            return false;
+        }
+    } else {
+        if (!http.begin(plainClient, cfgServerUrl)) {
+            Serial.println(F("[UPLOAD] Failed to begin HTTP connection"));
+            return false;
+        }
+    }
+
     http.setTimeout(HTTP_TIMEOUT_MS);
 
     // ── Build multipart body ────────────────────────────────────────────
@@ -338,9 +397,13 @@ bool uploadImage(camera_fb_t *fb) {
     uint32_t totalLen = bodyStart.length() + fileHeader.length() + fb->len + bodyEnd.length();
 
     // ── Allocate single buffer and assemble ─────────────────────────────
-    uint8_t *payload = (uint8_t *)malloc(totalLen);
+    uint8_t *payload = (uint8_t *)ps_malloc(totalLen);
     if (!payload) {
-        Serial.println(F("[UPLOAD] malloc failed — not enough memory"));
+        // Fallback to regular malloc if PSRAM alloc failed
+        payload = (uint8_t *)malloc(totalLen);
+    }
+    if (!payload) {
+        Serial.printf("[UPLOAD] malloc failed — need %u bytes, free heap: %u\n", totalLen, ESP.getFreeHeap());
         http.end();
         return false;
     }
@@ -360,38 +423,44 @@ bool uploadImage(camera_fb_t *fb) {
     offset += bodyEnd.length();
 
     // ── Blink LED during transmission ───────────────────────────────────
-    ledBlinkTimer = millis();
-    ledBlinkState = false;
-
-    // Start blinking (we'll blink in a tight pattern before POST)
-    flashLedOn();
-
-    // Use a custom stream to blink while sending — but HTTPClient is
-    // blocking, so we blink before + after.  For visible feedback we
-    // blink 3 times before and keep LED on during send.
     for (int i = 0; i < 3; i++) {
         flashLedOn();  delay(LED_BLINK_INTERVAL);
         flashLedOff(); delay(LED_BLINK_INTERVAL);
     }
     flashLedOn();   // Stay on during actual transfer
 
+    Serial.printf("[UPLOAD] Sending %u bytes...\n", totalLen);
+
     int httpCode = http.POST(payload, totalLen);
 
     flashLedOff();  // Transfer done — LED off
     free(payload);
 
-    // ── Blink result: 2 quick blinks = success, 5 slow blinks = error ──
+    // ── Handle response ─────────────────────────────────────────────────
     if (httpCode == HTTP_CODE_OK || httpCode == HTTP_CODE_CREATED) {
         String response = http.getString();
-        Serial.printf("[UPLOAD] HTTP %d — Response: %s\n", httpCode, response.c_str());
+        Serial.printf("[UPLOAD] HTTP %d\n", httpCode);
 
         // Parse server response
         JsonDocument doc;
         DeserializationError jsonErr = deserializeJson(doc, response);
-        if (!jsonErr && doc["success"].as<bool>()) {
-            int passengers  = doc["passengers"].as<int>();
-            const char *conf = doc["confidence"].as<const char *>();
-            Serial.printf("[RESULT] Passengers: %d  Confidence: %s\n", passengers, conf ? conf : "N/A");
+        if (!jsonErr) {
+            bool success = doc["success"] | false;
+            if (success) {
+                int passengers = doc["passengers"] | -1;
+                const char *conf = doc["confidence"];
+                const char *model = doc["model"];
+                Serial.printf("[RESULT] Passengers: %d  Confidence: %s  Model: %s\n",
+                              passengers,
+                              conf ? conf : "N/A",
+                              model ? model : "N/A");
+            } else {
+                const char *errMsg = doc["error"];
+                Serial.printf("[RESULT] Server error: %s\n", errMsg ? errMsg : "unknown");
+            }
+        } else {
+            Serial.printf("[RESULT] JSON parse error: %s\n", jsonErr.c_str());
+            Serial.printf("[RESULT] Raw response: %s\n", response.c_str());
         }
 
         // Success blink: 2 quick
@@ -403,7 +472,11 @@ bool uploadImage(camera_fb_t *fb) {
         http.end();
         return true;
     } else {
+        String errorBody = http.getString();
         Serial.printf("[UPLOAD] HTTP error: %d  %s\n", httpCode, http.errorToString(httpCode).c_str());
+        if (errorBody.length() > 0 && errorBody.length() < 500) {
+            Serial.printf("[UPLOAD] Response: %s\n", errorBody.c_str());
+        }
 
         // Error blink: 5 slow
         for (int i = 0; i < 5; i++) {
@@ -458,31 +531,42 @@ void startConfigPortal() {
     Serial.println(F("[WIFI] Connect to AP: " WIFI_AP_NAME));
     Serial.println(F("[WIFI] Then open 192.168.4.1 in browser"));
 
-    // Add custom fields with current values
+    // Reset WiFiManager to clear old parameters before adding fresh ones
+    // This prevents duplicate parameters on repeated portal opens
+    wifiManager.resetSettings();  // Only resets WiFi credentials, not our SPIFFS config
+
+    // Re-create WiFiManager with fresh parameters
+    WiFiManager freshManager;
+    freshManager.setConfigPortalTimeout(WIFI_PORTAL_TIMEOUT);
+    freshManager.setConnectTimeout(20);
+
     WiFiManagerParameter paramApiUrl("api_url", "API Endpoint URL", cfgServerUrl, MAX_URL_LEN);
     WiFiManagerParameter paramVehicle("vehicle_id", "Vehicle / Bus ID", cfgVehicleId, MAX_VID_LEN);
 
-    wifiManager.addParameter(&paramApiUrl);
-    wifiManager.addParameter(&paramVehicle);
-    wifiManager.setSaveConfigCallback(saveConfigCallback);
+    freshManager.addParameter(&paramApiUrl);
+    freshManager.addParameter(&paramVehicle);
+    freshManager.setSaveConfigCallback(saveConfigCallback);
 
     statusLedOn();   // Solid status LED while portal is active
     shouldSaveConfig = false;
 
     // startConfigPortal blocks until connected or timeout
-    bool connected = wifiManager.startConfigPortal(WIFI_AP_NAME, WIFI_AP_PASS);
+    bool connected = freshManager.startConfigPortal(WIFI_AP_NAME, WIFI_AP_PASS);
 
     if (connected) {
         Serial.print(F("[WIFI] New credentials saved — IP: "));
         Serial.println(WiFi.localIP());
     } else {
-        Serial.println(F("[WIFI] Portal timed out — continuing with old config"));
+        Serial.println(F("[WIFI] Portal timed out — reconnecting with old config"));
+        WiFi.begin();  // Reconnect with previously saved credentials
     }
 
     // Save custom params if user submitted the form
     if (shouldSaveConfig) {
         strncpy(cfgServerUrl, paramApiUrl.getValue(), MAX_URL_LEN - 1);
+        cfgServerUrl[MAX_URL_LEN - 1] = '\0';
         strncpy(cfgVehicleId, paramVehicle.getValue(), MAX_VID_LEN - 1);
+        cfgVehicleId[MAX_VID_LEN - 1] = '\0';
         saveConfig();
         Serial.printf("[CFG] Updated — URL: %s  VID: %s\n", cfgServerUrl, cfgVehicleId);
     }
@@ -501,7 +585,9 @@ void saveConfigCallback() {
 void loadConfig() {
     // Start with defaults
     strncpy(cfgServerUrl, DEFAULT_SERVER_URL, MAX_URL_LEN - 1);
+    cfgServerUrl[MAX_URL_LEN - 1] = '\0';
     strncpy(cfgVehicleId, DEFAULT_VEHICLE_ID, MAX_VID_LEN - 1);
+    cfgVehicleId[MAX_VID_LEN - 1] = '\0';
 
     if (!SPIFFS.exists(CONFIG_FILE)) {
         Serial.println(F("[CFG] No saved config — using defaults"));
@@ -519,15 +605,18 @@ void loadConfig() {
     file.close();
 
     if (err) {
-        Serial.printf("[CFG] JSON parse error: %s\n", err.c_str());
+        Serial.printf("[CFG] JSON parse error: %s — using defaults\n", err.c_str());
+        SPIFFS.remove(CONFIG_FILE);  // Remove corrupt config
         return;
     }
 
     if (doc["api_url"].is<const char *>()) {
         strncpy(cfgServerUrl, doc["api_url"].as<const char *>(), MAX_URL_LEN - 1);
+        cfgServerUrl[MAX_URL_LEN - 1] = '\0';
     }
     if (doc["vehicle_id"].is<const char *>()) {
         strncpy(cfgVehicleId, doc["vehicle_id"].as<const char *>(), MAX_VID_LEN - 1);
+        cfgVehicleId[MAX_VID_LEN - 1] = '\0';
     }
 
     Serial.println(F("[CFG] Loaded saved config from SPIFFS"));

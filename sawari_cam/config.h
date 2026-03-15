@@ -6,7 +6,7 @@
  *  Board  : AI-Thinker ESP32-CAM
  *  Purpose: Capture images every 30 s, POST to Sawari vision API for
  *           AI-based passenger counting.
- * =========================================================]]]]]]===================
+ * ============================================================================
  */
 
 #ifndef CONFIG_H
@@ -19,7 +19,7 @@
 #define DEFAULT_SERVER_URL    "https://zenithkandel.com.np/sawari/app/hardware-api/passenger.php"
 #define DEFAULT_VEHICLE_ID    "1"
 #define HTTP_TIMEOUT_MS       15000      // 15 s (image uploads can be slow)
-#define MAX_URL_LEN           200        // Max length for API URL field
+#define MAX_URL_LEN           256        // Max length for API URL field
 #define MAX_VID_LEN           10         // Max length for vehicle ID field
 #define CONFIG_FILE           "/config.json"   // SPIFFS path for saved settings
 
