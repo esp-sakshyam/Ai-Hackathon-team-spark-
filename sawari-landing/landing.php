@@ -261,13 +261,15 @@ $groqApiKey = $env['GROQ_API_KEY'] ?? '';
                     <div class="feature-icon"><i class="fa-solid fa-route"></i></div>
                     <h3>Route Planning</h3>
                     <p>Direct and transfer route discovery using stop-level matching.</p>
-                    <img src="gallery/mahanagar-yatayat.png" alt="Route planning" class="feature-bg-img" loading="lazy" />
+                    <img src="gallery/mahanagar-yatayat.png" alt="Route planning" class="feature-bg-img"
+                        loading="lazy" />
                 </article>
                 <article class="feature-card">
                     <div class="feature-icon"><i class="fa-solid fa-ticket"></i></div>
                     <h3>Fare Estimation</h3>
                     <p>Fare approximation aligned with local tariff logic.</p>
-                    <img src="gallery/manangar-yatayat.jpg" alt="Fare estimation" class="feature-bg-img" loading="lazy" />
+                    <img src="gallery/manangar-yatayat.jpg" alt="Fare estimation" class="feature-bg-img"
+                        loading="lazy" />
                 </article>
                 <article class="feature-card feature-card-accent">
                     <div class="feature-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
@@ -279,19 +281,22 @@ $groqApiKey = $env['GROQ_API_KEY'] ?? '';
                     <div class="feature-icon"><i class="fa-solid fa-location-arrow"></i></div>
                     <h3>GPS and Nearby Stops</h3>
                     <p>Locates surrounding stops and available passing routes.</p>
-                    <img src="gallery/mayur_yatayat_XWhLImWBJm.jpg" alt="GPS stops" class="feature-bg-img" loading="lazy" />
+                    <img src="gallery/mayur_yatayat_XWhLImWBJm.jpg" alt="GPS stops" class="feature-bg-img"
+                        loading="lazy" />
                 </article>
                 <article class="feature-card feature-card-accent">
                     <div class="feature-icon"><i class="fa-solid fa-leaf"></i></div>
                     <h3>Carbon Comparison</h3>
                     <p>Displays approximate CO2 savings for public transit use.</p>
-                    <img src="gallery/39089002_214055306121394_3987346834723962880_n_mmZU29H7GE.jpg" alt="Carbon comparison" class="feature-bg-img" loading="lazy" />
+                    <img src="gallery/39089002_214055306121394_3987346834723962880_n_mmZU29H7GE.jpg"
+                        alt="Carbon comparison" class="feature-bg-img" loading="lazy" />
                 </article>
                 <article class="feature-card">
                     <div class="feature-icon"><i class="fa-solid fa-circle-half-stroke"></i></div>
                     <h3>Dark and Light Themes</h3>
                     <p>Theme options for readability in different lighting conditions.</p>
-                    <img src="gallery/81038617_2710162452340155_22013957954863104_n.jpg" alt="Themes" class="feature-bg-img" loading="lazy" />
+                    <img src="gallery/81038617_2710162452340155_22013957954863104_n.jpg" alt="Themes"
+                        class="feature-bg-img" loading="lazy" />
                 </article>
             </div>
         </section>
@@ -306,32 +311,39 @@ $groqApiKey = $env['GROQ_API_KEY'] ?? '';
             <div class="gallery-masonry">
                 <div class="gallery-col">
                     <img src="gallery/1594641445.jpg" alt="Kathmandu road transit" loading="lazy" />
-                    <img src="gallery/473749570_1355280112583010_593412764911101796_n.jpg" alt="Public bus" loading="lazy" />
+                    <img src="gallery/473749570_1355280112583010_593412764911101796_n.jpg" alt="Public bus"
+                        loading="lazy" />
                     <img src="gallery/high-tech-buses.jpg" alt="High tech buses" loading="lazy" />
                     <img src="gallery/sajha.jpg" alt="Sajha bus" loading="lazy" />
                     <img src="gallery/samakhusi-yatayat-1729569860.jpg" alt="Samakhusi route" loading="lazy" />
                 </div>
                 <div class="gallery-col">
-                    <img src="gallery/302216934_482557370551393_6475660738973236802_n.jpg" alt="Bus service" loading="lazy" />
+                    <img src="gallery/302216934_482557370551393_6475660738973236802_n.jpg" alt="Bus service"
+                        loading="lazy" />
                     <img src="gallery/IMG-1.jpeg" alt="Transit Kathmandu" loading="lazy" />
                     <img src="gallery/mahanagar-yatayat.png" alt="Mahanagar yatayat" loading="lazy" />
                     <img src="gallery/nepal.jpg" alt="Nepal transit" loading="lazy" />
                     <img src="gallery/routes.jpg" alt="Route board" loading="lazy" />
                 </div>
                 <div class="gallery-col">
-                    <img src="gallery/39089002_214055306121394_3987346834723962880_n_mmZU29H7GE.jpg" alt="Older bus" loading="lazy" />
-                    <img src="gallery/481820024_656265493582501_1243983797300762177_n.jpg" alt="Modern local bus" loading="lazy" />
+                    <img src="gallery/39089002_214055306121394_3987346834723962880_n_mmZU29H7GE.jpg" alt="Older bus"
+                        loading="lazy" />
+                    <img src="gallery/481820024_656265493582501_1243983797300762177_n.jpg" alt="Modern local bus"
+                        loading="lazy" />
                     <img src="gallery/mayur.jpg" alt="Mayur bus" loading="lazy" />
                     <img src="gallery/nilo-micro.jpg" alt="Blue microbus" loading="lazy" />
                     <img src="gallery/tempo.jpg" alt="Tempo transport" loading="lazy" />
                 </div>
                 <div class="gallery-col">
-                    <img src="gallery/473783154_1062778689195922_6904992953434292580_n.jpg" alt="Transport route" loading="lazy" />
-                    <img src="gallery/81038617_2710162452340155_22013957954863104_n.jpg" alt="Transit community" loading="lazy" />
+                    <img src="gallery/473783154_1062778689195922_6904992953434292580_n.jpg" alt="Transport route"
+                        loading="lazy" />
+                    <img src="gallery/81038617_2710162452340155_22013957954863104_n.jpg" alt="Transit community"
+                        loading="lazy" />
                     <img src="gallery/manangar-yatayat.jpg" alt="Yatayat bus" loading="lazy" />
                     <img src="gallery/sajha1.jpg" alt="Sajha route" loading="lazy" />
                     <img src="gallery/SajhaBus_20220707134627.jpg" alt="Sajha bus" loading="lazy" />
-                    <img src="gallery/sajha-yatayat-kathmandu-narayangadh-shuttle-service-1758693554.jpg" alt="Sajha shuttle" loading="lazy" />
+                    <img src="gallery/sajha-yatayat-kathmandu-narayangadh-shuttle-service-1758693554.jpg"
+                        alt="Sajha shuttle" loading="lazy" />
                     <img src="gallery/mayur_yatayat_XWhLImWBJm.jpg" alt="Mayur yatayat" loading="lazy" />
                 </div>
             </div>
@@ -354,10 +366,14 @@ $groqApiKey = $env['GROQ_API_KEY'] ?? '';
                         </div>
                     </div>
                     <div class="ask-examples">
-                        <span class="ask-example" data-query="How do I get from Kalanki to Chabahil?">Kalanki to Chabahil</span>
-                        <span class="ask-example" data-query="What is the bus fare from Ratnapark to Lagankhel?">Ratnapark fare</span>
-                        <span class="ask-example" data-query="Which buses pass through Balaju?">Buses through Balaju</span>
-                        <span class="ask-example" data-query="How to reach Bhaktapur from Koteshwor?">Koteshwor to Bhaktapur</span>
+                        <span class="ask-example" data-query="How do I get from Kalanki to Chabahil?">Kalanki to
+                            Chabahil</span>
+                        <span class="ask-example"
+                            data-query="What is the bus fare from Ratnapark to Lagankhel?">Ratnapark fare</span>
+                        <span class="ask-example" data-query="Which buses pass through Balaju?">Buses through
+                            Balaju</span>
+                        <span class="ask-example" data-query="How to reach Bhaktapur from Koteshwor?">Koteshwor to
+                            Bhaktapur</span>
                     </div>
                 </div>
                 <div class="chat-shell">
@@ -401,8 +417,8 @@ $groqApiKey = $env['GROQ_API_KEY'] ?? '';
                     </select>
 
                     <label for="suggest-message">Suggestion</label>
-                    <textarea id="suggest-message" rows="5" maxlength="1000"
-                        placeholder="Share what needs correction" required></textarea>
+                    <textarea id="suggest-message" rows="5" maxlength="1000" placeholder="Share what needs correction"
+                        required></textarea>
                     <div class="char-count"><span id="suggest-chars">0</span> / 1000</div>
 
                     <button id="suggest-submit" type="submit"><i class="fa-solid fa-paper-plane"></i> Submit
