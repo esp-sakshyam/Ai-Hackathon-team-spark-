@@ -219,7 +219,7 @@
             suggestSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Submitting';
 
             try {
-                var res = await fetch('../app/backend/handlers/suggestions.php', {
+                var res = await fetch('app/backend/handlers/suggestions.php', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ name: name, category: category, message: message })
