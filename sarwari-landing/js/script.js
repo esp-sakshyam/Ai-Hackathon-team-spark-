@@ -82,6 +82,20 @@
         });
     }
 
+    /* ── 5. Back to Top ── */
+    var backToTop = document.getElementById('backToTop');
+
+    function updateBackToTop() {
+        if (!backToTop) return;
+        backToTop.classList.toggle('visible', window.scrollY > 600);
+    }
+
+    if (backToTop) {
+        backToTop.addEventListener('click', function () {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+
     /* ── Combined scroll handler ── */
     var ticking = false;
 
@@ -92,6 +106,7 @@
                 updateHeader();
                 updateActiveNav();
                 updateParallax();
+                updateBackToTop();
                 ticking = false;
             });
             ticking = true;
@@ -313,6 +328,29 @@
 
         var infographic = document.querySelector('.infographic-compare');
         if (infographic) barObserver.observe(infographic);
+    }
+
+    /* ── 12. Suggestion Form Handler ── */
+    var suggestionForm = document.getElementById('suggestionForm');
+
+    if (suggestionForm) {
+        suggestionForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            var submitBtn = suggestionForm.querySelector('.suggestion-submit');
+            var originalHTML = submitBtn.innerHTML;
+
+            submitBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Thank You!';
+            submitBtn.style.pointerEvents = 'none';
+            submitBtn.style.opacity = '.7';
+
+            setTimeout(function () {
+                suggestionForm.reset();
+                submitBtn.innerHTML = originalHTML;
+                submitBtn.style.pointerEvents = '';
+                submitBtn.style.opacity = '';
+                if (window.feather) feather.replace({ 'stroke-width': 2 });
+            }, 3000);
+        });
     }
 
 })();
