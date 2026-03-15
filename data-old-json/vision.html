@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>People Counter — OpenRouter</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: system-ui, sans-serif;
+        background: #f5f5f5;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+      }
+      .card {
+        background: #fff;
+        border-radius: 16px;
+        padding: 2rem;
+        max-width: 580px;
+        width: 100%;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+      }
+      h1 {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 4px;
+      }
+      .subtitle {
+        font-size: 13px;
+        color: #888;
+        margin-bottom: 1.5rem;
+      }
+      label {
+        display: block;
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 6px;
+      }
+      input[type="password"],
+      select {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 14px;
+        outline: none;
+        background: #fff;
+        transition: border-color 0.15s;
+      }
+      input:focus,
+      select:focus {
+        border-color: #7c3aed;
+      }
+      .field {
+        margin-bottom: 1.25rem;
+      }
+      .drop-zone {
+        border: 2px dashed #ccc;
+        border-radius: 12px;
+        padding: 2rem 1rem;
+        text-align: center;
+        cursor: pointer;
+        transition:
+          border-color 0.15s,
+          background 0.15s;
+        margin-bottom: 1.25rem;
+      }
+      .drop-zone:hover,
+      .drop-zone.drag-over {
+        border-color: #7c3aed;
+        background: #faf5ff;
+      }
+      .drop-zone p {
+        font-size: 14px;
+        color: #888;
+        margin-top: 8px;
+      }
+      .drop-zone p.hint {
+        font-size: 12px;
+        color: #bbb;
+        margin-top: 4px;
+      }
+      #preview-img {
+        max-width: 100%;
+        max-height: 200px;
+        border-radius: 8px;
+        display: none;
+        margin: 0.75rem auto 0;
+      }
+      button {
+        width: 100%;
+        padding: 11px;
+        background: #7c3aed;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.15s;
+      }
+      button:hover {
+        background: #6d28d9;
+      }
+      button:disabled {
+        background: #c4b5fd;
+        cursor: not-allowed;
+      }
+      .results {
+        margin-top: 1.5rem;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 12px;
+      }
+      .metric {
+        background: #f7f8fa;
+        border-radius: 10px;
+        padding: 1rem;
+        text-align: center;
+      }
+      .metric .label {
+        font-size: 11px;
+        color: #888;
+        margin-bottom: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .metric .value {
+        font-size: 26px;
+        font-weight: 600;
+        color: #222;
+      }
+      .metric .value.big {
+        font-size: 40px;
+        color: #7c3aed;
+      }
+      .error {
+        margin-top: 1rem;
+        background: #fff2f2;
+        border: 1px solid #fca5a5;
+        border-radius: 8px;
+        padding: 0.75rem 1rem;
+        font-size: 13px;
+        color: #b91c1c;
+        display: none;
+      }
+      .notes {
+        margin-top: 1rem;
+        font-size: 13px;
+        color: #555;
+        background: #faf5ff;
+        border: 1px solid #e9d5ff;
+        border-radius: 8px;
+        padding: 0.75rem 1rem;
+        display: none;
+        line-height: 1.6;
+      }
+      .model-tag {
+        font-size: 11px;
+        background: #ede9fe;
+        color: #6d28d9;
+        border-radius: 20px;
+        padding: 3px 10px;
+        display: inline-block;
+        margin-top: 0.75rem;
+      }
+      .spinner {
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        border: 2px solid rgba(255, 255, 255, 0.4);
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+        vertical-align: middle;
+        margin-right: 6px;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h1>People counter</h1>
+      <p class="subtitle">Upload a photo → get a people count as an integer</p>
+
+      <div class="field">
+        <label for="api-key">OpenRouter API key</label>
+        <input type="password" id="api-key" placeholder="sk-or-v1-..." />
+        <p style="font-size: 12px; color: #aaa; margin-top: 5px">
+          Free key at
+          <a
+            href="https://openrouter.ai/keys"
+            target="_blank"
+            style="color: #7c3aed"
+            >openrouter.ai/keys</a
+          >
+          — no credit card needed
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="model-select">Vision model</label>
+        <select id="model-select">
+          <option value="qwen/qwen2.5-vl-72b-instruct:free">
+            Qwen 2.5 VL 72B — best accuracy (recommended)
+          </option>
+          <option value="qwen/qwen2.5-vl-32b-instruct:free">
+            Qwen 2.5 VL 32B — faster
+          </option>
+          <option value="mistralai/mistral-small-3.1-24b-instruct:free">
+            Mistral Small 3.1 24B — fallback
+          </option>
+          <option value="meta-llama/llama-3.2-11b-vision-instruct:free">
+            Llama 3.2 11B Vision — lightest
+          </option>
+          <option value="openrouter/free">
+            openrouter/free — auto-pick any free vision model
+          </option>
+        </select>
+      </div>
+
+      <div class="drop-zone" id="drop-zone">
+        <svg
+          width="36"
+          height="36"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="#bbb"
+          stroke-width="1.5"
+          style="display: block; margin: 0 auto"
+        >
+          <rect x="3" y="3" width="18" height="18" rx="2" />
+          <circle cx="8.5" cy="8.5" r="1.5" />
+          <polyline points="21 15 16 10 5 21" />
+        </svg>
+        <p>Drop image here or click to upload</p>
+        <p class="hint">JPG · PNG · WEBP — max 20 MB</p>
+        <img id="preview-img" alt="Preview" />
+        <input
+          type="file"
+          id="file-input"
+          accept="image/*"
+          style="display: none"
+        />
+      </div>
+
+      <button id="count-btn" disabled>Count people in image</button>
+
+      <div class="error" id="error-box"></div>
+
+      <div class="results" id="results" style="display: none">
+        <div class="metric">
+          <div class="label">People</div>
+          <div class="value big" id="res-count">—</div>
+        </div>
+        <div class="metric">
+          <div class="label">Confidence</div>
+          <div class="value" id="res-conf">—</div>
+        </div>
+        <div class="metric">
+          <div class="label">Visibility</div>
+          <div class="value" id="res-vis">—</div>
+        </div>
+      </div>
+
+      <div class="notes" id="notes-box"></div>
+      <div id="model-used"></div>
+    </div>
+
+    <script>
+      const dropZone = document.getElementById("drop-zone");
+      const fileInput = document.getElementById("file-input");
+      const previewImg = document.getElementById("preview-img");
+      const countBtn = document.getElementById("count-btn");
+      const errorBox = document.getElementById("error-box");
+      const resultsDiv = document.getElementById("results");
+      const notesBox = document.getElementById("notes-box");
+      const modelUsed = document.getElementById("model-used");
+
+      let imageBase64 = null;
+      let imageType = null;
+
+      // Drop zone
+      dropZone.addEventListener("click", () => fileInput.click());
+      dropZone.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        dropZone.classList.add("drag-over");
+      });
+      dropZone.addEventListener("dragleave", () =>
+        dropZone.classList.remove("drag-over"),
+      );
+      dropZone.addEventListener("drop", (e) => {
+        e.preventDefault();
+        dropZone.classList.remove("drag-over");
+        if (e.dataTransfer.files[0]) loadFile(e.dataTransfer.files[0]);
+      });
+      fileInput.addEventListener("change", () => {
+        if (fileInput.files[0]) loadFile(fileInput.files[0]);
+      });
+
+      function loadFile(file) {
+        if (!file.type.startsWith("image/"))
+          return showError("Please select an image file.");
+        if (file.size > 20 * 1024 * 1024)
+          return showError("Image must be under 20 MB.");
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const dataUrl = e.target.result;
+          imageBase64 = dataUrl.split(",")[1];
+          imageType = file.type;
+          previewImg.src = dataUrl;
+          previewImg.style.display = "block";
+          countBtn.disabled = false;
+          hideError();
+          resultsDiv.style.display = "none";
+          notesBox.style.display = "none";
+          modelUsed.innerHTML = "";
+        };
+        reader.readAsDataURL(file);
+      }
+
+      countBtn.addEventListener("click", async () => {
+        const apiKey = document.getElementById("api-key").value.trim();
+        const model = document.getElementById("model-select").value;
+        if (!apiKey) return showError("Please enter your OpenRouter API key.");
+        if (!imageBase64) return showError("Please upload an image first.");
+
+        countBtn.disabled = true;
+        countBtn.innerHTML = '<span class="spinner"></span>Analysing…';
+        hideError();
+        resultsDiv.style.display = "none";
+        notesBox.style.display = "none";
+        modelUsed.innerHTML = "";
+
+        const prompt = `Count the number of people visible in this image.
+
+Respond with ONLY a raw JSON object — no markdown fences, no explanation, nothing else:
+{
+  "count": <integer>,
+  "confidence": "<high|medium|low>",
+  "visibility": "<clear|partial|crowded>",
+  "notes": "<one sentence about counting challenges, or empty string>"
+}
+
+Rules:
+- count: must be an integer. Count partial bodies (a visible head or torso) as 1 person.
+- confidence: high = you are certain of the count, medium = some people may be hidden or occluded, low = very crowded, blurry, or distant.
+- visibility: clear = people are distinct and easy to count, partial = some overlap, crowded = dense crowd hard to count individually.
+- notes: brief note if image quality or crowd density affected accuracy, else empty string.`;
+
+        try {
+          const response = await fetch(
+            "https://openrouter.ai/api/v1/chat/completions",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${apiKey}`,
+                "HTTP-Referer": window.location.href,
+                "X-Title": "People Counter",
+              },
+              body: JSON.stringify({
+                model: model,
+                max_tokens: 256,
+                temperature: 0,
+                messages: [
+                  {
+                    role: "user",
+                    content: [
+                      {
+                        type: "image_url",
+                        image_url: {
+                          url: `data:${imageType};base64,${imageBase64}`,
+                        },
+                      },
+                      {
+                        type: "text",
+                        text: prompt,
+                      },
+                    ],
+                  },
+                ],
+              }),
+            },
+          );
+
+          if (!response.ok) {
+            const err = await response.json().catch(() => ({}));
+            throw new Error(
+              err?.error?.message || `API error ${response.status}`,
+            );
+          }
+
+          const data = await response.json();
+          const raw = data.choices?.[0]?.message?.content?.trim() || "";
+          const usedModel = data.model || model;
+
+          // Strip accidental markdown fences
+          const cleaned = raw
+            .replace(/^```[a-z]*\n?/i, "")
+            .replace(/```$/, "")
+            .trim();
+
+          let result;
+          try {
+            result = JSON.parse(cleaned);
+          } catch {
+            // Try extracting JSON from within the response if model added extra text
+            const match = cleaned.match(/\{[\s\S]*\}/);
+            if (!match)
+              throw new Error(
+                "Could not parse model response. Try again or switch models.",
+              );
+            result = JSON.parse(match[0]);
+          }
+
+          if (
+            typeof result.count !== "number" ||
+            !Number.isInteger(result.count)
+          ) {
+            throw new Error(
+              "Model returned an unexpected format. Try switching models.",
+            );
+          }
+
+          document.getElementById("res-count").textContent = result.count;
+          document.getElementById("res-conf").textContent = result.confidence
+            ? result.confidence[0].toUpperCase() + result.confidence.slice(1)
+            : "—";
+          document.getElementById("res-vis").textContent = result.visibility
+            ? result.visibility[0].toUpperCase() + result.visibility.slice(1)
+            : "—";
+
+          resultsDiv.style.display = "grid";
+
+          if (result.notes) {
+            notesBox.textContent = result.notes;
+            notesBox.style.display = "block";
+          }
+
+          modelUsed.innerHTML = `<span class="model-tag">Used: ${usedModel}</span>`;
+        } catch (err) {
+          showError(
+            err.message ||
+              "Something went wrong. Check your API key and try again.",
+          );
+        } finally {
+          countBtn.disabled = false;
+          countBtn.textContent = "Count people in image";
+        }
+      });
+
+      function showError(msg) {
+        errorBox.textContent = msg;
+        errorBox.style.display = "block";
+      }
+      function hideError() {
+        errorBox.style.display = "none";
+      }
+    </script>
+  </body>
+</html>
