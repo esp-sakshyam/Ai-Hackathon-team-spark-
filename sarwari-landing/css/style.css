@@ -1845,8 +1845,9 @@ h1, h2, h3, h4, h5, h6 {
 /* ==================================================================
    19. FOOTER (Premium)
    ================================================================== */
+/* ── Footer ── */
 .site-footer {
-    background: var(--stone-950);
+    background: #0B0B0B;
     color: var(--stone-300);
     padding: 5rem 0 0;
     position: relative;
@@ -1859,54 +1860,53 @@ h1, h2, h3, h4, h5, h6 {
     top: 0;
     left: 0;
     right: 0;
-    height: 1px;
+    height: 2px;
     background: linear-gradient(90deg, transparent, var(--amber-500), transparent);
 }
 
 .footer-grid {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
-    gap: 2.5rem;
-    padding-bottom: 3rem;
-    border-bottom: 1px solid rgba(255,255,255,.06);
+    grid-template-columns: 1.8fr 1fr 1fr 1.4fr;
+    gap: 3rem;
+    padding-bottom: 3.5rem;
+    border-bottom: 1px solid rgba(255,255,255,.08);
 }
-
 
 .footer-logo {
     display: inline-flex;
     align-items: center;
     gap: .75rem;
     font-weight: 800;
-    font-size: var(--text-xl);
+    font-size: var(--text-2xl);
     color: #fff;
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.5rem;
 }
 
 .footer-logo-img {
-    width: 2.25rem;
-    height: 2.25rem;
+    width: 2.75rem;
+    height: 2.75rem;
     border-radius: var(--radius-sm);
     object-fit: contain;
 }
 
 .footer-about {
     font-size: var(--text-sm);
-    line-height: 1.7;
+    line-height: 1.8;
     color: var(--stone-400);
-    max-width: 420px;
-    margin-bottom: 1.5rem;
+    max-width: 400px;
+    margin-bottom: 1.75rem;
 }
 
 .footer-contact {
     display: grid;
-    gap: .9rem;
-    margin-bottom: 1.5rem;
+    gap: 1rem;
+    margin-bottom: 1.75rem;
 }
 
 .footer-contact li {
     display: flex;
     align-items: flex-start;
-    gap: .7rem;
+    gap: .75rem;
     color: var(--stone-400);
     font-size: var(--text-sm);
     line-height: 1.5;
@@ -1914,6 +1914,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .footer-contact a {
     color: var(--stone-300);
+    transition: color .2s;
 }
 
 .footer-contact a:hover {
@@ -1925,31 +1926,33 @@ h1, h2, h3, h4, h5, h6 {
     height: 1rem;
     color: var(--amber-400);
     margin-top: .18rem;
+    flex-shrink: 0;
 }
 
 .footer-social {
     display: flex;
-    gap: .7rem;
+    gap: .75rem;
 }
 
 .footer-social a {
-    width: 2.25rem;
-    height: 2.25rem;
+    width: 2.5rem;
+    height: 2.5rem;
     border-radius: 999px;
     border: 1px solid rgba(255,255,255,.12);
-    background: rgba(255,255,255,.02);
+    background: rgba(255,255,255,.04);
     color: var(--stone-100);
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    transition: all .2s;
+    transition: all .25s ease;
 }
 
 .footer-social a:hover {
-    color: var(--stone-950);
+    color: #0B0B0B;
     background: var(--amber-400);
     border-color: var(--amber-400);
-    transform: translateY(-2px);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 16px rgba(255, 170, 0, .3);
 }
 
 .footer-social i {
@@ -1965,129 +1968,165 @@ h1, h2, h3, h4, h5, h6 {
     line-height: 1;
 }
 
+/* ── Footer Columns ── */
 .footer-col h4 {
     color: #fff;
     font-size: var(--text-base);
     font-weight: 700;
-    margin-bottom: 1.1rem;
+    margin-bottom: 1.25rem;
+    letter-spacing: .02em;
 }
 
 .footer-col li {
-    margin-bottom: .7rem;
+    margin-bottom: .75rem;
 }
 
 .footer-col a,
 .footer-col li {
     font-size: var(--text-sm);
     color: var(--stone-400);
-    transition: all .2s;
+    transition: color .25s ease, transform .25s ease;
 }
 
 .footer-col a:hover {
     color: var(--amber-400);
-    transform: translateX(2px);
+    transform: translateX(3px);
     display: inline-block;
 }
 
-.footer-download p {
+/* ── Download App CTA Column ── */
+.footer-download-col {
+    background: rgba(255,255,255,.03);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: var(--radius-lg);
+    padding: 1.75rem;
+    margin: -.5rem 0;
+}
+
+.footer-download-col h4 {
+    color: var(--amber-400);
+    font-size: var(--text-lg);
+    margin-bottom: .75rem;
+}
+
+.footer-download-desc {
     font-size: var(--text-sm);
-}
-
-.download-copy {
     color: var(--stone-400);
-    line-height: 1.6;
-    margin-bottom: .25rem;
-}
-
-.download-cta {
-    color: #fff;
-    font-weight: 700;
+    line-height: 1.7;
     margin-bottom: 1.25rem;
 }
 
-.download-grid {
-    display: grid;
-    grid-template-columns: 120px 1fr;
-    gap: 1rem;
-    align-items: start;
-}
-
-.qr-wrap p,
-.store-wrap p {
-    color: var(--stone-300);
-    font-weight: 600;
-    margin-bottom: .7rem;
-}
-
-.qr-code {
-    width: 120px;
-    height: 120px;
-    border-radius: .75rem;
-    border: 1px solid rgba(255,255,255,.1);
-    background:
-        radial-gradient(circle at 12px 12px, #fff 0 9px, #0000 10px),
-        radial-gradient(circle at 108px 12px, #fff 0 9px, #0000 10px),
-        radial-gradient(circle at 12px 108px, #fff 0 9px, #0000 10px),
-        repeating-linear-gradient(0deg, #f8f8f8 0 6px, #1a1a1a 6px 12px),
-        repeating-linear-gradient(90deg, #f8f8f8 0 6px, #1a1a1a 6px 12px);
-    position: relative;
-    overflow: hidden;
-}
-
-.qr-dot {
-    position: absolute;
-    inset: 50%;
-    transform: translate(-50%, -50%);
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    background: var(--stone-950);
-    border: 2px solid var(--amber-400);
-}
-
-.store-wrap {
+.footer-qr-container {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    margin-bottom: 1.25rem;
+}
+
+.footer-qr-img {
+    width: 120px;
+    height: 120px;
+    border-radius: var(--radius-md);
+    border: 2px solid rgba(255,255,255,.1);
+    object-fit: contain;
+    background: #fff;
+    padding: 4px;
+}
+
+.footer-qr-label {
+    display: block;
+    text-align: center;
+    font-size: var(--text-xs);
+    color: var(--stone-500);
+    margin-top: .5rem;
+    font-weight: 600;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+
+.footer-store-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
 }
 
 .store-btn {
     display: flex;
     align-items: center;
-    gap: .6rem;
-    border-radius: .7rem;
-    border: 1px solid rgba(255,255,255,.15);
-    background: #f3f0e5;
-    color: #252525;
-    font-weight: 700;
-    font-size: .9rem;
-    padding: .65rem .85rem;
-    margin-bottom: .65rem;
-    transition: all .2s;
-}
-
-.store-btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 18px rgba(0,0,0,.25);
-}
-
-.store-btn i {
-    width: 1rem;
-    height: 1rem;
-}
-
-.footer-bottom {
-    padding: 1.25rem 0;
-    display: flex;
     justify-content: center;
+    gap: .6rem;
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(255,255,255,.15);
+    font-weight: 700;
+    font-size: .95rem;
+    padding: .75rem 1rem;
+    transition: all .25s ease;
+    text-align: center;
+}
+
+.store-btn--play {
+    background: var(--amber-500);
+    color: #0B0B0B;
+    border-color: var(--amber-500);
+}
+
+.store-btn--play:hover {
+    background: var(--amber-400);
+    border-color: var(--amber-400);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 170, 0, .35);
+}
+
+.store-btn--apple {
+    background: rgba(255,255,255,.08);
+    color: #fff;
+    border-color: rgba(255,255,255,.15);
+}
+
+.store-btn--apple:hover {
+    background: rgba(255,255,255,.14);
+    border-color: rgba(255,255,255,.25);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, .3);
+}
+
+.store-btn svg {
+    flex-shrink: 0;
+}
+
+/* ── Footer Bottom Bar ── */
+.footer-bottom {
+    padding: 1.5rem 0;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    gap: .5rem;
+    gap: 1rem;
     color: var(--stone-500);
     font-size: var(--text-sm);
-    margin-top: 1.6rem;
+    margin-top: 0;
 }
 
-.footer-bottom p { font-size: var(--text-sm); }
+.footer-bottom p {
+    font-size: var(--text-sm);
+    margin: 0;
+}
+
+.footer-bottom-links {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.footer-bottom-links a {
+    color: var(--stone-500);
+    font-size: var(--text-sm);
+    transition: color .2s ease;
+}
+
+.footer-bottom-links a:hover {
+    color: var(--amber-400);
+}
 
 /* ==================================================================
    20. COMMUNITY SUGGESTIONS — Form + process (Premium)
@@ -2352,6 +2391,7 @@ h1, h2, h3, h4, h5, h6 {
 
     .footer-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
     .footer-brand { grid-column: span 2; }
+    .footer-download-col { margin: 0; }
 
     .suggestions-grid { grid-template-columns: 1fr; gap: 2rem; }
 }
@@ -2407,7 +2447,17 @@ h1, h2, h3, h4, h5, h6 {
 
     .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
     .footer-brand { grid-column: auto; }
-    .footer-bottom { text-align: center; }
+    .footer-download-col { margin: 0; }
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+        gap: .75rem;
+    }
+    .footer-bottom-links {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
     .nav-links.mobile-active { width: 100%; }
 
     .suggestions-grid { grid-template-columns: 1fr; }
