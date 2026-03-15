@@ -1968,6 +1968,14 @@ h1, h2, h3, h4, h5, h6 {
     height: 1rem;
 }
 
+.social-text {
+    font-size: .85rem;
+    font-weight: 700;
+    text-transform: lowercase;
+    letter-spacing: .01em;
+    line-height: 1;
+}
+
 .footer-col h4 {
     color: #fff;
     font-size: var(--text-base);
