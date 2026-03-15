@@ -186,27 +186,27 @@ h1, h2, h3, h4, h5, h6 {
     display: flex;
     align-items: center;
     gap: .5rem;
-    background: rgba(10, 10, 10, .75);
-    -webkit-backdrop-filter: blur(20px) saturate(1.6);
-    backdrop-filter: blur(20px) saturate(1.6);
-    border: 1px solid rgba(255, 255, 255, .08);
+    background: rgba(255, 255, 255, .06);
+    -webkit-backdrop-filter: blur(16px) saturate(1.4);
+    backdrop-filter: blur(16px) saturate(1.4);
+    border: 1px solid rgba(255, 255, 255, .12);
     border-radius: 999px;
     padding: .4rem .5rem .4rem .4rem;
     box-shadow:
-        0 4px 24px rgba(0, 0, 0, .25),
-        0 1px 0 rgba(255, 255, 255, .04) inset;
-    transition: all .4s var(--ease-out);
+        0 4px 30px rgba(0, 0, 0, .08),
+        0 1px 0 rgba(255, 255, 255, .08) inset;
+    transition: all .5s cubic-bezier(.4, 0, .2, 1);
     pointer-events: auto;
 }
 
 .site-header.scrolled .nav-capsule {
-    background: rgba(255, 255, 255, .82);
+    background: rgba(8, 8, 8, .92);
     -webkit-backdrop-filter: blur(24px) saturate(1.8);
     backdrop-filter: blur(24px) saturate(1.8);
-    border-color: rgba(0, 0, 0, .06);
+    border-color: rgba(255, 255, 255, .06);
     box-shadow:
-        0 4px 32px rgba(0, 0, 0, .08),
-        0 1px 0 rgba(255, 255, 255, .5) inset;
+        0 8px 40px rgba(0, 0, 0, .35),
+        0 1px 0 rgba(255, 255, 255, .04) inset;
 }
 
 /* ── Logo Circle ── */
@@ -224,8 +224,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .site-header.scrolled .nav-logo-circle {
-    background: var(--stone-100);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, .06);
+    background: rgba(255, 255, 255, .08);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .2);
 }
 
 .nav-logo-circle:hover {
@@ -234,7 +234,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .site-header.scrolled .nav-logo-circle:hover {
-    background: var(--amber-50);
+    background: rgba(255, 255, 255, .14);
 }
 
 .nav-logo-img {
@@ -248,8 +248,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .nav-logo-white { display: block; }
 .nav-logo-black { display: none; }
-.site-header.scrolled .nav-logo-white { display: none; }
-.site-header.scrolled .nav-logo-black { display: block; }
+.site-header.scrolled .nav-logo-white { display: block; }
+.site-header.scrolled .nav-logo-black { display: none; }
 
 /* ── Navigation Links ── */
 .nav-links {
@@ -299,15 +299,15 @@ h1, h2, h3, h4, h5, h6 {
     transform: translateX(-50%) scaleX(1);
 }
 
-/* Scrolled state links */
+/* Scrolled state links — dark capsule, keep light text */
 .site-header.scrolled .nav-link {
-    color: var(--stone-500);
+    color: rgba(255, 255, 255, .6);
 }
 
 .site-header.scrolled .nav-link:hover,
 .site-header.scrolled .nav-link.active {
-    color: var(--stone-900);
-    background: var(--stone-100);
+    color: #fff;
+    background: rgba(255, 255, 255, .1);
 }
 
 .site-header.scrolled .nav-link::after {
@@ -350,13 +350,13 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .site-header.scrolled .nav-contact-btn {
-    background: var(--stone-100);
-    color: var(--stone-600);
+    background: rgba(255, 255, 255, .08);
+    color: rgba(255, 255, 255, .75);
 }
 
 .site-header.scrolled .nav-contact-btn:hover {
-    background: var(--stone-200);
-    color: var(--stone-900);
+    background: rgba(255, 255, 255, .14);
+    color: #fff;
 }
 
 /* Map CTA Button */
@@ -411,7 +411,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .site-header.scrolled .hamburger span {
-    background: var(--stone-700);
+    background: rgba(255, 255, 255, .9);
 }
 
 .hamburger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
