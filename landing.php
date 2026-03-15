@@ -138,9 +138,12 @@ $groqApiKey = $env['GROQ_API_KEY'] ?? '';
                     <img src="sawari-landing/gallery/image5.jpg" alt="Transit photo 5" loading="lazy" />
                     <img src="sawari-landing/gallery/image6.jpg" alt="Transit photo 6" loading="lazy" />
                     <img src="sawari-landing/gallery/image7.jpg" alt="Transit photo 7" loading="lazy" />
-                    <img src="sawari-landing/gallery/image1.jpg" alt="Transit photo 1" loading="lazy" aria-hidden="true" />
-                    <img src="sawari-landing/gallery/image2.jpg" alt="Transit photo 2" loading="lazy" aria-hidden="true" />
-                    <img src="sawari-landing/gallery/image3.jpg" alt="Transit photo 3" loading="lazy" aria-hidden="true" />
+                    <img src="sawari-landing/gallery/image1.jpg" alt="Transit photo 1" loading="lazy"
+                        aria-hidden="true" />
+                    <img src="sawari-landing/gallery/image2.jpg" alt="Transit photo 2" loading="lazy"
+                        aria-hidden="true" />
+                    <img src="sawari-landing/gallery/image3.jpg" alt="Transit photo 3" loading="lazy"
+                        aria-hidden="true" />
                 </div>
             </div>
         </section>
@@ -156,7 +159,8 @@ $groqApiKey = $env['GROQ_API_KEY'] ?? '';
                 <article class="step-card">
                     <div class="step-number">01</div>
                     <div class="step-visual">
-                        <img src="sawari-landing/gallery/SajhaBus_20220707134627.jpg" alt="Enter destination" loading="lazy" />
+                        <img src="sawari-landing/gallery/SajhaBus_20220707134627.jpg" alt="Enter destination"
+                            loading="lazy" />
                     </div>
                     <h3>Enter origin and destination</h3>
                     <p>Use natural language or map points to start your journey query.</p>
@@ -173,7 +177,8 @@ $groqApiKey = $env['GROQ_API_KEY'] ?? '';
                 <article class="step-card">
                     <div class="step-number">03</div>
                     <div class="step-visual">
-                        <img src="sawari-landing/gallery/samakhusi-yatayat-1729569860.jpg" alt="Check fare" loading="lazy" />
+                        <img src="sawari-landing/gallery/samakhusi-yatayat-1729569860.jpg" alt="Check fare"
+                            loading="lazy" />
                     </div>
                     <h3>Check fare and walking legs</h3>
                     <p>Fare estimates and short walk segments are shown with clear trip structure.</p>
@@ -215,14 +220,15 @@ $groqApiKey = $env['GROQ_API_KEY'] ?? '';
                     <div class="feature-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
                     <h3>Natural Language</h3>
                     <p>Supports practical everyday phrasing from users.</p>
-                    <img src="sawari-landing/gallery/IMG-1.jpeg" alt="Natural language" class="feature-bg-img" loading="lazy" />
+                    <img src="sawari-landing/gallery/IMG-1.jpeg" alt="Natural language" class="feature-bg-img"
+                        loading="lazy" />
                 </article>
                 <article class="feature-card">
                     <div class="feature-icon"><i class="fa-solid fa-location-arrow"></i></div>
                     <h3>GPS and Nearby Stops</h3>
                     <p>Locates surrounding stops and available passing routes.</p>
-                    <img src="sawari-landing/gallery/mayur_yatayat_XWhLImWBJm.jpg" alt="GPS stops" class="feature-bg-img"
-                        loading="lazy" />
+                    <img src="sawari-landing/gallery/mayur_yatayat_XWhLImWBJm.jpg" alt="GPS stops"
+                        class="feature-bg-img" loading="lazy" />
                 </article>
                 <article class="feature-card feature-card-accent">
                     <div class="feature-icon"><i class="fa-solid fa-leaf"></i></div>
@@ -251,34 +257,35 @@ $groqApiKey = $env['GROQ_API_KEY'] ?? '';
             <div class="gallery-masonry">
                 <div class="gallery-col">
                     <img src="sawari-landing/gallery/1594641445.jpg" alt="Kathmandu road transit" loading="lazy" />
-                    <img src="sawari-landing/gallery/473749570_1355280112583010_593412764911101796_n.jpg" alt="Public bus"
-                        loading="lazy" />
+                    <img src="sawari-landing/gallery/473749570_1355280112583010_593412764911101796_n.jpg"
+                        alt="Public bus" loading="lazy" />
                     <img src="sawari-landing/gallery/high-tech-buses.jpg" alt="High tech buses" loading="lazy" />
                     <img src="sawari-landing/gallery/sajha.jpg" alt="Sajha bus" loading="lazy" />
-                    <img src="sawari-landing/gallery/samakhusi-yatayat-1729569860.jpg" alt="Samakhusi route" loading="lazy" />
+                    <img src="sawari-landing/gallery/samakhusi-yatayat-1729569860.jpg" alt="Samakhusi route"
+                        loading="lazy" />
                 </div>
                 <div class="gallery-col">
-                    <img src="sawari-landing/gallery/302216934_482557370551393_6475660738973236802_n.jpg" alt="Bus service"
-                        loading="lazy" />
+                    <img src="sawari-landing/gallery/302216934_482557370551393_6475660738973236802_n.jpg"
+                        alt="Bus service" loading="lazy" />
                     <img src="sawari-landing/gallery/IMG-1.jpeg" alt="Transit Kathmandu" loading="lazy" />
                     <img src="sawari-landing/gallery/mahanagar-yatayat.png" alt="Mahanagar yatayat" loading="lazy" />
                     <img src="sawari-landing/gallery/nepal.jpg" alt="Nepal transit" loading="lazy" />
                     <img src="sawari-landing/gallery/routes.jpg" alt="Route board" loading="lazy" />
                 </div>
                 <div class="gallery-col">
-                    <img src="sawari-landing/gallery/39089002_214055306121394_3987346834723962880_n_mmZU29H7GE.jpg" alt="Older bus"
-                        loading="lazy" />
-                    <img src="sawari-landing/gallery/481820024_656265493582501_1243983797300762177_n.jpg" alt="Modern local bus"
-                        loading="lazy" />
+                    <img src="sawari-landing/gallery/39089002_214055306121394_3987346834723962880_n_mmZU29H7GE.jpg"
+                        alt="Older bus" loading="lazy" />
+                    <img src="sawari-landing/gallery/481820024_656265493582501_1243983797300762177_n.jpg"
+                        alt="Modern local bus" loading="lazy" />
                     <img src="sawari-landing/gallery/mayur.jpg" alt="Mayur bus" loading="lazy" />
                     <img src="sawari-landing/gallery/nilo-micro.jpg" alt="Blue microbus" loading="lazy" />
                     <img src="sawari-landing/gallery/tempo.jpg" alt="Tempo transport" loading="lazy" />
                 </div>
                 <div class="gallery-col">
-                    <img src="sawari-landing/gallery/473783154_1062778689195922_6904992953434292580_n.jpg" alt="Transport route"
-                        loading="lazy" />
-                    <img src="sawari-landing/gallery/81038617_2710162452340155_22013957954863104_n.jpg" alt="Transit community"
-                        loading="lazy" />
+                    <img src="sawari-landing/gallery/473783154_1062778689195922_6904992953434292580_n.jpg"
+                        alt="Transport route" loading="lazy" />
+                    <img src="sawari-landing/gallery/81038617_2710162452340155_22013957954863104_n.jpg"
+                        alt="Transit community" loading="lazy" />
                     <img src="sawari-landing/gallery/manangar-yatayat.jpg" alt="Yatayat bus" loading="lazy" />
                     <img src="sawari-landing/gallery/sajha1.jpg" alt="Sajha route" loading="lazy" />
                     <img src="sawari-landing/gallery/SajhaBus_20220707134627.jpg" alt="Sajha bus" loading="lazy" />
