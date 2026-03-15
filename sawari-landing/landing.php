@@ -63,104 +63,21 @@ $groqApiKey = $env['GROQ_API_KEY'] ?? '';
 
     <main>
         <!-- ==================== HERO ==================== -->
-        <section class="hero reveal" id="hero">
-            <!-- Rounded hero image container -->
-            <div class="hero-frame">
-                <div class="hero-bg">
-                    <img src="gallery/landing.jpg" alt="Kathmandu transit" />
-                </div>
-                <div class="hero-overlay"></div>
-
-                <!-- Glow orbs -->
-                <div class="hero-orb hero-orb-1" aria-hidden="true"></div>
-                <div class="hero-orb hero-orb-2" aria-hidden="true"></div>
-
-                <!-- Main centered text block -->
-                <div class="hero-center">
-                    <div class="hero-badge">
-                        <span class="hero-badge-dot"></span>
-                        Kathmandu Valley Transit
-                    </div>
-                    <h1>
-                        <span class="hero-line-1">Local transit,</span>
-                        <span class="hero-line-2">beautifully <em>mapped.</em></span>
-                    </h1>
-                    <p class="hero-desc">
-                        Plan your bus journey with practical route guidance, transfer intelligence,
-                        fare estimates, and nearby stop discovery.
-                    </p>
-                    <div class="hero-actions">
-                        <a class="btn-hero" href="../app/index.php">
-                            <i class="fa-solid fa-route"></i> Plan a Journey
-                        </a>
-                        <a class="btn-hero-ghost" href="#how">
-                            Explore <i class="fa-solid fa-arrow-down"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Floating glass route-finder widget -->
-                <div class="hero-glass-widget">
-                    <div class="glass-widget-header">
-                        <i class="fa-solid fa-compass"></i>
-                        <span>Quick Route Finder</span>
-                    </div>
-                    <div class="glass-widget-body">
-                        <div class="glass-widget-row">
-                            <span class="gw-dot gw-dot-green"></span>
-                            <span>Kalanki</span>
-                        </div>
-                        <div class="glass-widget-divider"></div>
-                        <div class="glass-widget-row">
-                            <span class="gw-dot gw-dot-orange"></span>
-                            <span>Chabahil</span>
-                        </div>
-                    </div>
-                    <div class="glass-widget-footer">
-                        <span><i class="fa-solid fa-bus"></i> 3 routes</span>
-                        <span><i class="fa-solid fa-clock"></i> ~35 min</span>
-                    </div>
-                </div>
-
-                <!-- Floating transit image thumbnails -->
-                <div class="hero-float hero-float-1">
-                    <img src="gallery/sajha-bus-EV.jpg" alt="Sajha EV Bus" />
-                </div>
-                <div class="hero-float hero-float-2">
-                    <img src="gallery/hiace.webp" alt="Hiace Microbus" />
-                </div>
-                <div class="hero-float hero-float-3">
-                    <img src="gallery/mahanagar.jpg" alt="Mahanagar Bus" />
-                </div>
-
-                <!-- Bottom image strip inside hero -->
-                <div class="hero-bottom-strip">
-                    <div class="hero-strip-item">
-                        <img src="gallery/sajha1.jpg" alt="Sajha" />
-                        <span>Sajha Yatayat</span>
-                    </div>
-                    <div class="hero-strip-item">
-                        <img src="gallery/mayur.jpg" alt="Mayur" />
-                        <span>Mayur Yatayat</span>
-                    </div>
-                    <div class="hero-strip-item">
-                        <img src="gallery/digo-yatayat.jpg" alt="Digo" />
-                        <span>Digo Yatayat</span>
-                    </div>
-                    <div class="hero-strip-item">
-                        <img src="gallery/tempo.jpg" alt="Tempo" />
-                        <span>Tempo</span>
-                    </div>
-                    <div class="hero-strip-item hero-strip-hide-mobile">
-                        <img src="gallery/nilo-micro.jpg" alt="Micro" />
-                        <span>Microbus</span>
-                    </div>
-                </div>
-
-                <!-- Scroll indicator -->
-                <div class="hero-scroll-hint">
-                    <div class="scroll-line"></div>
-                    <span>Scroll</span>
+        <section class="hero" id="hero">
+            <div class="hero-bg">
+                <img src="gallery/landing.jpg" alt="Kathmandu transit" />
+            </div>
+            <div class="hero-gradient"></div>
+            <div class="hero-content">
+                <p class="hero-eyebrow">Kathmandu Valley Transit</p>
+                <h1>Local transit,<br>beautifully <em>mapped.</em></h1>
+                <p class="hero-desc">
+                    Plan your bus journey with practical route guidance, transfer intelligence,
+                    fare estimates, and nearby stop discovery built around how Kathmandu actually moves.
+                </p>
+                <div class="hero-actions">
+                    <a class="btn-hero" href="../app/index.php">Plan a Journey</a>
+                    <a class="btn-hero-secondary" href="#how">See how it works</a>
                 </div>
             </div>
         </section>
