@@ -179,9 +179,10 @@ textarea {
     transition: color var(--transition);
 }
 
-.logo i {
-    font-size: 1.25rem;
-    transition: color var(--transition);
+.logo img {
+    height: 2rem;
+    width: auto;
+    transition: opacity var(--transition);
 }
 
 .nav-links {
