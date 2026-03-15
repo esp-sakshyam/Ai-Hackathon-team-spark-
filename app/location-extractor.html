@@ -1,0 +1,172 @@
+<!doctype html>
+<!-- Sawari - AI Location Extractor | Author: Zenith Kandel — https://zenithkandel.com.np -->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Route Extractor</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="input-area">
+        <label class="input-label">Your Prompt</label>
+        <textarea
+          id="prompt"
+          placeholder="e.g. take me from bagbazar to basundhara..."
+        ></textarea>
+      </div>
+
+      <button class="extract-btn" id="extractBtn" onclick="extract()">
+        <span id="btnText">Extract Locations</span>
+      </button>
+
+      <div class="error-msg" id="errorMsg"></div>
+
+      <div class="result-grid" id="resultGrid">
+        <div class="result-card from">
+          <div class="result-card-icon">◉</div>
+          <div class="result-card-label">Starting Point</div>
+          <div class="result-value" id="fromVal">—</div>
+        </div>
+        <div class="result-card to">
+          <div class="result-card-icon">◎</div>
+          <div class="result-card-label">Destination</div>
+          <div class="result-value" id="toVal">—</div>
+        </div>
+      </div>
+
+      <div class="code-output" id="codeOutput">
+        <div class="code-output-label">// Variables</div>
+        <pre id="codeBlock"></pre>
+      </div>
+    </div>
+
+    <script>
+      // ─────────────────────────────────────────
+      //  🔑 PASTE YOUR GROQ API KEY HERE
+      //  Get one free at: https://console.groq.com
+      // ─────────────────────────────────────────
+      const GROQ_API_KEY = "YOUR_GROQ_API_KEY_HERE";
+      // ─────────────────────────────────────────
+
+      async function extract() {
+        const prompt = document.getElementById("prompt").value.trim();
+        const btn = document.getElementById("extractBtn");
+        const btnText = document.getElementById("btnText");
+        const errorMsg = document.getElementById("errorMsg");
+        const resultGrid = document.getElementById("resultGrid");
+        const codeOutput = document.getElementById("codeOutput");
+
+        if (!prompt) {
+          showError("Please enter a direction prompt first.");
+          return;
+        }
+
+        if (!GROQ_API_KEY || GROQ_API_KEY === "YOUR_GROQ_API_KEY_HERE") {
+          showError(
+            "Please set your GROQ_API_KEY in the script at the top of the file.",
+          );
+          return;
+        }
+
+        // Loading state
+        btn.classList.add("loading");
+        btnText.innerHTML = `Extracting <span class="dot-loader"><span></span><span></span><span></span></span>`;
+        errorMsg.classList.remove("visible");
+        resultGrid.classList.remove("visible");
+        codeOutput.classList.remove("visible");
+
+        try {
+          const response = await fetch(
+            "https://api.groq.com/openai/v1/chat/completions",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${GROQ_API_KEY}`,
+              },
+              body: JSON.stringify({
+                model: "llama-3.3-70b-versatile",
+                max_tokens: 200,
+                temperature: 0,
+                messages: [
+                  {
+                    role: "system",
+                    content: `You are a location extractor. Given a natural language direction prompt, extract the starting point and destination.
+Return ONLY a raw JSON object with no markdown, no backticks, no explanation. Format:
+{"from": "starting location name", "to": "destination location name"}
+If you cannot identify both locations, return: {"error": "reason"}`,
+                  },
+                  { role: "user", content: prompt },
+                ],
+              }),
+            },
+          );
+
+          const data = await response.json();
+
+          if (data.error)
+            throw new Error(data.error.message || "Groq API error.");
+
+          const text = data.choices?.[0]?.message?.content || "";
+
+          let parsed;
+          try {
+            parsed = JSON.parse(text.trim());
+          } catch {
+            throw new Error("Could not parse AI response.");
+          }
+
+          if (parsed.error) {
+            throw new Error(parsed.error);
+          }
+
+          if (!parsed.from || !parsed.to) {
+            throw new Error(
+              "Could not identify both a starting point and destination.",
+            );
+          }
+
+          // Expose as window variables
+          window.startingPoint = parsed.from;
+          window.destination = parsed.to;
+
+          // Update UI
+          document.getElementById("fromVal").textContent = parsed.from;
+          document.getElementById("toVal").textContent = parsed.to;
+
+          document.getElementById("codeBlock").innerHTML =
+            `<span class="var-name">startingPoint</span> <span class="var-eq">=</span> <span class="str-val-from">"${escapeHtml(parsed.from)}"</span>\n` +
+            `<span class="var-name">destination</span>    <span class="var-eq">=</span> <span class="str-val-to">"${escapeHtml(parsed.to)}"</span>`;
+
+          resultGrid.classList.add("visible");
+          codeOutput.classList.add("visible");
+        } catch (err) {
+          showError(err.message || "Something went wrong. Please try again.");
+        } finally {
+          btn.classList.remove("loading");
+          btnText.textContent = "Extract Locations";
+        }
+      }
+
+      function showError(msg) {
+        const el = document.getElementById("errorMsg");
+        el.textContent = "⚠ " + msg;
+        el.classList.add("visible");
+      }
+
+      function escapeHtml(str) {
+        return str
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+
+      // Allow Enter key (Ctrl+Enter) to submit
+      document.getElementById("prompt").addEventListener("keydown", (e) => {
+        if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) extract();
+      });
+    </script>
+  </body>
+</html>
