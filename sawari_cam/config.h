@@ -12,12 +12,16 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-// ─── Vehicle Identity ───────────────────────────────────────────────────────
-#define VEHICLE_ID            1          // Must match the vehicle ID in Sawari database
+// ─── Vehicle Identity (default — can be changed via WiFi portal) ────────────
+#define VEHICLE_ID            1          // Compile-time fallback only
 
-// ─── Server Configuration ───────────────────────────────────────────────────
-#define SERVER_URL            "http://zenithkandel.com.np/sawari/app/hardware-api/passenger.php"
+// ─── Server Configuration (defaults — overridden by portal values in SPIFFS) ─
+#define DEFAULT_SERVER_URL    "http://zenithkandel.com.np/sawari/app/hardware-api/passenger.php"
+#define DEFAULT_VEHICLE_ID    "1"
 #define HTTP_TIMEOUT_MS       15000      // 15 s (image uploads can be slow)
+#define MAX_URL_LEN           200        // Max length for API URL field
+#define MAX_VID_LEN           10         // Max length for vehicle ID field
+#define CONFIG_FILE           "/config.json"   // SPIFFS path for saved settings
 
 // ─── Timing ─────────────────────────────────────────────────────────────────
 #define CAPTURE_INTERVAL_MS   30000      // 30 seconds between captures

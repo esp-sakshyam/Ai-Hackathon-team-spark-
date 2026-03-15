@@ -9,7 +9,9 @@
  *  2. POSTs the image as multipart/form-data to the Sawari passenger API.
  *  3. Blinks the on-board flash LED while the upload is in progress.
  *  4. Hold the BOOT button (GPIO 0) for 3 seconds to launch WiFiManager
- *     captive portal for on-the-fly WiFi configuration.
+ *     captive portal for on-the-fly WiFi + API URL + Vehicle ID config.
+ *  5. API URL and Vehicle ID are configurable via the portal and saved
+ *     to SPIFFS so they persist across reboots.
  *
  *  Hardware
  *  ────────
@@ -42,8 +44,11 @@
 // ─── WiFiManager (captive portal for WiFi config) ───────────────────────────
 #include <WiFiManager.h>
 
-// ─── ArduinoJson (parse server response) ────────────────────────────────────
+// ─── ArduinoJson (parse server response + config persistence) ───────────────
 #include <ArduinoJson.h>
+
+// ─── SPIFFS (persistent storage for custom portal parameters) ───────────────
+#include <SPIFFS.h>
 
 // ═══════════════════════════════════════════════════════════════════════════
 //  GLOBALS
@@ -61,6 +66,11 @@ unsigned long     ledBlinkTimer      = 0;
 bool              ledBlinkState      = false;
 static const int  LED_BLINK_INTERVAL = 150;     // ms
 
+// ─── Runtime config (loaded from SPIFFS, editable via portal) ───────────────
+char cfgServerUrl[MAX_URL_LEN]  = "";
+char cfgVehicleId[MAX_VID_LEN]  = "";
+bool shouldSaveConfig           = false;        // Flag set by WiFiManager callback
+
 // ═══════════════════════════════════════════════════════════════════════════
 //  FORWARD DECLARATIONS
 // ═══════════════════════════════════════════════════════════════════════════
@@ -70,6 +80,9 @@ void     captureAndUpload();
 bool     uploadImage(camera_fb_t *fb);
 void     checkBootButton();
 void     startConfigPortal();
+void     loadConfig();
+void     saveConfig();
+void     saveConfigCallback();
 void     statusLedOn();
 void     statusLedOff();
 void     flashLedOn();
@@ -95,6 +108,17 @@ void setup() {
     flashLedOff();
     statusLedOff();
 
+    // ── SPIFFS + load saved config ──────────────────────────────────────
+    if (!SPIFFS.begin(true)) {
+        Serial.println(F("[SPIFFS] Mount failed — using defaults"));
+    } else {
+        Serial.println(F("[SPIFFS] Mounted OK"));
+    }
+    loadConfig();
+
+    Serial.printf("[CFG] API URL   : %s\n", cfgServerUrl);
+    Serial.printf("[CFG] Vehicle ID: %s\n", cfgVehicleId);
+
     // ── Camera init ─────────────────────────────────────────────────────
     if (!initCamera()) {
         Serial.println(F("[ERROR] Camera init failed — restarting in 5 s"));
@@ -107,6 +131,13 @@ void setup() {
     wifiManager.setConfigPortalTimeout(WIFI_PORTAL_TIMEOUT);
     wifiManager.setConnectTimeout(20);
 
+    // Add custom fields to the portal: API URL + Vehicle ID
+    WiFiManagerParameter paramApiUrl("api_url", "API Endpoint URL", cfgServerUrl, MAX_URL_LEN);
+    WiFiManagerParameter paramVehicle("vehicle_id", "Vehicle / Bus ID", cfgVehicleId, MAX_VID_LEN);
+    wifiManager.addParameter(&paramApiUrl);
+    wifiManager.addParameter(&paramVehicle);
+    wifiManager.setSaveConfigCallback(saveConfigCallback);
+
     // Try auto-connect with saved credentials; on first boot opens portal
     Serial.println(F("[WIFI] Connecting to saved network..."));
     statusLedOn();   // LED on while connecting
@@ -118,6 +149,15 @@ void setup() {
     }
 
     statusLedOff();
+
+    // Save custom params if they were changed in the portal
+    if (shouldSaveConfig) {
+        strncpy(cfgServerUrl, paramApiUrl.getValue(), MAX_URL_LEN - 1);
+        strncpy(cfgVehicleId, paramVehicle.getValue(), MAX_VID_LEN - 1);
+        saveConfig();
+        Serial.println(F("[CFG] New settings saved to SPIFFS"));
+    }
+
     Serial.print(F("[WIFI] Connected — IP: "));
     Serial.println(WiFi.localIP());
 
@@ -270,7 +310,7 @@ bool uploadImage(camera_fb_t *fb) {
     Serial.println(F("[UPLOAD] Starting upload..."));
 
     HTTPClient http;
-    http.begin(SERVER_URL);
+    http.begin(cfgServerUrl);
     http.setTimeout(HTTP_TIMEOUT_MS);
 
     // ── Build multipart body ────────────────────────────────────────────
@@ -281,7 +321,7 @@ bool uploadImage(camera_fb_t *fb) {
     // Part 1: vehicle_id field
     String bodyStart = "--" + boundary + "\r\n"
                        "Content-Disposition: form-data; name=\"vehicle_id\"\r\n\r\n"
-                       + String(VEHICLE_ID) + "\r\n";
+                       + String(cfgVehicleId) + "\r\n";
 
     // Part 2: image file
     String fileHeader = "--" + boundary + "\r\n"
@@ -414,7 +454,16 @@ void startConfigPortal() {
     Serial.println(F("[WIFI] Connect to AP: " WIFI_AP_NAME));
     Serial.println(F("[WIFI] Then open 192.168.4.1 in browser"));
 
+    // Add custom fields with current values
+    WiFiManagerParameter paramApiUrl("api_url", "API Endpoint URL", cfgServerUrl, MAX_URL_LEN);
+    WiFiManagerParameter paramVehicle("vehicle_id", "Vehicle / Bus ID", cfgVehicleId, MAX_VID_LEN);
+
+    wifiManager.addParameter(&paramApiUrl);
+    wifiManager.addParameter(&paramVehicle);
+    wifiManager.setSaveConfigCallback(saveConfigCallback);
+
     statusLedOn();   // Solid status LED while portal is active
+    shouldSaveConfig = false;
 
     // startConfigPortal blocks until connected or timeout
     bool connected = wifiManager.startConfigPortal(WIFI_AP_NAME, WIFI_AP_PASS);
@@ -426,7 +475,74 @@ void startConfigPortal() {
         Serial.println(F("[WIFI] Portal timed out — continuing with old config"));
     }
 
+    // Save custom params if user submitted the form
+    if (shouldSaveConfig) {
+        strncpy(cfgServerUrl, paramApiUrl.getValue(), MAX_URL_LEN - 1);
+        strncpy(cfgVehicleId, paramVehicle.getValue(), MAX_VID_LEN - 1);
+        saveConfig();
+        Serial.printf("[CFG] Updated — URL: %s  VID: %s\n", cfgServerUrl, cfgVehicleId);
+    }
+
     statusLedOff();
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  CONFIG PERSISTENCE (SPIFFS)
+// ═══════════════════════════════════════════════════════════════════════════
+
+void saveConfigCallback() {
+    shouldSaveConfig = true;
+}
+
+void loadConfig() {
+    // Start with defaults
+    strncpy(cfgServerUrl, DEFAULT_SERVER_URL, MAX_URL_LEN - 1);
+    strncpy(cfgVehicleId, DEFAULT_VEHICLE_ID, MAX_VID_LEN - 1);
+
+    if (!SPIFFS.exists(CONFIG_FILE)) {
+        Serial.println(F("[CFG] No saved config — using defaults"));
+        return;
+    }
+
+    File file = SPIFFS.open(CONFIG_FILE, "r");
+    if (!file) {
+        Serial.println(F("[CFG] Failed to open config file"));
+        return;
+    }
+
+    JsonDocument doc;
+    DeserializationError err = deserializeJson(doc, file);
+    file.close();
+
+    if (err) {
+        Serial.printf("[CFG] JSON parse error: %s\n", err.c_str());
+        return;
+    }
+
+    if (doc["api_url"].is<const char *>()) {
+        strncpy(cfgServerUrl, doc["api_url"].as<const char *>(), MAX_URL_LEN - 1);
+    }
+    if (doc["vehicle_id"].is<const char *>()) {
+        strncpy(cfgVehicleId, doc["vehicle_id"].as<const char *>(), MAX_VID_LEN - 1);
+    }
+
+    Serial.println(F("[CFG] Loaded saved config from SPIFFS"));
+}
+
+void saveConfig() {
+    JsonDocument doc;
+    doc["api_url"]    = cfgServerUrl;
+    doc["vehicle_id"] = cfgVehicleId;
+
+    File file = SPIFFS.open(CONFIG_FILE, "w");
+    if (!file) {
+        Serial.println(F("[CFG] Failed to create config file"));
+        return;
+    }
+
+    serializeJson(doc, file);
+    file.close();
+    Serial.println(F("[CFG] Config saved to SPIFFS"));
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
