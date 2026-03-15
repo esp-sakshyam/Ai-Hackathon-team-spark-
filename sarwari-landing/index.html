@@ -31,16 +31,10 @@
     <!-- Preload LCP image -->
     <link rel="preload" as="image" href="../gallery/landing.jpg" fetchpriority="high">
 
-    <!-- Fonts -->
+    <!-- Fonts — Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <!-- Feather Icons -->
-    <script src="https://unpkg.com/feather-icons"></script>
-
-    <!-- Font Awesome (for footer social icons) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <!-- Stylesheet -->
     <link rel="stylesheet" href="css/style.css">
@@ -75,557 +69,363 @@
     <!-- Noscript fallback -->
     <noscript>
         <style>
-            .reveal { opacity: 1; transform: none; }
-            .scroll-progress { display: none; }
+            [data-animate] { opacity: 1 !important; transform: none !important; }
         </style>
     </noscript>
 </head>
 <body>
 
-    <!-- Scroll Progress -->
-    <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
-
     <!-- ================================================================
-         NAVIGATION — Capsule Style
+         NAVBAR — Glassmorphism sticky
          ================================================================ -->
-    <header class="site-header" id="siteHeader">
-        <nav class="nav-capsule">
-            <!-- Left: Logo Circle -->
-            <a href="#hero" class="nav-logo-circle" aria-label="Sawari Home">
-                <img src="../logo-white.png" alt="Sawari" class="nav-logo-img nav-logo-white">
-                <img src="../logo-black.png" alt="Sawari" class="nav-logo-img nav-logo-black">
+    <header class="navbar" id="navbar">
+        <div class="navbar__inner">
+            <a href="#hero" class="navbar__logo" aria-label="Sawari Home">
+                <img src="../logo-white.png" alt="Sawari" class="navbar__logo-img navbar__logo-img--white">
+                <img src="../logo-black.png" alt="Sawari" class="navbar__logo-img navbar__logo-img--dark">
             </a>
 
-            <!-- Center: Navigation Links -->
-            <ul class="nav-links" id="navLinks">
-                <li><a href="#why" class="nav-link">Why Sawari</a></li>
-                <li><a href="#what" class="nav-link">What We Do</a></li>
-                <li><a href="#how" class="nav-link">How It Works</a></li>
-                <li><a href="#perspectives" class="nav-link">Perspectives</a></li>
-                <li><a href="#gallery" class="nav-link">Gallery</a></li>
-                <li><a href="#suggestions" class="nav-link">Feedback</a></li>
-            </ul>
+            <nav class="navbar__nav" id="navLinks" role="navigation" aria-label="Main navigation">
+                <a href="#features" class="navbar__link">Features</a>
+                <a href="#how" class="navbar__link">How It Works</a>
+                <a href="#impact" class="navbar__link">Impact</a>
+                <a href="#fleet" class="navbar__link">Fleet</a>
+                <a href="#feedback" class="navbar__link">Feedback</a>
+            </nav>
 
-            <!-- Right: Contact Button + Hamburger -->
-            <div class="nav-actions">
-                <a href="mailto:support@sawari.com.np" class="nav-contact-btn">
-                    <i data-feather="mail"></i>
-                    <span class="nav-contact-text">support@sawari.com.np</span>
+            <div class="navbar__actions">
+                <a href="pages/map.php" class="btn btn--primary btn--sm">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                    Open Map
                 </a>
-                <a href="pages/map.php" class="nav-cta">
-                    <i data-feather="map-pin"></i>
-                    <span>Map</span>
-                </a>
-                <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+                <button class="navbar__hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
                     <span></span>
                     <span></span>
                     <span></span>
                 </button>
             </div>
-        </nav>
+        </div>
     </header>
 
-    <!-- Mobile Overlay -->
+    <!-- Mobile overlay -->
     <div class="mobile-overlay" id="mobileOverlay" aria-hidden="true"></div>
 
     <!-- ================================================================
-         HERO — Full-screen real bus image
+         HERO — Cinematic full-bleed
          ================================================================ -->
     <section class="hero" id="hero">
-        <div class="hero-img-bg">
-            <img src="../gallery/landing.jpg" alt="Nepal's public transport system" class="hero-bg-image" fetchpriority="high">
-            <div class="hero-overlay"></div>
+        <div class="hero__bg">
+            <img src="../gallery/landing.jpg" alt="Nepal's public transport" class="hero__bg-img" fetchpriority="high">
+            <div class="hero__overlay"></div>
         </div>
 
-        <div class="container hero-content">
-            <p class="hero-sub reveal">
-                Sawari tells you exactly which bus to take, where to board, what to say to the conductor,
-                how much to pay and tracks it live on the map, every 8 seconds.
+        <div class="container hero__content">
+            <div class="hero__badge" data-animate="fade-up">Smart Transit for Nepal</div>
+            <h1 class="hero__title" data-animate="fade-up" data-delay="1">
+                Know Your Bus.<br>
+                <span class="hero__accent">Before It Arrives.</span>
+            </h1>
+            <p class="hero__subtitle" data-animate="fade-up" data-delay="2">
+                Real-time GPS tracking, smart route finding, and live fare estimation.
+                Navigate Kathmandu's public transport with confidence.
             </p>
-
+            <div class="hero__actions" data-animate="fade-up" data-delay="3">
+                <a href="pages/map.php" class="btn btn--primary btn--lg">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                    Open the Map
+                </a>
+                <a href="#features" class="btn btn--ghost btn--lg">
+                    Learn More
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </a>
+            </div>
         </div>
 
-        <div class="hero-scroll" aria-hidden="true">
-            <div class="scroll-line"></div>
+        <div class="hero__scroll" aria-hidden="true">
+            <div class="hero__scroll-line"></div>
         </div>
     </section>
 
     <!-- ================================================================
-         WHY SAWARI — Problem statement with real image split
+         PROBLEM — Why Sawari
          ================================================================ -->
-    <section class="section why-section" id="why">
-        <div class="split-layout container">
-            <div class="split-image reveal">
-                <img loading="lazy" src="../gallery/473783154_1062778689195922_6904992953434292580_n.jpg" alt="Crowded Kathmandu bus stop" width="640" height="480">
-                <div class="image-badge">
-                    <i data-feather="alert-circle"></i>
-                    The daily struggle
-                </div>
-            </div>
-            <div class="split-content reveal">
-                <span class="section-tag">The Problem</span>
-                <h2 class="section-title">Why Sawari?</h2>
-                <p class="section-lead">
-                    Millions of commuters in Kathmandu Valley have no reliable way to navigate public transport.
-                    There is no official route map, no fare calculator, no way to know when a bus is coming.
-                </p>
-
-                <div class="pain-points">
-                    <div class="pain-point">
-                        <div class="pain-icon">
-                            <i data-feather="x"></i>
-                        </div>
-                        <div>
-                            <h4>No Route Information</h4>
-                            <p>Google Maps shows driving paths, not actual bus routes. Nepal's informal transit system is invisible online.</p>
-                        </div>
-                    </div>
-                    <div class="pain-point">
-                        <div class="pain-icon">
-                            <i data-feather="x"></i>
-                        </div>
-                        <div>
-                            <h4>Expensive Alternatives</h4>
-                            <p>Ride-booking apps like Pathao cost 5–10× the bus fare. Not everyone can afford them daily.</p>
-                        </div>
-                    </div>
-                    <div class="pain-point">
-                        <div class="pain-icon">
-                            <i data-feather="x"></i>
-                        </div>
-                        <div>
-                            <h4>Ask a Stranger</h4>
-                            <p>The most common method — unreliable, time-consuming, and impossible for tourists.</p>
-                        </div>
-                    </div>
-                    <div class="pain-point">
-                        <div class="pain-icon">
-                            <i data-feather="x"></i>
-                        </div>
-                        <div>
-                            <h4>No Live Tracking</h4>
-                            <p>You stand at a stop with zero visibility. Is the bus 2 minutes away or 30?</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ================================================================
-         IMAGE RIBBON — Visual break
-         ================================================================ -->
-    <div class="image-ribbon" aria-hidden="true">
-        <div class="ribbon-track">
-            <div class="ribbon-img"><img loading="lazy" src="../gallery/image1.jpg" alt="" width="400" height="260"></div>
-            <div class="ribbon-img"><img loading="lazy" src="../gallery/108638425_305582130808549_5592725951144085732_n.jpg" alt="" width="400" height="260"></div>
-            <div class="ribbon-img"><img loading="lazy" src="../gallery/image2.jpg" alt="" width="400" height="260"></div>
-            <div class="ribbon-img"><img loading="lazy" src="../gallery/1594641445.jpg" alt="" width="400" height="260"></div>
-            <div class="ribbon-img"><img loading="lazy" src="../gallery/image3.jpg" alt="" width="400" height="260"></div>
-            <!-- Duplicate for seamless loop -->
-            <div class="ribbon-img"><img loading="lazy" src="../gallery/image1.jpg" alt="" width="400" height="260"></div>
-            <div class="ribbon-img"><img loading="lazy" src="../gallery/108638425_305582130808549_5592725951144085732_n.jpg" alt="" width="400" height="260"></div>
-            <div class="ribbon-img"><img loading="lazy" src="../gallery/image2.jpg" alt="" width="400" height="260"></div>
-            <div class="ribbon-img"><img loading="lazy" src="../gallery/1594641445.jpg" alt="" width="400" height="260"></div>
-            <div class="ribbon-img"><img loading="lazy" src="../gallery/image3.jpg" alt="" width="400" height="260"></div>
-        </div>
-    </div>
-
-    <!-- ================================================================
-         WHAT DOES SAWARI DO — Features showcase
-         ================================================================ -->
-    <section class="section what-section" id="what">
+    <section class="section" id="problem">
         <div class="container">
-            <div class="section-header reveal">
-                <span class="section-tag">The Solution</span>
-                <h2 class="section-title">What Does Sawari Do?</h2>
-                <p class="section-subtitle">
-                    One platform that answers every question a commuter has — from "Which bus?" to "How much?"
-                </p>
+            <div class="section__header" data-animate="fade-up">
+                <span class="section__tag">The Problem</span>
+                <h2 class="section__title">Millions commute blind every day</h2>
+                <p class="section__subtitle">Kathmandu Valley has 4+ million daily commuters with no reliable digital tools for public transport.</p>
             </div>
 
-            <div class="features-showcase">
-                <div class="feature-main reveal">
-                    <div class="feature-main-image">
-                        <img loading="lazy" src="../gallery/sajha1.jpg" alt="Sajha Yatayat bus fleet" width="800" height="500">
-                        <div class="feature-overlay-card">
-                            <i data-feather="map"></i>
-                            <h3>Smart Route Finding</h3>
-                            <p>Enter your start and destination. Sawari finds the best bus, shows every stop along the way, and draws the route on a live map.</p>
-                        </div>
+            <div class="problems-grid">
+                <div class="problem-card" data-animate="fade-up" data-delay="0">
+                    <div class="problem-card__icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
                     </div>
+                    <h3 class="problem-card__title">No Route Information</h3>
+                    <p class="problem-card__desc">Google Maps shows driving paths, not actual bus routes. Nepal's informal transit is invisible online.</p>
                 </div>
 
-                <!-- Infographic Feature Bullets -->
-                <div class="feature-bullets">
-                    <div class="feature-bullet reveal">
-                        <div class="bullet-icon">
-                            <i data-feather="navigation"></i>
-                        </div>
-                        <div class="bullet-content">
-                            <div class="bullet-stat">8s</div>
-                            <h3>Live GPS Tracking</h3>
-                            <p>Refresh rate. ESP32 hardware on each bus sends positions every 2 seconds. Your map updates with smooth marker animations.</p>
-                        </div>
+                <div class="problem-card" data-animate="fade-up" data-delay="1">
+                    <div class="problem-card__icon problem-card__icon--amber">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
                     </div>
-
-                    <div class="feature-bullet reveal">
-                        <div class="bullet-icon bullet-icon--emerald">
-                            <i data-feather="dollar-sign"></i>
-                        </div>
-                        <div class="bullet-content">
-                            <div class="bullet-stat">NPR 20</div>
-                            <h3>Nepal Fare Rules</h3>
-                            <p>Minimum fare. Rounded to nearest NPR 5. Automatic 25% student and elderly discounts applied instantly.</p>
-                        </div>
-                    </div>
-
-                    <div class="feature-bullet reveal">
-                        <div class="bullet-icon bullet-icon--rose">
-                            <i data-feather="git-merge"></i>
-                        </div>
-                        <div class="bullet-content">
-                            <div class="bullet-stat">2-Bus</div>
-                            <h3>Multi-Bus Transfers</h3>
-                            <p>Transfer planning. No direct bus? Sawari finds shared transfer stops and plans two-bus journeys with separate fares.</p>
-                        </div>
-                    </div>
-
-                    <div class="feature-bullet reveal">
-                        <div class="bullet-icon bullet-icon--orange">
-                            <i data-feather="message-circle"></i>
-                        </div>
-                        <div class="bullet-content">
-                            <div class="bullet-stat">रोक्नु!</div>
-                            <h3>Conductor Tips</h3>
-                            <p>Exact Nepali phrasing. "Tell the conductor: Kalanki to Buspark." Boarding instructions and stop signals included.</p>
-                        </div>
-                    </div>
-
-                    <div class="feature-bullet reveal">
-                        <div class="bullet-icon bullet-icon--sky">
-                            <i data-feather="bell"></i>
-                        </div>
-                        <div class="bullet-content">
-                            <div class="bullet-stat">Live</div>
-                            <h3>Emergency Alerts</h3>
-                            <p>Real-time notifications. Strikes, road blocks, diversions — alerts on affected routes with severity markers on the map.</p>
-                        </div>
-                    </div>
-
-                    <div class="feature-bullet reveal">
-                        <div class="bullet-icon bullet-icon--green">
-                            <i data-feather="bar-chart-2"></i>
-                        </div>
-                        <div class="bullet-content">
-                            <div class="bullet-stat">57%</div>
-                            <h3>Carbon Savings</h3>
-                            <p>Less CO₂ per km vs. cars. Every route shows environmental impact — Bus: 0.089 kg/km. Car: 0.210 kg/km.</p>
-                        </div>
-                    </div>
+                    <h3 class="problem-card__title">Expensive Alternatives</h3>
+                    <p class="problem-card__desc">Ride-booking apps cost 5-10x the bus fare. Not everyone can afford them daily.</p>
                 </div>
 
-                <!-- Infographic Comparison Chart -->
-                <div class="infographic reveal">
-                    <div class="infographic-compare">
-                        <div class="compare-header">
-                            <h3><i data-feather="trending-up"></i> Why Public Transit Wins</h3>
-                            <p>Per kilometer comparison — Public Bus vs Private Car</p>
-                        </div>
-                        <div class="compare-bars">
-                            <div class="compare-row">
-                                <span class="compare-label">Cost per km</span>
-                                <div class="compare-bar-group">
-                                    <div class="compare-bar compare-bar--bus" style="--bar-width: 25%"><span>NPR 1.8</span></div>
-                                    <div class="compare-bar compare-bar--car" style="--bar-width: 85%"><span>NPR 8.5</span></div>
-                                </div>
-                            </div>
-                            <div class="compare-row">
-                                <span class="compare-label">CO₂ Emissions</span>
-                                <div class="compare-bar-group">
-                                    <div class="compare-bar compare-bar--bus" style="--bar-width: 35%"><span>0.089 kg</span></div>
-                                    <div class="compare-bar compare-bar--car" style="--bar-width: 80%"><span>0.210 kg</span></div>
-                                </div>
-                            </div>
-                            <div class="compare-row">
-                                <span class="compare-label">Road Space Used</span>
-                                <div class="compare-bar-group">
-                                    <div class="compare-bar compare-bar--bus" style="--bar-width: 18%"><span>1×</span></div>
-                                    <div class="compare-bar compare-bar--car" style="--bar-width: 72%"><span>8×</span></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="compare-legend">
-                            <span class="legend-item legend-item--bus"><span class="legend-dot"></span> Public Bus</span>
-                            <span class="legend-item legend-item--car"><span class="legend-dot"></span> Private Car</span>
-                        </div>
+                <div class="problem-card" data-animate="fade-up" data-delay="2">
+                    <div class="problem-card__icon problem-card__icon--rose">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
                     </div>
+                    <h3 class="problem-card__title">Ask a Stranger</h3>
+                    <p class="problem-card__desc">The most common method — unreliable, time-consuming, and impossible for tourists.</p>
+                </div>
+
+                <div class="problem-card" data-animate="fade-up" data-delay="3">
+                    <div class="problem-card__icon problem-card__icon--blue">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    </div>
+                    <h3 class="problem-card__title">No Live Tracking</h3>
+                    <p class="problem-card__desc">You stand at a stop with zero visibility. Is the bus 2 minutes away or 30?</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- ================================================================
-         HOW IT WORKS — Step-by-step with image banner
+         FEATURES — What Sawari Does (Dark)
          ================================================================ -->
-    <section class="section how-section" id="how">
-        <div class="how-img-banner">
-            <img loading="lazy" src="../gallery/mahanagar.jpg" alt="Mahanagar Yatayat bus on Kathmandu road" width="1920" height="600">
-            <div class="banner-overlay"></div>
-            <div class="container banner-content reveal">
-                <span class="section-tag section-tag--light">Simple Process</span>
-                <h2 class="section-title section-title--light">How Does Sawari Make Things Easier?</h2>
-                <p class="section-subtitle section-subtitle--light">
-                    Three steps from confusion to confident commuting.
-                </p>
-            </div>
-        </div>
-
+    <section class="section section--dark" id="features">
         <div class="container">
-            <div class="steps-grid">
-                <div class="step-card reveal">
-                    <div class="step-number">01</div>
-                    <div class="step-icon">
-                        <i data-feather="search"></i>
+            <div class="section__header" data-animate="fade-up">
+                <span class="section__tag section__tag--light">The Solution</span>
+                <h2 class="section__title section__title--light">Everything a commuter needs</h2>
+                <p class="section__subtitle section__subtitle--light">One platform that answers every question — from "Which bus?" to "How much?"</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card" data-animate="fade-up" data-delay="0">
+                    <div class="feature-card__stat">8s</div>
+                    <div class="feature-card__icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg>
                     </div>
-                    <h3>Enter Your Destination</h3>
-                    <p>
-                        Type where you want to go — or tap the map. Sawari finds the nearest bus stops
-                        to your start and destination using its approved stop database.
-                    </p>
+                    <h3 class="feature-card__title">Live GPS Tracking</h3>
+                    <p class="feature-card__desc">ESP32 hardware on each bus sends positions every 2 seconds. Your map updates with smooth marker animations.</p>
                 </div>
 
-                <div class="step-card reveal">
-                    <div class="step-number">02</div>
-                    <div class="step-icon">
-                        <i data-feather="truck"></i>
+                <div class="feature-card" data-animate="fade-up" data-delay="1">
+                    <div class="feature-card__stat">Smart</div>
+                    <div class="feature-card__icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon><line x1="8" y1="2" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="22"></line></svg>
                     </div>
-                    <h3>Get Your Bus &amp; Fare</h3>
-                    <p>
-                        See the exact bus name, route drawn on the map, fare in NPR (with student discount),
-                        every stop along the way, and what to tell the conductor.
-                    </p>
+                    <h3 class="feature-card__title">Smart Route Finding</h3>
+                    <p class="feature-card__desc">Enter start and destination. Sawari finds the best bus, shows every stop, and draws the route on a live map.</p>
                 </div>
 
-                <div class="step-card reveal">
-                    <div class="step-number">03</div>
-                    <div class="step-icon">
-                        <i data-feather="radio"></i>
+                <div class="feature-card" data-animate="fade-up" data-delay="2">
+                    <div class="feature-card__stat">NPR 20</div>
+                    <div class="feature-card__icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
                     </div>
-                    <h3>Track It Live</h3>
-                    <p>
-                        Watch your bus move on the map in real-time. GPS hardware on the vehicle updates every 2 seconds.
-                        See ETA, approaching stop, and current speed.
-                    </p>
+                    <h3 class="feature-card__title">Nepal Fare Rules</h3>
+                    <p class="feature-card__desc">Minimum fare. Rounded to nearest NPR 5. Automatic 25% student and elderly discounts applied instantly.</p>
+                </div>
+
+                <div class="feature-card" data-animate="fade-up" data-delay="3">
+                    <div class="feature-card__stat">2-Bus</div>
+                    <div class="feature-card__icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="18" r="3"></circle><circle cx="6" cy="6" r="3"></circle><path d="M6 21V9a9 9 0 0 0 9 9"></path></svg>
+                    </div>
+                    <h3 class="feature-card__title">Multi-Bus Transfers</h3>
+                    <p class="feature-card__desc">No direct bus? Sawari finds shared transfer stops and plans two-bus journeys with separate fares.</p>
+                </div>
+
+                <div class="feature-card" data-animate="fade-up" data-delay="4">
+                    <div class="feature-card__stat">Live</div>
+                    <div class="feature-card__icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                    </div>
+                    <h3 class="feature-card__title">Emergency Alerts</h3>
+                    <p class="feature-card__desc">Strikes, road blocks, diversions — real-time alerts on affected routes with severity markers on the map.</p>
+                </div>
+
+                <div class="feature-card" data-animate="fade-up" data-delay="5">
+                    <div class="feature-card__stat">57%</div>
+                    <div class="feature-card__icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    </div>
+                    <h3 class="feature-card__title">Carbon Savings</h3>
+                    <p class="feature-card__desc">Less CO2 per km vs. cars. Every route shows environmental impact — Bus: 0.089 kg/km. Car: 0.210 kg/km.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- ================================================================
-         IMAGE MOSAIC — Visual break
+         HOW IT WORKS — 3 Steps
          ================================================================ -->
-    <div class="image-mosaic" aria-hidden="true">
-        <div class="mosaic-grid">
-            <div class="mosaic-img mosaic-img--tall"><img loading="lazy" src="../gallery/image4.jpg" alt="" width="400" height="500"></div>
-            <div class="mosaic-img"><img loading="lazy" src="../gallery/39089002_214055306121394_3987346834723962880_n_mmZU29H7GE.jpg" alt="" width="400" height="260"></div>
-            <div class="mosaic-img"><img loading="lazy" src="../gallery/image5.jpg" alt="" width="400" height="260"></div>
-            <div class="mosaic-img mosaic-img--tall"><img loading="lazy" src="../gallery/473749570_1355280112583010_593412764911101796_n.jpg" alt="" width="400" height="500"></div>
-        </div>
-    </div>
-
-    <!-- ================================================================
-         WHY IS IT NEEDED — Impact section
-         ================================================================ -->
-    <section class="section need-section" id="need">
+    <section class="section" id="how">
         <div class="container">
-            <div class="section-header reveal">
-                <span class="section-tag">The Impact</span>
-                <h2 class="section-title">Why Is Sawari Needed?</h2>
-                <p class="section-subtitle">
-                    Nepal's public transport carries millions daily, but lacks any digital infrastructure.
-                    Sawari fills that gap entirely.
-                </p>
+            <div class="section__header" data-animate="fade-up">
+                <span class="section__tag">Simple Process</span>
+                <h2 class="section__title">Three steps to confident commuting</h2>
+                <p class="section__subtitle">From confusion to clarity in under a minute.</p>
             </div>
 
-            <div class="need-grid">
-                <div class="need-card need-card--wide reveal">
-                    <div class="need-card-image">
-                        <img loading="lazy" src="../gallery/481820024_656265493582501_1243983797300762177_n.jpg" alt="Busy Kathmandu transit" width="800" height="400">
-                        <div class="need-image-overlay"></div>
-                    </div>
-                    <div class="need-card-body">
-                        <div class="need-icon">
-                            <i data-feather="users"></i>
+            <div class="steps">
+                <div class="step" data-animate="fade-up" data-delay="0">
+                    <div class="step__number">01</div>
+                    <div class="step__content">
+                        <div class="step__icon">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                         </div>
-                        <h3>Millions of Commuters, Zero Digital Tools</h3>
-                        <p>
-                            Kathmandu Valley alone has 4+ million people who rely on buses, microbuses, and tempos daily.
-                            There is no app, no website, no centralized database of routes. Sawari is the first system
-                            that maps, tracks, and routes Nepal's entire public transit network — built from the ground up
-                            with real hardware on real buses.
-                        </p>
+                        <h3 class="step__title">Enter Your Destination</h3>
+                        <p class="step__desc">Type where you want to go or tap the map. Sawari finds the nearest bus stops using its approved stop database.</p>
                     </div>
                 </div>
 
-                <div class="need-card reveal">
-                    <div class="need-icon need-icon--accent">
-                        <i data-feather="globe"></i>
-                    </div>
-                    <h3>Tourists Left Stranded</h3>
-                    <p>
-                        Visitors can't read Nepali signs or ask conductors in the local language. Sawari provides
-                        exact boarding phrases, fare estimates, and visual route maps — making public transit
-                        accessible to everyone regardless of language.
-                    </p>
+                <div class="step__connector" aria-hidden="true">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
                 </div>
 
-                <div class="need-card reveal">
-                    <div class="need-icon need-icon--green">
-                        <i data-feather="wind"></i>
-                    </div>
-                    <h3>Environmental Necessity</h3>
-                    <p>
-                        Every ride diverted from a private car to a public bus saves 0.121 kg of CO₂ per kilometer.
-                        With Sawari making buses easier to use, we reduce emissions while saving commuters money.
-                    </p>
-                    <div class="carbon-badge">
-                        <span class="carbon-stat">57%</span>
-                        <span class="carbon-label">less CO₂ per km vs. cars</span>
+                <div class="step" data-animate="fade-up" data-delay="1">
+                    <div class="step__number">02</div>
+                    <div class="step__content">
+                        <div class="step__icon step__icon--amber">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                        </div>
+                        <h3 class="step__title">Get Your Bus &amp; Fare</h3>
+                        <p class="step__desc">See the exact bus name, route on the map, fare in NPR with student discount, and what to tell the conductor.</p>
                     </div>
                 </div>
 
-                <div class="need-card reveal">
-                    <div class="need-icon need-icon--warm">
-                        <i data-feather="shield"></i>
+                <div class="step__connector" aria-hidden="true">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </div>
+
+                <div class="step" data-animate="fade-up" data-delay="2">
+                    <div class="step__number">03</div>
+                    <div class="step__content">
+                        <div class="step__icon step__icon--green">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"></circle><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"></path></svg>
+                        </div>
+                        <h3 class="step__title">Track It Live</h3>
+                        <p class="step__desc">Watch your bus move on the map in real-time. GPS hardware updates every 2 seconds. See ETA and current speed.</p>
                     </div>
-                    <h3>Safety &amp; Fair Pricing</h3>
-                    <p>
-                        Conductors sometimes overcharge tourists or unfamiliar riders. Sawari shows the
-                        government-regulated fare before you board — including student and elderly discounts,
-                        rounded to the nearest NPR 5 as per Nepal's transport rules.
-                    </p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- ================================================================
-         TRANSIT STATS — Key numbers with image background
+         IMPACT — Stats + Value
          ================================================================ -->
-    <section class="section stats-section">
-        <div class="stats-bg">
-            <img loading="lazy" src="../gallery/81038617_2710162452340155_22013957954863104_n.jpg" alt="" width="1920" height="600">
-            <div class="stats-overlay"></div>
-        </div>
-        <div class="container stats-content">
-            <div class="stats-grid reveal">
-                <div class="stat-item">
-                    <div><span class="stat-number" data-count="4">0</span><span class="stat-unit"> Million+</span></div>
-                    <div class="stat-label">Daily Commuters in Kathmandu Valley</div>
-                </div>
-                <div class="stat-item">
-                    <div><span class="stat-number" data-count="100">0</span><span class="stat-unit">+</span></div>
-                    <div class="stat-label">Bus Routes Across Nepal</div>
-                </div>
-                <div class="stat-item">
-                    <div><span class="stat-number" data-count="57">0</span><span class="stat-unit">%</span></div>
-                    <div class="stat-label">Less CO₂ Per Km vs Cars</div>
-                </div>
-                <div class="stat-item">
-                    <div><span class="stat-number" data-count="0">0</span><span class="stat-unit"> Apps</span></div>
-                    <div class="stat-label">Digital Transit Tools Before Sawari</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ================================================================
-         PERSPECTIVES — User vs Admin viewpoint
-         ================================================================ -->
-    <section class="section perspectives-section" id="perspectives">
-        <div class="perspectives-bg">
-            <img loading="lazy" src="../gallery/SajhaBus_20220707134627.jpg" alt="Sajha Yatayat fleet" width="1920" height="800">
-            <div class="perspectives-overlay"></div>
-        </div>
-
+    <section class="section section--accent" id="impact">
         <div class="container">
-            <div class="section-header reveal">
-                <span class="section-tag section-tag--light">Two Sides, One Platform</span>
-                <h2 class="section-title section-title--light">Built for Everyone</h2>
-                <p class="section-subtitle section-subtitle--light">
-                    Sawari works differently for those who ride and those who manage. Here's what each side experiences.
-                </p>
+            <div class="impact-grid">
+                <div class="impact__content" data-animate="fade-up">
+                    <span class="section__tag section__tag--light">The Impact</span>
+                    <h2 class="section__title section__title--light">Built for a country<br>that needed it most</h2>
+                    <p class="impact__lead">
+                        Nepal's public transport carries millions daily but lacks any digital infrastructure.
+                        Sawari fills that gap — making buses findable, fares transparent, and routes navigable for everyone.
+                    </p>
+                    <div class="impact__points">
+                        <div class="impact__point">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <span>First digital transit tool for Nepal</span>
+                        </div>
+                        <div class="impact__point">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <span>Tourist-friendly with Nepali boarding phrases</span>
+                        </div>
+                        <div class="impact__point">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <span>Government-regulated fares prevent overcharging</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="impact__stats" data-animate="fade-up" data-delay="1">
+                    <div class="stat-card">
+                        <span class="stat-card__number" data-count="4">0</span>
+                        <span class="stat-card__unit">Million+</span>
+                        <span class="stat-card__label">Daily Commuters</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-card__number" data-count="100">0</span>
+                        <span class="stat-card__unit">+</span>
+                        <span class="stat-card__label">Bus Routes</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-card__number" data-count="57">0</span>
+                        <span class="stat-card__unit">%</span>
+                        <span class="stat-card__label">Less CO2 vs Cars</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-card__number" data-count="0">0</span>
+                        <span class="stat-card__unit">Apps</span>
+                        <span class="stat-card__label">Before Sawari</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================================
+         PERSPECTIVES — User vs Admin
+         ================================================================ -->
+    <section class="section" id="perspectives">
+        <div class="container">
+            <div class="section__header" data-animate="fade-up">
+                <span class="section__tag">Two Sides, One Platform</span>
+                <h2 class="section__title">Built for everyone</h2>
+                <p class="section__subtitle">Sawari works differently for those who ride and those who manage.</p>
             </div>
 
             <div class="perspectives-grid">
-                <!-- User Perspective -->
-                <div class="perspective-card perspective-card--user reveal">
-                    <div class="perspective-header">
-                        <div class="perspective-avatar">
-                            <i data-feather="user"></i>
+                <div class="perspective-card" data-animate="fade-up" data-delay="0">
+                    <div class="perspective-card__header">
+                        <div class="perspective-card__avatar">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                         </div>
                         <div>
-                            <h3>What Users Think</h3>
-                            <span class="perspective-role">Commuters &amp; Tourists</span>
+                            <h3>Commuters &amp; Tourists</h3>
+                            <span class="perspective-card__role">User View</span>
                         </div>
                     </div>
-                    <div class="perspective-body">
-                        <div class="thought">
-                            <div class="thought-icon"><i data-feather="help-circle"></i></div>
-                            <p>"Which bus goes to Buspark from Kalanki?"</p>
-                        </div>
-                        <div class="thought">
-                            <div class="thought-icon"><i data-feather="help-circle"></i></div>
-                            <p>"How much should I actually pay?"</p>
-                        </div>
-                        <div class="thought">
-                            <div class="thought-icon"><i data-feather="help-circle"></i></div>
-                            <p>"Is the bus close or should I wait?"</p>
-                        </div>
-                        <div class="thought">
-                            <div class="thought-icon"><i data-feather="help-circle"></i></div>
-                            <p>"What do I say to the conductor?"</p>
-                        </div>
+                    <div class="perspective-card__questions">
+                        <div class="perspective-card__q">"Which bus goes to Buspark from Kalanki?"</div>
+                        <div class="perspective-card__q">"How much should I actually pay?"</div>
+                        <div class="perspective-card__q">"Is the bus close or should I wait?"</div>
+                        <div class="perspective-card__q">"What do I say to the conductor?"</div>
                     </div>
-                    <div class="perspective-answer">
-                        <i data-feather="check-circle"></i>
+                    <div class="perspective-card__answer">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
                         <p><strong>Sawari answers all of these</strong> — route, fare, live position, boarding instructions, and conductor phrases in one search.</p>
                     </div>
                 </div>
 
-                <!-- Admin Perspective -->
-                <div class="perspective-card perspective-card--admin reveal">
-                    <div class="perspective-header">
-                        <div class="perspective-avatar perspective-avatar--admin">
-                            <i data-feather="settings"></i>
+                <div class="perspective-card perspective-card--alt" data-animate="fade-up" data-delay="1">
+                    <div class="perspective-card__header">
+                        <div class="perspective-card__avatar perspective-card__avatar--alt">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
                         </div>
                         <div>
-                            <h3>What Admins Think</h3>
-                            <span class="perspective-role">Operators &amp; Managers</span>
+                            <h3>Operators &amp; Managers</h3>
+                            <span class="perspective-card__role">Admin View</span>
                         </div>
                     </div>
-                    <div class="perspective-body">
-                        <div class="thought">
-                            <div class="thought-icon thought-icon--admin"><i data-feather="activity"></i></div>
-                            <p>"Where are my buses right now?"</p>
-                        </div>
-                        <div class="thought">
-                            <div class="thought-icon thought-icon--admin"><i data-feather="activity"></i></div>
-                            <p>"Is the route data submitted by agents accurate?"</p>
-                        </div>
-                        <div class="thought">
-                            <div class="thought-icon thought-icon--admin"><i data-feather="activity"></i></div>
-                            <p>"Are there any disruptions I need to alert riders about?"</p>
-                        </div>
-                        <div class="thought">
-                            <div class="thought-icon thought-icon--admin"><i data-feather="activity"></i></div>
-                            <p>"How do I manage agents and approve contributions?"</p>
-                        </div>
+                    <div class="perspective-card__questions">
+                        <div class="perspective-card__q">"Where are my buses right now?"</div>
+                        <div class="perspective-card__q">"Is the route data accurate?"</div>
+                        <div class="perspective-card__q">"Any disruptions I need to alert about?"</div>
+                        <div class="perspective-card__q">"How do I manage agents and approvals?"</div>
                     </div>
-                    <div class="perspective-answer perspective-answer--admin">
-                        <i data-feather="check-circle"></i>
-                        <p><strong>The admin dashboard provides</strong> — live fleet overview, contribution approval workflows, alert management, agent tracking, and suggestion inbox.</p>
+                    <div class="perspective-card__answer perspective-card__answer--alt">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                        <p><strong>The admin dashboard provides</strong> — live fleet overview, contribution approval, alert management, and agent tracking.</p>
                     </div>
                 </div>
             </div>
@@ -633,152 +433,90 @@
     </section>
 
     <!-- ================================================================
-         IMAGE RIBBON 2 — Visual break (reverse direction)
+         FLEET GALLERY
          ================================================================ -->
-    <div class="image-ribbon image-ribbon--reverse" aria-hidden="true">
-        <div class="ribbon-track">
-            <div class="ribbon-img"><img loading="lazy" src="../gallery/image6.jpg" alt="" width="400" height="260"></div>
-            <div class="ribbon-img"><img loading="lazy" src="../gallery/302216934_482557370551393_6475660738973236802_n.jpg" alt="" width="400" height="260"></div>
-            <div class="ribbon-img"><img loading="lazy" src="../gallery/image7.jpg" alt="" width="400" height="260"></div>
-            <div class="ribbon-img"><img loading="lazy" src="../gallery/IMG-1.jpeg" alt="" width="400" height="260"></div>
-            <div class="ribbon-img"><img loading="lazy" src="../gallery/mayur_yatayat_XWhLImWBJm.jpg" alt="" width="400" height="260"></div>
-            <!-- Duplicate for seamless loop -->
-            <div class="ribbon-img"><img loading="lazy" src="../gallery/image6.jpg" alt="" width="400" height="260"></div>
-            <div class="ribbon-img"><img loading="lazy" src="../gallery/302216934_482557370551393_6475660738973236802_n.jpg" alt="" width="400" height="260"></div>
-            <div class="ribbon-img"><img loading="lazy" src="../gallery/image7.jpg" alt="" width="400" height="260"></div>
-            <div class="ribbon-img"><img loading="lazy" src="../gallery/IMG-1.jpeg" alt="" width="400" height="260"></div>
-            <div class="ribbon-img"><img loading="lazy" src="../gallery/mayur_yatayat_XWhLImWBJm.jpg" alt="" width="400" height="260"></div>
-        </div>
-    </div>
-
-    <!-- ================================================================
-         GALLERY — Real fleet images
-         ================================================================ -->
-    <section class="section gallery-section" id="gallery">
+    <section class="section section--subtle" id="fleet">
         <div class="container">
-            <div class="section-header reveal">
-                <span class="section-tag">The Fleet</span>
-                <h2 class="section-title">Nepal's Public Transport</h2>
-                <p class="section-subtitle">
-                    Real vehicles from Kathmandu Valley — the buses, microbuses, and tempos that Sawari tracks.
-                </p>
+            <div class="section__header" data-animate="fade-up">
+                <span class="section__tag">The Fleet</span>
+                <h2 class="section__title">Nepal's public transport</h2>
+                <p class="section__subtitle">Real vehicles from Kathmandu Valley — the buses, microbuses, and tempos that Sawari tracks.</p>
             </div>
 
-            <div class="gallery-grid reveal">
-                <div class="gallery-item gallery-item--tall" data-caption="Sajha Yatayat — Nepal's first electric public bus fleet serving main corridors">
+            <div class="fleet-grid" data-animate="fade-up" data-delay="1">
+                <div class="fleet-card fleet-card--tall">
                     <img loading="lazy" src="../gallery/sajha-bus-EV.jpg" alt="Sajha Yatayat electric bus" width="600" height="700">
-                    <div class="gallery-hover"><i data-feather="maximize-2"></i></div>
+                    <div class="fleet-card__overlay"><span class="fleet-card__label">Sajha Yatayat EV</span></div>
                 </div>
-                <div class="gallery-item" data-caption="Mahanagar Yatayat — Major public transit operator in the valley">
-                    <img loading="lazy" src="../gallery/mahanagar-yatayat.png" alt="Mahanagar Yatayat public bus" width="600" height="400">
-                    <div class="gallery-hover"><i data-feather="maximize-2"></i></div>
+                <div class="fleet-card">
+                    <img loading="lazy" src="../gallery/mahanagar-yatayat.png" alt="Mahanagar Yatayat" width="600" height="400">
+                    <div class="fleet-card__overlay"><span class="fleet-card__label">Mahanagar Yatayat</span></div>
                 </div>
-                <div class="gallery-item" data-caption="Digo Yatayat — Eco-friendly green bus service">
-                    <img loading="lazy" src="../gallery/digo-yatayat.jpg" alt="Digo Yatayat green bus" width="600" height="400">
-                    <div class="gallery-hover"><i data-feather="maximize-2"></i></div>
+                <div class="fleet-card">
+                    <img loading="lazy" src="../gallery/digo-yatayat.jpg" alt="Digo Yatayat" width="600" height="400">
+                    <div class="fleet-card__overlay"><span class="fleet-card__label">Digo Yatayat</span></div>
                 </div>
-                <div class="gallery-item gallery-item--tall" data-caption="Samakhusi Yatayat — Serving northern Kathmandu corridor">
-                    <img loading="lazy" src="../gallery/samakhusi-yatayat-1729569860.jpg" alt="Samakhusi Yatayat bus" width="600" height="700">
-                    <div class="gallery-hover"><i data-feather="maximize-2"></i></div>
+                <div class="fleet-card fleet-card--tall">
+                    <img loading="lazy" src="../gallery/samakhusi-yatayat-1729569860.jpg" alt="Samakhusi Yatayat" width="600" height="700">
+                    <div class="fleet-card__overlay"><span class="fleet-card__label">Samakhusi Yatayat</span></div>
                 </div>
-                <div class="gallery-item" data-caption="Hiace minibus — The workhorse of Nepal's semi-urban routes">
-                    <img loading="lazy" src="../gallery/hiace.webp" alt="Toyota Hiace minibus" width="600" height="400">
-                    <div class="gallery-hover"><i data-feather="maximize-2"></i></div>
+                <div class="fleet-card">
+                    <img loading="lazy" src="../gallery/high-tech-buses.jpg" alt="Modern fleet" width="600" height="400">
+                    <div class="fleet-card__overlay"><span class="fleet-card__label">Modern Fleet</span></div>
                 </div>
-                <div class="gallery-item" data-caption="High-tech modern buses entering Nepal's transit fleet">
-                    <img loading="lazy" src="../gallery/high-tech-buses.jpg" alt="Modern high-tech bus" width="600" height="400">
-                    <div class="gallery-hover"><i data-feather="maximize-2"></i></div>
-                </div>
-                <div class="gallery-item gallery-item--wide" data-caption="Sajha Yatayat luxury service — Kathmandu–Narayangadh shuttle">
-                    <img loading="lazy" src="../gallery/sajha-yatayat-kathmandu-narayangadh-shuttle-service-1758693554.jpg" alt="Sajha Yatayat long-distance shuttle" width="800" height="400">
-                    <div class="gallery-hover"><i data-feather="maximize-2"></i></div>
-                </div>
-                <div class="gallery-item" data-caption="Mayur Yatayat — Connecting outer ring road communities">
-                    <img loading="lazy" src="../gallery/mayur.jpg" alt="Mayur Yatayat bus" width="600" height="400">
-                    <div class="gallery-hover"><i data-feather="maximize-2"></i></div>
-                </div>
-                <div class="gallery-item" data-caption="Nilo Micro — Blue microbus serving Kathmandu inner routes">
-                    <img loading="lazy" src="../gallery/nilo-micro.jpg" alt="Nilo Micro bus" width="600" height="400">
-                    <div class="gallery-hover"><i data-feather="maximize-2"></i></div>
-                </div>
-                <div class="gallery-item gallery-item--tall" data-caption="Sajha Yatayat — Modern fleet vehicle in service">
-                    <img loading="lazy" src="../gallery/sajha.jpg" alt="Sajha Yatayat bus" width="600" height="700">
-                    <div class="gallery-hover"><i data-feather="maximize-2"></i></div>
-                </div>
-                <div class="gallery-item" data-caption="Manangar Yatayat — Another view of the valley fleet">
-                    <img loading="lazy" src="../gallery/manangar-yatayat.jpg" alt="Manangar Yatayat bus" width="600" height="400">
-                    <div class="gallery-hover"><i data-feather="maximize-2"></i></div>
-                </div>
-                <div class="gallery-item" data-caption="Electric three-wheeler tempo — Zero emission local transit">
-                    <img loading="lazy" src="../gallery/tempo.jpg" alt="Electric tempo in Kathmandu" width="600" height="400">
-                    <div class="gallery-hover"><i data-feather="maximize-2"></i></div>
-                </div>
-                <div class="gallery-item gallery-item--wide" data-caption="Route map — Visualizing the bus network across Kathmandu Valley">
-                    <img loading="lazy" src="../gallery/routes.jpg" alt="Bus route map" width="800" height="400">
-                    <div class="gallery-hover"><i data-feather="maximize-2"></i></div>
+                <div class="fleet-card">
+                    <img loading="lazy" src="../gallery/mayur.jpg" alt="Mayur Yatayat" width="600" height="400">
+                    <div class="fleet-card__overlay"><span class="fleet-card__label">Mayur Yatayat</span></div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Lightbox -->
-    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer" hidden>
-        <button class="lb-close" aria-label="Close"><i data-feather="x"></i></button>
-        <button class="lb-prev" aria-label="Previous"><i data-feather="chevron-left"></i></button>
-        <button class="lb-next" aria-label="Next"><i data-feather="chevron-right"></i></button>
-        <div class="lb-body">
-            <img src="" alt="" class="lb-img" id="lbImg">
-            <p class="lb-caption" id="lbCaption"></p>
-        </div>
-    </div>
-
     <!-- ================================================================
-         COMMUNITY SUGGESTIONS — Feedback section
+         FEEDBACK — Community Suggestions
          ================================================================ -->
-    <section class="section suggestions-section" id="suggestions">
+    <section class="section" id="feedback">
         <div class="container">
-            <div class="section-header reveal">
-                <span class="section-tag">Community</span>
-                <h2 class="section-title">Help Us Improve</h2>
-                <p class="section-subtitle">
-                    Spotted a wrong route? A missing stop? A fare issue? Your feedback directly shapes Sawari's transit data.
-                </p>
+            <div class="section__header" data-animate="fade-up">
+                <span class="section__tag">Community</span>
+                <h2 class="section__title">Help us improve</h2>
+                <p class="section__subtitle">Spotted a wrong route, a missing stop, or a fare issue? Your feedback directly shapes Sawari's transit data.</p>
             </div>
 
-            <div class="suggestions-grid">
-                <div class="suggestion-info reveal">
-                    <div class="suggestion-step">
-                        <div class="suggestion-step-icon">
-                            <i data-feather="message-square"></i>
+            <div class="feedback-grid">
+                <div class="feedback-info" data-animate="fade-up">
+                    <div class="feedback-step">
+                        <div class="feedback-step__icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
                         </div>
                         <div>
                             <h3>Submit a Suggestion</h3>
-                            <p>Report any transit issue — a wrong route, a missing stop, an incorrect fare, or a new bus service you've spotted.</p>
+                            <p>Report any transit issue — wrong route, missing stop, incorrect fare, or new bus service.</p>
                         </div>
                     </div>
-                    <div class="suggestion-step">
-                        <div class="suggestion-step-icon suggestion-step-icon--sky">
-                            <i data-feather="cpu"></i>
+                    <div class="feedback-step">
+                        <div class="feedback-step__icon feedback-step__icon--amber">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>
                         </div>
                         <div>
                             <h3>AI Processes It</h3>
-                            <p>Our AI reads your message and extracts a specific, actionable task — like "add Kalanki stop to the Basundhara–RNAC route."</p>
+                            <p>Our AI extracts a specific, actionable task — like "add Kalanki stop to the Basundhara route."</p>
                         </div>
                     </div>
-                    <div class="suggestion-step">
-                        <div class="suggestion-step-icon suggestion-step-icon--emerald">
-                            <i data-feather="check-square"></i>
+                    <div class="feedback-step">
+                        <div class="feedback-step__icon feedback-step__icon--green">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
                         </div>
                         <div>
                             <h3>Admin Approves</h3>
-                            <p>The extracted task appears in the admin dashboard for one-click approval. Transit data updates automatically.</p>
+                            <p>The task appears in the admin dashboard for one-click approval. Transit data updates automatically.</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="suggestion-form-card reveal">
+                <div class="feedback-form-card" data-animate="fade-up" data-delay="1">
                     <h3>Send a Suggestion</h3>
-                    <form class="suggestion-form" id="suggestionForm">
+                    <form class="feedback-form" id="suggestionForm">
                         <div class="form-group">
                             <label for="suggestName">Your Name</label>
                             <input type="text" id="suggestName" name="name" placeholder="Ram Sharma" required>
@@ -798,9 +536,9 @@
                             <label for="suggestMessage">Your Message</label>
                             <textarea id="suggestMessage" name="message" rows="4" placeholder="Describe the issue or suggestion..." required></textarea>
                         </div>
-                        <button type="submit" class="btn btn-accent btn-lg suggestion-submit">
-                            <i data-feather="send"></i>
+                        <button type="submit" class="btn btn--primary btn--lg feedback-submit" style="width: 100%;">
                             Submit Suggestion
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
                         </button>
                     </form>
                 </div>
@@ -811,156 +549,83 @@
     <!-- ================================================================
          CTA — Final call to action
          ================================================================ -->
-    <section class="section cta-section" id="cta">
-        <div class="cta-bg">
-            <img loading="lazy" src="../gallery/nepal.jpg" alt="Nepal cityscape" width="1920" height="700">
-            <div class="cta-overlay"></div>
+    <section class="cta" id="cta">
+        <div class="cta__bg">
+            <img loading="lazy" src="../gallery/nepal.jpg" alt="Nepal" width="1920" height="700">
+            <div class="cta__overlay"></div>
         </div>
-        <div class="container cta-content reveal">
-            <h2>Start Navigating Smarter</h2>
-            <p>
-                Whether you're a daily commuter, a tourist, or someone who wants to help map Nepal's transit —
-                Sawari is ready.
-            </p>
-            <div class="cta-actions">
-                <a href="pages/map.php" class="btn btn-accent btn-lg">
-                    <i data-feather="map-pin"></i>
+        <div class="container cta__content" data-animate="fade-up">
+            <h2 class="cta__title">Start navigating smarter</h2>
+            <p class="cta__desc">Whether you're a daily commuter, a tourist, or someone who wants to help map Nepal's transit — Sawari is ready.</p>
+            <div class="cta__actions">
+                <a href="pages/map.php" class="btn btn--white btn--lg">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
                     Open the Map
                 </a>
-                <a href="pages/agent/login.php" class="btn btn-glass btn-lg">
-                    <i data-feather="users"></i>
+                <a href="pages/agent/login.php" class="btn btn--ghost-light btn--lg">
                     Become an Agent
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
                 </a>
             </div>
-        </div>
-    </section>
-
-    <section class="bottom-tagline" aria-label="Sawari promise">
-        <div class="bottom-tagline-bg" aria-hidden="true">
-            <img loading="lazy" src="../gallery/landing.jpg" alt="">
-            <div class="bottom-tagline-overlay"></div>
-        </div>
-        <div class="container bottom-tagline-content">
-            <h2 class="bottom-tagline-title reveal">
-                Know Your Bus.<br>
-                <span class="bottom-tagline-accent">Before It Arrives.</span>
-            </h2>
         </div>
     </section>
 
     <!-- ================================================================
          FOOTER
          ================================================================ -->
-    <footer class="site-footer">
-        <!-- Newsletter Bar -->
-        <div class="footer-newsletter">
-            <div class="container">
-                <div class="newsletter-inner">
-                    <div class="newsletter-text">
-                        <h3>Stay Updated with Sawari</h3>
-                        <p>Get the latest routes, travel tips, and exclusive offers delivered to your inbox.</p>
-                    </div>
-                    <form class="newsletter-form" onsubmit="return false;">
-                        <input type="email" placeholder="Enter your email address" class="newsletter-input" required>
-                        <button type="submit" class="newsletter-btn">Subscribe</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <!-- Main Footer -->
+    <footer class="footer">
         <div class="container">
-            <div class="footer-grid">
-                <!-- Brand Section -->
-                <div class="footer-brand">
-                    <a href="#hero" class="footer-logo">
-                        <img src="../logo-white.png" alt="Sawari" class="footer-logo-img">
+            <div class="footer__top">
+                <div class="footer__brand">
+                    <a href="#hero" class="footer__logo">
+                        <img src="../logo-white.png" alt="Sawari" class="footer__logo-img">
                         <span>Sawari</span>
                     </a>
-                    <p class="footer-about">
-                        Sawari helps travelers and commuters discover smarter transport options across Nepal with reliable routes, bookings, and real-time support.
-                    </p>
-                    <ul class="footer-contact">
-                        <li><i data-feather="map-pin"></i><span>Putalisadak, Kathmandu, Nepal</span></li>
-                        <li><i data-feather="mail"></i><a href="mailto:support@sawari.com.np">support@sawari.com.np</a></li>
-                        <li><i data-feather="phone"></i><a href="tel:+977014123445">01-4123445</a></li>
-                    </ul>
+                    <p class="footer__about">Smart public transit navigation for Nepal. Real-time tracking, route finding, and fare estimation.</p>
+                    <div class="footer__social">
+                        <a href="#" aria-label="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+                        <a href="#" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
+                        <a href="#" aria-label="LinkedIn"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+                        <a href="#" aria-label="YouTube"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+                    </div>
                 </div>
-
-                <!-- Quick Links -->
-                <div class="footer-col">
-                    <h4>Quick Links</h4>
+                <div class="footer__col">
+                    <h4>Product</h4>
                     <ul>
                         <li><a href="#">Bus Finder</a></li>
-                        <li><a href="#">Flight Booking</a></li>
-                        <li><a href="#">Bus Ticketing</a></li>
-                        <li><a href="#">Vehicle Reservation</a></li>
-                        <li><a href="#">Cable Car Booking</a></li>
+                        <li><a href="#">Live Tracking</a></li>
+                        <li><a href="#">Route Planner</a></li>
+                        <li><a href="#">Fare Calculator</a></li>
                     </ul>
                 </div>
-
-                <!-- Support -->
-                <div class="footer-col">
+                <div class="footer__col">
                     <h4>Support</h4>
                     <ul>
                         <li><a href="#">Help Center</a></li>
                         <li><a href="#">FAQs</a></li>
-                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="mailto:support@sawari.com.np">Contact Us</a></li>
                         <li><a href="#">Report an Issue</a></li>
-                        <li><a href="#">Feedback</a></li>
                     </ul>
                 </div>
-
-                <!-- Legal -->
-                <div class="footer-col">
+                <div class="footer__col">
                     <h4>Legal</h4>
                     <ul>
                         <li><a href="#">Privacy Policy</a></li>
                         <li><a href="#">Terms of Service</a></li>
                         <li><a href="#">Cookie Policy</a></li>
-                        <li><a href="#">Sitemap</a></li>
                     </ul>
                 </div>
-
-                <!-- Download App Section -->
-                <div class="footer-col footer-download-col">
-                    <h4>Download App</h4>
-                    <p class="footer-download-desc">Get the Sawari app for a seamless travel experience.</p>
-                    <div class="footer-store-buttons">
-                        <a href="#" class="store-btn store-btn--play">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .609-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.199l2.302 2.302a1 1 0 0 1 0 1.38l-2.302 2.302L15.396 12l2.302-2.492zM5.864 2.658L16.8 8.99l-2.302 2.302L5.864 2.658z"/></svg>
-                            <span class="store-btn-text"><small>GET IT ON</small>Google Play</span>
-                        </a>
-                        <a href="#" class="store-btn store-btn--apple">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-                            <span class="store-btn-text"><small>Download on the</small>App Store</span>
-                        </a>
-                    </div>
-                    <div class="footer-qr-container">
-                        <img src="../sawari_qr.jpg" alt="Scan to download Sawari app" class="footer-qr-img">
-                        <span class="footer-qr-label">Scan QR to Download</span>
-                    </div>
-                </div>
             </div>
-
-            <!-- Footer Bottom -->
-            <div class="footer-bottom">
+            <div class="footer__bottom">
                 <p>&copy; 2026 Sawari Pvt. Ltd. All rights reserved.</p>
-                <div class="footer-social" aria-label="Social media links">
-                    <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-                    <a href="#" aria-label="X (Twitter)"><i class="fa-brands fa-x-twitter"></i></a>
-                    <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-                    <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
-                </div>
-                <a href="#hero" class="footer-back-top">Back to Top <i data-feather="arrow-up"></i></a>
+                <a href="#hero" class="footer__back-top">Back to Top <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg></a>
             </div>
         </div>
     </footer>
 
     <!-- Back to Top -->
     <button class="back-to-top" id="backToTop" aria-label="Back to top">
-        <i data-feather="arrow-up"></i>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
     </button>
 
     <script src="js/script.js"></script>
