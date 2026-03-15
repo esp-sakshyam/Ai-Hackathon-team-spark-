@@ -86,30 +86,35 @@
     <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
 
     <!-- ================================================================
-         NAVIGATION
+         NAVIGATION — Capsule Style
          ================================================================ -->
     <header class="site-header" id="siteHeader">
-        <nav class="nav-container">
-            <a href="#hero" class="nav-logo" aria-label="Sawari Home">
+        <nav class="nav-capsule">
+            <!-- Left: Logo Circle -->
+            <a href="#hero" class="nav-logo-circle" aria-label="Sawari Home">
                 <img src="../logo-white.png" alt="Sawari" class="nav-logo-img nav-logo-white">
                 <img src="../logo-black.png" alt="Sawari" class="nav-logo-img nav-logo-black">
-                <span>Sawari</span>
             </a>
 
+            <!-- Center: Navigation Links -->
             <ul class="nav-links" id="navLinks">
                 <li><a href="#why" class="nav-link">Why Sawari</a></li>
                 <li><a href="#what" class="nav-link">What We Do</a></li>
                 <li><a href="#how" class="nav-link">How It Works</a></li>
-                <li><a href="#need" class="nav-link">Why It's Needed</a></li>
                 <li><a href="#perspectives" class="nav-link">Perspectives</a></li>
                 <li><a href="#gallery" class="nav-link">Gallery</a></li>
                 <li><a href="#suggestions" class="nav-link">Feedback</a></li>
             </ul>
 
+            <!-- Right: Contact Button + Hamburger -->
             <div class="nav-actions">
+                <a href="mailto:support@sawari.com.np" class="nav-contact-btn">
+                    <i data-feather="mail"></i>
+                    <span class="nav-contact-text">support@sawari.com.np</span>
+                </a>
                 <a href="pages/map.php" class="nav-cta">
                     <i data-feather="map-pin"></i>
-                    Open Map
+                    <span>Map</span>
                 </a>
                 <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
                     <span></span>
