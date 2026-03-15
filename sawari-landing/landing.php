@@ -27,10 +27,13 @@ $groqApiKey = $env['GROQ_API_KEY'] ?? '';
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sawari Landing</title>
-    <meta name="description" content="Animated, image-rich landing page for Sawari public transit in Kathmandu Valley." />
+    <meta name="description"
+        content="Animated, image-rich landing page for Sawari public transit in Kathmandu Valley." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <link rel="stylesheet" href="landing.css" />
 </head>
@@ -88,7 +91,8 @@ $groqApiKey = $env['GROQ_API_KEY'] ?? '';
 
         <div class="svg-separator" aria-hidden="true">
             <svg viewBox="0 0 1440 90" preserveAspectRatio="none">
-                <path d="M0,43 C180,76 360,8 540,30 C720,52 900,84 1080,58 C1260,32 1360,8 1440,21 L1440,90 L0,90 Z"></path>
+                <path d="M0,43 C180,76 360,8 540,30 C720,52 900,84 1080,58 C1260,32 1360,8 1440,21 L1440,90 L0,90 Z">
+                </path>
             </svg>
         </div>
 
@@ -197,12 +201,18 @@ $groqApiKey = $env['GROQ_API_KEY'] ?? '';
             </div>
             <div class="gallery-grid">
                 <img src="gallery/1594641445.jpg" alt="Kathmandu road transit" loading="lazy" />
-                <img src="gallery/302216934_482557370551393_6475660738973236802_n.jpg" alt="Bus service image" loading="lazy" />
-                <img src="gallery/39089002_214055306121394_3987346834723962880_n_mmZU29H7GE.jpg" alt="Older bus photo" loading="lazy" />
-                <img src="gallery/473749570_1355280112583010_593412764911101796_n.jpg" alt="Public bus photograph" loading="lazy" />
-                <img src="gallery/473783154_1062778689195922_6904992953434292580_n.jpg" alt="Transport route image" loading="lazy" />
-                <img src="gallery/481820024_656265493582501_1243983797300762177_n.jpg" alt="Modern local bus" loading="lazy" />
-                <img src="gallery/81038617_2710162452340155_22013957954863104_n.jpg" alt="Transit community photo" loading="lazy" />
+                <img src="gallery/302216934_482557370551393_6475660738973236802_n.jpg" alt="Bus service image"
+                    loading="lazy" />
+                <img src="gallery/39089002_214055306121394_3987346834723962880_n_mmZU29H7GE.jpg" alt="Older bus photo"
+                    loading="lazy" />
+                <img src="gallery/473749570_1355280112583010_593412764911101796_n.jpg" alt="Public bus photograph"
+                    loading="lazy" />
+                <img src="gallery/473783154_1062778689195922_6904992953434292580_n.jpg" alt="Transport route image"
+                    loading="lazy" />
+                <img src="gallery/481820024_656265493582501_1243983797300762177_n.jpg" alt="Modern local bus"
+                    loading="lazy" />
+                <img src="gallery/81038617_2710162452340155_22013957954863104_n.jpg" alt="Transit community photo"
+                    loading="lazy" />
                 <img src="gallery/high-tech-buses.jpg" alt="High tech buses" loading="lazy" />
                 <img src="gallery/IMG-1.jpeg" alt="Transit photo Kathmandu" loading="lazy" />
                 <img src="gallery/mahanagar-yatayat.png" alt="Mahanagar yatayat fleet" loading="lazy" />
@@ -215,7 +225,8 @@ $groqApiKey = $env['GROQ_API_KEY'] ?? '';
                 <img src="gallery/sajha.jpg" alt="Sajha bus image" loading="lazy" />
                 <img src="gallery/sajha1.jpg" alt="Sajha route" loading="lazy" />
                 <img src="gallery/SajhaBus_20220707134627.jpg" alt="Sajha bus older photo" loading="lazy" />
-                <img src="gallery/sajha-yatayat-kathmandu-narayangadh-shuttle-service-1758693554.jpg" alt="Sajha shuttle bus" loading="lazy" />
+                <img src="gallery/sajha-yatayat-kathmandu-narayangadh-shuttle-service-1758693554.jpg"
+                    alt="Sajha shuttle bus" loading="lazy" />
                 <img src="gallery/samakhusi-yatayat-1729569860.jpg" alt="Samakhusi route bus" loading="lazy" />
                 <img src="gallery/tempo.jpg" alt="Tempo transport" loading="lazy" />
             </div>
@@ -236,8 +247,10 @@ $groqApiKey = $env['GROQ_API_KEY'] ?? '';
                     </div>
                 </div>
                 <form id="chat-form" class="chat-form">
-                    <input type="text" id="chat-input" placeholder="Example: Kalanki to Chabahil by bus" autocomplete="off" />
-                    <button type="submit" id="chat-send" aria-label="Send"><i class="fa-solid fa-paper-plane"></i></button>
+                    <input type="text" id="chat-input" placeholder="Example: Kalanki to Chabahil by bus"
+                        autocomplete="off" />
+                    <button type="submit" id="chat-send" aria-label="Send"><i
+                            class="fa-solid fa-paper-plane"></i></button>
                 </form>
             </div>
         </section>
@@ -262,10 +275,12 @@ $groqApiKey = $env['GROQ_API_KEY'] ?? '';
                     </select>
 
                     <label for="suggest-message">Suggestion</label>
-                    <textarea id="suggest-message" rows="5" maxlength="1000" placeholder="Share what needs correction" required></textarea>
+                    <textarea id="suggest-message" rows="5" maxlength="1000" placeholder="Share what needs correction"
+                        required></textarea>
                     <div class="count"><span id="suggest-chars">0</span> / 1000</div>
 
-                    <button id="suggest-submit" type="submit"><i class="fa-solid fa-paper-plane"></i> Submit Suggestion</button>
+                    <button id="suggest-submit" type="submit"><i class="fa-solid fa-paper-plane"></i> Submit
+                        Suggestion</button>
                     <div id="suggest-feedback" class="suggest-feedback" style="display:none"></div>
                 </form>
 
