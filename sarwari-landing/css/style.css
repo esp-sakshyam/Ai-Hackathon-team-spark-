@@ -544,7 +544,7 @@ h1, h2, h3, h4, h5, h6 {
     padding-top: 10rem;
     padding-bottom: 5rem;
     max-width: 720px;
-    /* Enhanced depth for content separation */
+    text-align: left;
 }
 
 .hero-chip {
@@ -607,6 +607,11 @@ h1, h2, h3, h4, h5, h6 {
     max-width: 560px;
     line-height: 1.75;
     margin-bottom: 2.5rem;
+    text-align: left;
+    position: absolute;
+    bottom: 3rem;
+    left: 2rem;
+    z-index: 3;
     text-shadow:
         0 2px 8px rgba(0,0,0,.9),
         0 1px 4px rgba(0,0,0,.8);
@@ -2756,6 +2761,7 @@ h1, h2, h3, h4, h5, h6 {
     .hero-content { padding-top: 7rem; }
 
     .hero-title { font-size: 2.25rem; }
+    .hero-sub { bottom: 1.5rem; left: 1.25rem; max-width: 90%; font-size: .95rem; }
 
     .hero-search-row {
         flex-direction: column;
