@@ -499,7 +499,7 @@ h1, h2, h3, h4, h5, h6 {
     position: relative;
     min-height: 100vh;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     overflow: hidden;
 }
 
@@ -539,12 +539,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .hero-content {
-    position: relative;
+    position: absolute;
     z-index: 2;
     padding-top: 10rem;
-    padding-bottom: 5rem;
+    padding-bottom: 3rem;
     max-width: 720px;
     text-align: left;
+    left: 2rem;
+    top: 0;
 }
 
 .hero-chip {
@@ -606,12 +608,8 @@ h1, h2, h3, h4, h5, h6 {
     color: rgba(255,255,255,.95);
     max-width: 560px;
     line-height: 1.75;
-    margin-bottom: 2.5rem;
+    margin-bottom: 1.5rem;
     text-align: left;
-    position: absolute;
-    bottom: 3rem;
-    left: 2rem;
-    z-index: 3;
     text-shadow:
         0 2px 8px rgba(0,0,0,.9),
         0 1px 4px rgba(0,0,0,.8);
@@ -2113,6 +2111,71 @@ h1, h2, h3, h4, h5, h6 {
     border-bottom: 1px solid rgba(255,255,255,.06);
 }
 
+/* ==================================================================
+   22. BOTTOM TAGLINE — Moved hero promise
+   ================================================================== */
+.bottom-tagline {
+    position: relative;
+    overflow: hidden;
+    min-height: clamp(280px, 42vw, 430px);
+    display: flex;
+    align-items: flex-end;
+    border-top: 1px solid rgba(255, 255, 255, .08);
+    border-bottom: 1px solid rgba(255, 255, 255, .08);
+}
+
+.bottom-tagline-bg {
+    position: absolute;
+    inset: 0;
+}
+
+.bottom-tagline-bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.bottom-tagline-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at 18% 78%, rgba(0, 0, 0, .55), transparent 45%),
+        linear-gradient(90deg, rgba(0, 0, 0, .62) 0%, rgba(0, 0, 0, .28) 52%, rgba(0, 0, 0, .4) 100%);
+}
+
+.bottom-tagline-content {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    padding-top: 3rem;
+    padding-bottom: 2.5rem;
+}
+
+.bottom-tagline-title {
+    text-align: left;
+    max-width: 9.5ch;
+    font-size: clamp(2.25rem, 6.5vw, 5rem);
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.02;
+    letter-spacing: -.02em;
+    margin: 0;
+    text-shadow:
+        0 4px 12px rgba(0, 0, 0, .95),
+        0 2px 5px rgba(0, 0, 0, .9),
+        0 12px 26px rgba(0, 0, 0, .55);
+}
+
+.bottom-tagline-accent {
+    display: inline-block;
+    margin-top: .2rem;
+    color: #FFC72C;
+    text-shadow:
+        0 0 24px rgba(255, 199, 44, .35),
+        0 4px 12px rgba(0, 0, 0, .95),
+        0 2px 4px rgba(0, 0, 0, .85);
+}
+
 .newsletter-inner {
     display: flex;
     align-items: center;
@@ -2749,6 +2812,15 @@ h1, h2, h3, h4, h5, h6 {
     .newsletter-form { width: 100%; max-width: 420px; }
 
     .suggestions-grid { grid-template-columns: 1fr; gap: 2rem; }
+
+    .bottom-tagline {
+        min-height: 340px;
+    }
+
+    .bottom-tagline-content {
+        padding-top: 2.5rem;
+        padding-bottom: 2rem;
+    }
 }
 
 /* ==================================================================
@@ -2761,7 +2833,6 @@ h1, h2, h3, h4, h5, h6 {
     .hero-content { padding-top: 7rem; }
 
     .hero-title { font-size: 2.25rem; }
-    .hero-sub { bottom: 1.5rem; left: 1.25rem; max-width: 90%; font-size: .95rem; }
 
     .hero-search-row {
         flex-direction: column;
@@ -2854,6 +2925,21 @@ h1, h2, h3, h4, h5, h6 {
     .suggestion-form-card { padding: 1.5rem; }
 
     .cta-section { padding: 5rem 0; }
+
+    .bottom-tagline {
+        min-height: 260px;
+    }
+
+    .bottom-tagline-content {
+        padding-top: 2rem;
+        padding-bottom: 1.4rem;
+    }
+
+    .bottom-tagline-title {
+        max-width: 10ch;
+        font-size: clamp(2rem, 11vw, 2.7rem);
+    }
+
     .back-to-top { bottom: 1.25rem; right: 1.25rem; }
 }
 
