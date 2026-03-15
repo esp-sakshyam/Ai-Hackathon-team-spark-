@@ -164,25 +164,30 @@
                 </a>
             </div>
 
-            <div class="hero-metrics reveal">
-                <div class="metric">
-                    <strong data-count="15">0</strong>
-                    <span>Stops Mapped</span>
-                </div>
-                <div class="metric-divider"></div>
-                <div class="metric">
-                    <strong data-count="5">0</strong>
-                    <span>Active Routes</span>
-                </div>
-                <div class="metric-divider"></div>
-                <div class="metric">
-                    <strong>8s</strong>
-                    <span>Refresh Rate</span>
-                </div>
-                <div class="metric-divider"></div>
-                <div class="metric">
-                    <strong>2.5m</strong>
-                    <span>GPS Precision</span>
+            <!-- Route Search Box -->
+            <div class="hero-search reveal">
+                <div class="hero-search-row">
+                    <div class="hero-search-field">
+                        <div class="search-field-icon">
+                            <i data-feather="circle"></i>
+                        </div>
+                        <input type="text" placeholder="From — e.g. Ratnapark" class="search-input" id="searchFrom" autocomplete="off">
+                    </div>
+                    <div class="search-connector">
+                        <span class="connector-dots"></span>
+                        <i data-feather="arrow-right" class="connector-arrow"></i>
+                        <span class="connector-dots"></span>
+                    </div>
+                    <div class="hero-search-field">
+                        <div class="search-field-icon search-field-icon--to">
+                            <i data-feather="map-pin"></i>
+                        </div>
+                        <input type="text" placeholder="To — e.g. Lagankhel" class="search-input" id="searchTo" autocomplete="off">
+                    </div>
+                    <button class="search-btn" onclick="window.location.href='pages/map.php'">
+                        <i data-feather="search"></i>
+                        <span>Search</span>
+                    </button>
                 </div>
             </div>
         </div>
