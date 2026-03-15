@@ -169,6 +169,10 @@ void setup() {
 
     Serial.println(F("[READY] Starting capture loop (30 s interval)"));
     Serial.println();
+
+    // Take the first photo immediately after WiFi connects
+    captureAndUpload();
+    lastCaptureTime = millis();
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
