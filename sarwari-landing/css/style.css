@@ -202,22 +202,16 @@ h1, h2, h3, h4, h5, h6 {
 
 .site-header.scrolled .nav-logo { color: var(--stone-900); }
 
-.nav-logo-mark {
+.nav-logo-img {
     width: 2.5rem;
     height: 2.5rem;
     border-radius: var(--radius-md);
-    background: linear-gradient(135deg, var(--amber-400), var(--amber-600));
-    color: #fff;
-    display: grid;
-    place-items: center;
-    font-size: var(--text-lg);
-    font-weight: 900;
+    object-fit: contain;
     flex-shrink: 0;
-    box-shadow: 0 2px 8px rgba(245,158,11,.3);
     transition: transform .2s var(--ease-spring);
 }
 
-.nav-logo:hover .nav-logo-mark {
+.nav-logo:hover .nav-logo-img {
     transform: rotate(-6deg) scale(1.05);
 }
 
@@ -471,8 +465,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .hero-accent {
-    color: #FFFF00;
-    filter: drop-shadow(0 2px 12px rgba(255,255,0,.8));
+    color: var(--amber-300);
+    filter: drop-shadow(0 2px 12px rgba(255,198,33,.6));
 }
 
 .hero-sub {
@@ -1877,6 +1871,7 @@ h1, h2, h3, h4, h5, h6 {
     border-bottom: 1px solid rgba(255,255,255,.06);
 }
 
+
 .footer-logo {
     display: inline-flex;
     align-items: center;
@@ -1887,17 +1882,11 @@ h1, h2, h3, h4, h5, h6 {
     margin-bottom: 1.25rem;
 }
 
-.footer-logo-mark {
+.footer-logo-img {
     width: 2.25rem;
     height: 2.25rem;
     border-radius: var(--radius-sm);
-    background: linear-gradient(135deg, var(--amber-500), var(--amber-600));
-    color: #fff;
-    display: grid;
-    place-items: center;
-    font-size: var(--text-sm);
-    font-weight: 800;
-    box-shadow: 0 2px 8px rgba(245,158,11,.3);
+    object-fit: contain;
 }
 
 .footer-about {
@@ -2095,16 +2084,180 @@ h1, h2, h3, h4, h5, h6 {
     gap: .5rem;
     color: var(--stone-500);
     font-size: var(--text-sm);
-    background: #070707;
-    margin: 1.6rem -2rem 0;
-    padding-left: 2rem;
-    padding-right: 2rem;
+    margin-top: 1.6rem;
 }
 
 .footer-bottom p { font-size: var(--text-sm); }
 
 /* ==================================================================
-   20. REVEAL ANIMATIONS — Premium with stagger
+   20. COMMUNITY SUGGESTIONS — Form + process (Premium)
+   ================================================================== */
+.suggestions-section {
+    background: var(--color-bg);
+}
+
+.suggestions-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+}
+
+.suggestion-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.suggestion-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.25rem;
+    padding: 1.5rem;
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    transition: all var(--duration) var(--ease-out);
+}
+
+.suggestion-step:hover {
+    transform: translateX(4px);
+    box-shadow: var(--shadow-card);
+    border-color: var(--amber-200);
+}
+
+.suggestion-step-icon {
+    width: 3rem;
+    height: 3rem;
+    display: grid;
+    place-items: center;
+    border-radius: var(--radius-md);
+    background: linear-gradient(135deg, var(--amber-50), var(--amber-100));
+    color: var(--amber-600);
+    flex-shrink: 0;
+}
+
+.suggestion-step-icon svg { width: 20px; height: 20px; }
+.suggestion-step-icon--sky     { background: linear-gradient(135deg, #F0F9FF, #E0F2FE); color: var(--sky-600); }
+.suggestion-step-icon--emerald { background: linear-gradient(135deg, #ECFDF5, #D1FAE5); color: var(--emerald-600); }
+
+.suggestion-step h3 {
+    font-size: var(--text-base);
+    font-weight: 700;
+    margin-bottom: .25rem;
+}
+
+.suggestion-step p {
+    font-size: var(--text-sm);
+    color: var(--stone-500);
+    line-height: 1.65;
+}
+
+.suggestion-form-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-2xl);
+    padding: 2.5rem;
+    box-shadow: var(--shadow-card);
+}
+
+.suggestion-form-card h3 {
+    font-size: var(--text-xl);
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+}
+
+.suggestion-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: .375rem;
+}
+
+.form-group label {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--stone-700);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    padding: .75rem 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-bg-alt);
+    color: var(--color-text);
+    transition: border-color var(--duration), box-shadow var(--duration);
+    outline: none;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: var(--amber-400);
+    box-shadow: 0 0 0 3px rgba(255,170,0,.15);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.suggestion-submit {
+    align-self: flex-start;
+    margin-top: .5rem;
+}
+
+/* ==================================================================
+   21. BACK TO TOP BUTTON
+   ================================================================== */
+.back-to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--amber-400), var(--amber-600));
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    box-shadow: 0 4px 16px rgba(255,170,0,.35);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(12px);
+    transition: all var(--duration) var(--ease-out);
+    z-index: 999;
+}
+
+.back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.back-to-top:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(255,170,0,.45);
+}
+
+.back-to-top svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* ==================================================================
+   22. REVEAL ANIMATIONS — Premium with stagger
    ================================================================== */
 .reveal {
     opacity: 0;
@@ -2199,8 +2352,8 @@ h1, h2, h3, h4, h5, h6 {
 
     .footer-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
     .footer-brand { grid-column: span 2; }
-    .footer-download { grid-column: span 2; }
-    .download-grid { grid-template-columns: 120px 1fr; max-width: 440px; }
+
+    .suggestions-grid { grid-template-columns: 1fr; gap: 2rem; }
 }
 
 /* ==================================================================
@@ -2253,13 +2406,15 @@ h1, h2, h3, h4, h5, h6 {
     .how-img-banner { height: 300px; }
 
     .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
-    .footer-brand,
-    .footer-download { grid-column: auto; }
-    .download-grid { grid-template-columns: 1fr; }
-    .footer-bottom { text-align: center; margin-left: -1.25rem; margin-right: -1.25rem; }
+    .footer-brand { grid-column: auto; }
+    .footer-bottom { text-align: center; }
     .nav-links.mobile-active { width: 100%; }
 
+    .suggestions-grid { grid-template-columns: 1fr; }
+    .suggestion-form-card { padding: 1.5rem; }
+
     .cta-section { padding: 5rem 0; }
+    .back-to-top { bottom: 1.25rem; right: 1.25rem; }
 }
 
 /* ==================================================================
