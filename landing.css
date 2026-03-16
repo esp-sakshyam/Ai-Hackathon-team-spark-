@@ -11,23 +11,23 @@
     --ink-on-dark: #e8ecf0;
     --muted: #7c7c94;
     --muted-dark: rgba(255, 255, 255, 0.55);
-    --accent: #e86c3a;
-    --accent-hover: #d45a2a;
-    --accent-light: #fff0eb;
+    --accent: #22a66e;
+    --accent-hover: #1a8f5c;
+    --accent-light: #e8f8f0;
     --accent-2: #2cb67d;
     --line: rgba(0, 0, 0, 0.08);
     --line-dark: rgba(255, 255, 255, 0.1);
     --shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.06);
     --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.08);
     --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.12);
-    --shadow-glow: 0 8px 32px rgba(232, 108, 58, 0.25);
+    --shadow-glow: 0 8px 32px rgba(34, 166, 110, 0.3);
     --radius-sm: 10px;
     --radius-md: 16px;
     --radius-lg: 24px;
     --radius-xl: 32px;
-    --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    --font-heading: 'DM Serif Display', Georgia, serif;
+    --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-heading: 'Outfit', 'Plus Jakarta Sans', sans-serif;
     --container: min(1200px, 92vw);
 }
 
@@ -264,6 +264,38 @@ textarea {
             rgba(10, 14, 20, 0.78) 30%,
             rgba(10, 14, 20, 0.35) 60%,
             rgba(10, 14, 20, 0.05) 100%);
+}
+
+.hero-route-overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 60%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.hero-route-path {
+    stroke-dashoffset: 300;
+    animation: drawHeroRoute 1.6s cubic-bezier(0.4, 0, 0.2, 1) 0.2s forwards;
+}
+
+@keyframes drawHeroRoute {
+    to { stroke-dashoffset: 0; }
+}
+
+.hero-pin {
+    opacity: 0;
+}
+
+.hero-pin-origin { animation: heroPinFade 0.5s ease 0.1s forwards; }
+.hero-pin-dest { animation: heroPinFade 0.5s ease 1.4s forwards; }
+
+@keyframes heroPinFade {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
 }
 
 .hero-content {
@@ -1101,8 +1133,8 @@ textarea {
 /* ===== REVEAL ANIMATION ===== */
 .reveal {
     opacity: 0;
-    transform: translateY(40px);
-    transition: opacity 0.8s ease, transform 0.8s ease;
+    transform: translateY(28px);
+    transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .reveal.visible {
@@ -1171,6 +1203,10 @@ textarea {
 }
 
 @media (max-width: 768px) {
+    .hero-route-overlay {
+        display: none;
+    }
+
     .nav-links {
         display: none;
     }
