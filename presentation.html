@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Sawari — Presentation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f172a;--surface:#1e293b;--card:#334155;
+  --text:#f1f5f9;--muted:#94a3b8;--accent:#38bdf8;
+  --green:#22c55e;--orange:#f59e0b;--red:#ef4444;--purple:#a78bfa;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
+img{max-width:100%;display:block}
+
+/* ===== SLIDE CONTAINER ===== */
+.slide{
+  min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;padding:60px 5vw;
+  position:relative;
+}
+.slide:nth-child(even){background:var(--surface)}
+
+/* ===== NAVIGATION ===== */
+.nav-bar{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(15,23,42,.85);backdrop-filter:blur(12px);
+  display:flex;align-items:center;gap:12px;padding:10px 24px;
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.nav-bar .logo-img{height:28px}
+.nav-bar .nav-dots{display:flex;gap:8px;margin-left:auto}
+.nav-dot{
+  width:10px;height:10px;border-radius:50%;background:var(--card);
+  border:2px solid var(--muted);cursor:pointer;transition:.2s;
+}
+.nav-dot.active,.nav-dot:hover{background:var(--accent);border-color:var(--accent)}
+.slide-counter{
+  position:fixed;bottom:20px;right:24px;z-index:100;
+  background:rgba(15,23,42,.8);backdrop-filter:blur(8px);
+  padding:6px 14px;border-radius:20px;font-size:13px;color:var(--muted);
+}
+.kbd-hint{
+  position:fixed;bottom:20px;left:24px;z-index:100;
+  background:rgba(15,23,42,.8);backdrop-filter:blur(8px);
+  padding:6px 14px;border-radius:20px;font-size:12px;color:var(--muted);
+}
+kbd{
+  background:var(--card);padding:2px 7px;border-radius:4px;
+  font-size:11px;border:1px solid rgba(255,255,255,.1);
+}
+
+/* ===== TYPOGRAPHY ===== */
+h1{font-family:'DM Serif Display',serif;font-size:clamp(2.4rem,5vw,4rem);line-height:1.15;text-align:center}
+h2{font-family:'DM Serif Display',serif;font-size:clamp(1.8rem,3.5vw,2.8rem);text-align:center;margin-bottom:16px}
+h3{font-size:1.15rem;font-weight:700;margin-bottom:8px}
+p.sub{color:var(--muted);font-size:clamp(.95rem,1.4vw,1.15rem);max-width:680px;text-align:center;line-height:1.6;margin-top:12px}
+.accent{color:var(--accent)}
+.green{color:var(--green)}
+.orange{color:var(--orange)}
+.tag{
+  display:inline-block;padding:4px 12px;border-radius:20px;
+  font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px;
+}
+.tag-blue{background:rgba(56,189,248,.15);color:var(--accent)}
+.tag-green{background:rgba(34,197,94,.15);color:var(--green)}
+.tag-orange{background:rgba(245,158,11,.15);color:var(--orange)}
+.tag-purple{background:rgba(167,139,250,.15);color:var(--purple)}
+
+/* ===== HERO ===== */
+.hero-glow{
+  position:absolute;top:-120px;width:600px;height:600px;
+  background:radial-gradient(circle,rgba(56,189,248,.12) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero-logo{width:clamp(100px,18vw,180px);margin-bottom:24px;filter:drop-shadow(0 0 40px rgba(56,189,248,.3))}
+.hero-cta{
+  margin-top:28px;display:inline-flex;align-items:center;gap:8px;
+  background:var(--accent);color:#0f172a;font-weight:700;padding:12px 28px;
+  border-radius:10px;font-size:1rem;text-decoration:none;transition:.25s;
+}
+.hero-cta:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(56,189,248,.35)}
+
+/* ===== FEATURE CARDS ===== */
+.features-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:20px;width:100%;max-width:1100px;margin-top:32px;
+}
+.f-card{
+  background:var(--card);border-radius:14px;padding:24px;
+  border:1px solid rgba(255,255,255,.06);transition:.3s;
+}
+.f-card:hover{transform:translateY(-4px);border-color:var(--accent)}
+.f-card i{font-size:1.6rem;margin-bottom:12px;color:var(--accent)}
+.f-card p{color:var(--muted);font-size:.9rem;line-height:1.55}
+
+/* ===== STATS ROW ===== */
+.stats-row{
+  display:flex;flex-wrap:wrap;gap:24px;justify-content:center;margin-top:32px;
+}
+.stat-box{
+  background:var(--card);padding:24px 36px;border-radius:14px;text-align:center;
+  border:1px solid rgba(255,255,255,.06);min-width:150px;
+}
+.stat-num{font-family:'DM Serif Display',serif;font-size:2.4rem;color:var(--accent)}
+.stat-label{color:var(--muted);font-size:.85rem;margin-top:4px}
+
+/* ===== CHECKLIST ===== */
+.checklist{
+  column-count:2;column-gap:32px;max-width:960px;margin-top:24px;
+  list-style:none;
+}
+.checklist li{
+  break-inside:avoid;padding:6px 0;font-size:.9rem;color:var(--muted);
+  display:flex;align-items:flex-start;gap:8px;
+}
+.checklist li i{color:var(--green);flex-shrink:0;margin-top:3px;font-size:.8rem}
+
+/* ===== GALLERY ===== */
+.gallery-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:12px;width:100%;max-width:1200px;margin-top:32px;
+}
+.gallery-grid img{
+  width:100%;height:200px;object-fit:cover;border-radius:10px;
+  border:1px solid rgba(255,255,255,.06);transition:.3s;cursor:pointer;
+}
+.gallery-grid img:hover{transform:scale(1.03);border-color:var(--accent)}
+
+/* ===== LIGHTBOX ===== */
+.lightbox{
+  display:none;position:fixed;inset:0;z-index:200;
+  background:rgba(0,0,0,.92);align-items:center;justify-content:center;
+  cursor:zoom-out;
+}
+.lightbox.open{display:flex}
+.lightbox img{max-width:90vw;max-height:88vh;border-radius:10px;box-shadow:0 0 60px rgba(0,0,0,.6)}
+.lightbox-close{
+  position:absolute;top:20px;right:24px;font-size:2rem;color:#fff;
+  cursor:pointer;background:none;border:none;
+}
+
+/* ===== ARCH DIAGRAM ===== */
+.arch-box{
+  background:var(--card);border-radius:14px;padding:32px;max-width:900px;
+  width:100%;margin-top:28px;border:1px solid rgba(255,255,255,.06);
+  font-family:'Courier New',monospace;font-size:clamp(.65rem,1.1vw,.85rem);
+  line-height:1.5;color:var(--muted);white-space:pre;overflow-x:auto;
+}
+
+/* ===== WORKFLOW ===== */
+.workflow{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin-top:28px;max-width:1000px}
+.wf-step{
+  background:var(--card);border-radius:12px;padding:20px;flex:1 1 200px;
+  max-width:240px;text-align:center;border:1px solid rgba(255,255,255,.06);
+  position:relative;
+}
+.wf-step .step-num{
+  position:absolute;top:-12px;left:50%;transform:translateX(-50%);
+  background:var(--accent);color:#0f172a;width:26px;height:26px;
+  border-radius:50%;font-size:.8rem;font-weight:700;display:grid;place-items:center;
+}
+.wf-step i{font-size:1.5rem;color:var(--accent);margin-bottom:8px}
+.wf-step p{font-size:.85rem;color:var(--muted);margin-top:6px}
+
+/* ===== TEAM ===== */
+.team-row{display:flex;flex-wrap:wrap;gap:20px;justify-content:center;margin-top:28px}
+
+/* ===== END SLIDE ===== */
+.end-qr{width:200px;border-radius:14px;margin-top:20px;border:4px solid var(--accent)}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:700px){
+  .checklist{column-count:1}
+  .gallery-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
+  .gallery-grid img{height:130px}
+  .arch-box{font-size:.6rem;padding:16px}
+  .features-grid{grid-template-columns:1fr}
+}
+
+/* ===== ANIMATIONS ===== */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .6s ease,transform .6s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<!-- ===== NAVIGATION BAR ===== -->
+<nav class="nav-bar" id="nav-bar">
+  <img src="logo/logo-white.png" alt="Sawari" class="logo-img"/>
+  <div class="nav-dots" id="nav-dots"></div>
+</nav>
+<div class="slide-counter" id="slide-counter">1 / 11</div>
+<div class="kbd-hint"><kbd>←</kbd> <kbd>→</kbd> or scroll</div>
+
+<!-- ===== SLIDE 1 — TITLE ===== -->
+<section class="slide" id="slide-1">
+  <div class="hero-glow"></div>
+  <img src="logo/logo-transparent.png" alt="Sawari Logo" class="hero-logo reveal"/>
+  <h1 class="reveal">Navigate Kathmandu Valley<br/><span class="accent">Public Transit</span></h1>
+  <p class="sub reveal">Sawari (सवारी) — meaning "ride" in Nepali — is a smart transit navigator with live tracking, AI-powered routing, fare estimates, and community-driven data.</p>
+  <span class="tag tag-blue" style="margin-top:16px">AI Hackathon &bull; Team Spark</span>
+</section>
+
+<!-- ===== SLIDE 2 — THE PROBLEM ===== -->
+<section class="slide" id="slide-2">
+  <h2 class="reveal"><i class="fa-solid fa-triangle-exclamation orange"></i>&ensp;The Problem</h2>
+  <p class="sub reveal">Getting around Kathmandu by bus is confusing. There are dozens of routes, no official app, and unless you already know which bus to take, you're stuck asking strangers or taking a taxi.</p>
+  <div class="stats-row reveal">
+    <div class="stat-box"><div class="stat-num">100+</div><div class="stat-label">Bus Routes</div></div>
+    <div class="stat-box"><div class="stat-num">0</div><div class="stat-label">Official Apps</div></div>
+    <div class="stat-box"><div class="stat-num">3M+</div><div class="stat-label">Daily Riders</div></div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 3 — HOW IT WORKS ===== -->
+<section class="slide" id="slide-3">
+  <h2 class="reveal"><i class="fa-solid fa-route accent"></i>&ensp;How It Works</h2>
+  <div class="workflow reveal">
+    <div class="wf-step"><span class="step-num">1</span><i class="fa-solid fa-globe"></i><h3>Open in Browser</h3><p>No download needed — works on any device</p></div>
+    <div class="wf-step"><span class="step-num">2</span><i class="fa-solid fa-keyboard"></i><h3>Tell It Where</h3><p>Type, tap the map, or say "take me from X to Y"</p></div>
+    <div class="wf-step"><span class="step-num">3</span><i class="fa-solid fa-bus"></i><h3>Get Your Route</h3><p>Which bus, where to board, where to get off, transfers</p></div>
+    <div class="wf-step"><span class="step-num">4</span><i class="fa-solid fa-money-bill-wave"></i><h3>See the Fare</h3><p>DoTM tariff-based — regular &amp; student discounts</p></div>
+    <div class="wf-step"><span class="step-num">5</span><i class="fa-solid fa-location-arrow"></i><h3>Track Live</h3><p>See your bus in real time on the map</p></div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 4 — KEY FEATURES ===== -->
+<section class="slide" id="slide-4">
+  <h2 class="reveal"><i class="fa-solid fa-sparkles accent"></i>&ensp;Key Features</h2>
+  <div class="features-grid reveal">
+    <div class="f-card"><i class="fa-solid fa-brain"></i><h3>AI-Powered Navigation</h3><p>Natural language input — "Bagbazar to Basundhara". Groq LLM extracts locations, finds the best bus route including transfers.</p></div>
+    <div class="f-card"><i class="fa-solid fa-money-check-dollar"></i><h3>Fare Calculator</h3><p>Nepal DoTM tariff rates, bus vs microbus ranges, student/elderly discounts, realistic Rs 5 increments.</p></div>
+    <div class="f-card"><i class="fa-solid fa-satellite-dish"></i><h3>Live Vehicle Tracking</h3><p>Real-time positions polled every 3 seconds with smooth animated movement and ETA estimates.</p></div>
+    <div class="f-card"><i class="fa-solid fa-leaf"></i><h3>Carbon Savings</h3><p>CO₂ comparison — car (170 g/km) vs bus (50 g/km). Shows grams or kilograms saved per trip.</p></div>
+    <div class="f-card"><i class="fa-solid fa-location-crosshairs"></i><h3>GPS Integration</h3><p>Real-time tracking, compass heading, accuracy circle, nearby stops discovery, one-tap "Use as Start".</p></div>
+    <div class="f-card"><i class="fa-solid fa-road-barrier"></i><h3>Obstruction Awareness</h3><p>Backend avoids active road blockages and protests. OSRM alternatives scored against obstructions.</p></div>
+    <div class="f-card"><i class="fa-solid fa-star"></i><h3>Rating System</h3><p>Rate routes and vehicles 1–5 stars. Running averages maintained server-side.</p></div>
+    <div class="f-card"><i class="fa-solid fa-comments"></i><h3>AI Chatbot</h3><p>Groq-powered Llama 3.3 70B chatbot answers transit questions directly on the landing page.</p></div>
+    <div class="f-card"><i class="fa-solid fa-lightbulb"></i><h3>Community Suggestions</h3><p>Submit route corrections or missing stops. AI extracts tasks for one-click admin approval.</p></div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 5 — NAVIGATOR FEATURES ===== -->
+<section class="slide" id="slide-5">
+  <h2 class="reveal"><i class="fa-solid fa-map accent"></i>&ensp;Public Navigator</h2>
+  <ul class="checklist reveal">
+    <li><i class="fa-solid fa-check"></i>Set start/end by clicking the map, typing, or right-click menu</li>
+    <li><i class="fa-solid fa-check"></i>Natural language — "take me from X to Y" (Groq AI)</li>
+    <li><i class="fa-solid fa-check"></i>Direct and transfer route finding</li>
+    <li><i class="fa-solid fa-check"></i>OSRM road-snapped polylines with direction arrows</li>
+    <li><i class="fa-solid fa-check"></i>Draggable start/end markers &amp; swap button</li>
+    <li><i class="fa-solid fa-check"></i>Multi-candidate stop search (800m radius)</li>
+    <li><i class="fa-solid fa-check"></i>Walking fallback as last resort</li>
+    <li><i class="fa-solid fa-check"></i>Route focus mode &amp; recenter/fit button</li>
+    <li><i class="fa-solid fa-check"></i>Local + online autocomplete with LRU cache</li>
+    <li><i class="fa-solid fa-check"></i>Dark / Light theme with matched tile layers</li>
+    <li><i class="fa-solid fa-check"></i>Explore all routes — filter, click to highlight</li>
+    <li><i class="fa-solid fa-check"></i>Keyboard shortcuts: / ? Enter Esc T E G N</li>
+    <li><i class="fa-solid fa-check"></i>Responsive layout — mobile, tablet, desktop</li>
+    <li><i class="fa-solid fa-check"></i>Toast notifications &amp; skeleton loading states</li>
+    <li><i class="fa-solid fa-check"></i>Stats bar: live clock, stop count, route count, vehicles</li>
+    <li><i class="fa-solid fa-check"></i>Share / copy route summary button</li>
+  </ul>
+</section>
+
+<!-- ===== SLIDE 6 — ADMIN DASHBOARD ===== -->
+<section class="slide" id="slide-6">
+  <h2 class="reveal"><i class="fa-solid fa-shield-halved accent"></i>&ensp;Admin Dashboard</h2>
+  <div class="features-grid reveal">
+    <div class="f-card"><i class="fa-solid fa-layer-group"></i><h3>Workspace Layout</h3><p>Command bar, layer panel, map canvas, inspector, status strip. Responsive for tablet &amp; mobile.</p></div>
+    <div class="f-card"><i class="fa-solid fa-map-pin"></i><h3>Stops Management</h3><p>Create, edit, delete stops with FontAwesome or custom image icons, color picker, and dependency checks.</p></div>
+    <div class="f-card"><i class="fa-solid fa-route"></i><h3>Route Builder</h3><p>Multi-step builder: click stops on map, drag-reorder, snap to road, preview polyline, color &amp; style controls.</p></div>
+    <div class="f-card"><i class="fa-solid fa-truck"></i><h3>Vehicle Management</h3><p>Assign to routes, toggle moving state, set bearing, upload images. Live markers on the map.</p></div>
+    <div class="f-card"><i class="fa-solid fa-robot"></i><h3>AI Assistant</h3><p>Ctrl+I — natural language entity CRUD. "Create a stop called Balaju at 27.72, 85.30". Batch actions supported.</p></div>
+    <div class="f-card"><i class="fa-solid fa-rotate-left"></i><h3>Undo / Redo</h3><p>Command pattern for all mutations. Ctrl+Z undo, Ctrl+Y redo. Full action history in status bar.</p></div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 7 — ARCHITECTURE ===== -->
+<section class="slide" id="slide-7">
+  <h2 class="reveal"><i class="fa-solid fa-cubes accent"></i>&ensp;Architecture</h2>
+  <div class="arch-box reveal">
+┌─────────────────────────────────────────────────────────────┐
+│                      CLIENT  (Browser)                      │
+│                                                             │
+│  ┌─────────────────────┐    ┌────────────────────────────┐  │
+│  │   Public Navigator  │    │    Admin Dashboard         │  │
+│  │   Leaflet + JS      │    │    12+ IIFE JS modules     │  │
+│  │   routing.js        │    │    AI Assistant (Groq)     │  │
+│  └────────┬────────────┘    └──────────┬─────────────────┘  │
+│           │ fetch()                    │ fetch()             │
+└───────────┼────────────────────────────┼────────────────────┘
+            ▼                            ▼
+┌───────────────────────┐    ┌────────────────────────────────┐
+│  Public API  (PHP)    │    │  Admin API  (PHP)              │
+│  api.php              │    │  validators / relation-guard   │
+│  suggestions.php      │    │  file-store (JSON + LOCK_EX)  │
+└───────────┬───────────┘    └──────────┬─────────────────────┘
+            ▼                            ▼
+┌─────────────────────────────────────────────────────────────┐
+│        data/*.json  (stops, routes, vehicles, etc.)         │
+└─────────────────────────────────────────────────────────────┘
+
+External: OSRM Routing · Nominatim Geocoding · Groq LLM (Llama 3.3 70B)</div>
+</section>
+
+<!-- ===== SLIDE 8 — TECH STACK ===== -->
+<section class="slide" id="slide-8">
+  <h2 class="reveal"><i class="fa-solid fa-laptop-code accent"></i>&ensp;Tech Stack</h2>
+  <div class="features-grid reveal">
+    <div class="f-card"><i class="fa-brands fa-js"></i><h3>Vanilla JavaScript</h3><p>ES2020+, no frameworks, no bundlers. IIFE module pattern with event-driven store.</p></div>
+    <div class="f-card"><i class="fa-brands fa-php"></i><h3>PHP 8+</h3><p>LAMP stack on XAMPP. Session auth, flat JSON storage, file locking for concurrency.</p></div>
+    <div class="f-card"><i class="fa-solid fa-map"></i><h3>Leaflet 1.9.4</h3><p>Interactive maps with CARTO basemaps, custom markers, polylines, and direction arrows.</p></div>
+    <div class="f-card"><i class="fa-solid fa-microchip"></i><h3>Groq Cloud</h3><p>Llama 3.3 70B Versatile for AI navigation, chatbot, admin assistant, and task extraction.</p></div>
+    <div class="f-card"><i class="fa-solid fa-road"></i><h3>OSRM Routing</h3><p>Road-snapped polylines for walking, driving, and cycling profiles with alternatives.</p></div>
+    <div class="f-card"><i class="fa-solid fa-database"></i><h3>JSON File Storage</h3><p>No database — flat JSON files with auto-increment IDs and LOCK_EX for write safety.</p></div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 9 — ESP32-CAM IoT ===== -->
+<section class="slide" id="slide-9">
+  <h2 class="reveal"><i class="fa-solid fa-camera accent"></i>&ensp;IoT — ESP32-CAM System</h2>
+  <p class="sub reveal">Onboard bus camera portal using ESP32-CAM (OV3660) for live feed, recording, and automatic cloud upload.</p>
+  <div class="features-grid reveal" style="margin-top:24px">
+    <div class="f-card"><i class="fa-solid fa-video"></i><h3>Live Camera Feed</h3><p>Web UI with live MJPEG stream, flash slider control, and debug console.</p></div>
+    <div class="f-card"><i class="fa-solid fa-hard-drive"></i><h3>SD Card Recording</h3><p>Auto-start on boot, 10-second segments, playback in UI, auto cleanup at 90% usage.</p></div>
+    <div class="f-card"><i class="fa-solid fa-wifi"></i><h3>Captive Portal</h3><p>AP name: bus#1, auto redirect to 1.2.3.4, Wi-Fi scan list for internet connection.</p></div>
+    <div class="f-card"><i class="fa-solid fa-cloud-arrow-up"></i><h3>Auto Upload</h3><p>1 image per minute to API endpoint. NTP time sync for Kathmandu timezone.</p></div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 10 — GALLERY ===== -->
+<section class="slide" id="slide-10">
+  <h2 class="reveal"><i class="fa-solid fa-images accent"></i>&ensp;Gallery</h2>
+  <p class="sub reveal">Public transit in Kathmandu Valley — the buses, microbuses, tempos, and streets Sawari serves.</p>
+  <div class="gallery-grid reveal">
+    <img src="gallery/landing.jpg" alt="Landing" loading="lazy"/>
+    <img src="gallery/image1.jpg" alt="Image 1" loading="lazy"/>
+    <img src="gallery/image2.jpg" alt="Image 2" loading="lazy"/>
+    <img src="gallery/image3.jpg" alt="Image 3" loading="lazy"/>
+    <img src="gallery/image4.jpg" alt="Image 4" loading="lazy"/>
+    <img src="gallery/image5.jpg" alt="Image 5" loading="lazy"/>
+    <img src="gallery/image6.jpg" alt="Image 6" loading="lazy"/>
+    <img src="gallery/image7.jpg" alt="Image 7" loading="lazy"/>
+    <img src="gallery/IMG-1.jpeg" alt="IMG 1" loading="lazy"/>
+    <img src="gallery/sajha-yatayat-kathmandu-narayangadh-shuttle-service-1758693554.jpg" alt="Sajha Yatayat Shuttle" loading="lazy"/>
+    <img src="gallery/sajha-bus-EV.jpg" alt="Sajha Bus EV" loading="lazy"/>
+    <img src="gallery/sajha.jpg" alt="Sajha" loading="lazy"/>
+    <img src="gallery/sajha1.jpg" alt="Sajha 1" loading="lazy"/>
+    <img src="gallery/SajhaBus_20220707134627.jpg" alt="Sajha Bus" loading="lazy"/>
+    <img src="gallery/mahanagar-yatayat.png" alt="Mahanagar Yatayat" loading="lazy"/>
+    <img src="gallery/mahanagar.jpg" alt="Mahanagar" loading="lazy"/>
+    <img src="gallery/manangar-yatayat.jpg" alt="Manangar Yatayat" loading="lazy"/>
+    <img src="gallery/high-tech-buses.jpg" alt="High Tech Buses" loading="lazy"/>
+    <img src="gallery/hiace.webp" alt="Hiace" loading="lazy"/>
+    <img src="gallery/mayur.jpg" alt="Mayur" loading="lazy"/>
+    <img src="gallery/mayur_yatayat_XWhLImWBJm.jpg" alt="Mayur Yatayat" loading="lazy"/>
+    <img src="gallery/nepal.jpg" alt="Nepal" loading="lazy"/>
+    <img src="gallery/nilo-micro.jpg" alt="Nilo Micro" loading="lazy"/>
+    <img src="gallery/digo-yatayat.jpg" alt="Digo Yatayat" loading="lazy"/>
+    <img src="gallery/tempo.jpg" alt="Tempo" loading="lazy"/>
+    <img src="gallery/routes.jpg" alt="Routes" loading="lazy"/>
+    <img src="gallery/samakhusi-yatayat-1729569860.jpg" alt="Samakhusi Yatayat" loading="lazy"/>
+    <img src="gallery/1594641445.jpg" alt="Transit" loading="lazy"/>
+    <img src="gallery/302216934_482557370551393_6475660738973236802_n.jpg" alt="Transit Scene" loading="lazy"/>
+    <img src="gallery/39089002_214055306121394_3987346834723962880_n_mmZU29H7GE.jpg" alt="Bus Scene" loading="lazy"/>
+    <img src="gallery/473749570_1355280112583010_593412764911101796_n.jpg" alt="Transit" loading="lazy"/>
+    <img src="gallery/473783154_1062778689195922_6904992953434292580_n.jpg" alt="Transit" loading="lazy"/>
+    <img src="gallery/481820024_656265493582501_1243983797300762177_n.jpg" alt="Transit" loading="lazy"/>
+    <img src="gallery/81038617_2710162452340155_22013957954863104_n.jpg" alt="Transit" loading="lazy"/>
+  </div>
+</section>
+
+<!-- ===== SLIDE 11 — THANK YOU ===== -->
+<section class="slide" id="slide-11">
+  <div class="hero-glow"></div>
+  <img src="logo/logo-transparent.png" alt="Sawari" class="hero-logo reveal"/>
+  <h1 class="reveal">Thank You <span class="accent">🙏</span></h1>
+  <p class="sub reveal">Sawari — making Kathmandu Valley transit accessible, smart, and community-driven.</p>
+  <div class="stats-row reveal" style="margin-top:28px">
+    <div class="stat-box"><div class="stat-num">80+</div><div class="stat-label">Features</div></div>
+    <div class="stat-box"><div class="stat-num">0</div><div class="stat-label">Frameworks</div></div>
+    <div class="stat-box"><div class="stat-num">∞</div><div class="stat-label">Possibilities</div></div>
+  </div>
+  <img src="sawari_qr.jpg" alt="QR Code" class="end-qr reveal"/>
+  <span class="tag tag-green" style="margin-top:16px">Team Spark &bull; AI Hackathon</span>
+</section>
+
+<!-- ===== LIGHTBOX ===== -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" aria-label="Close">&times;</button>
+  <img src="" alt="Full size"/>
+</div>
+
+<script>
+(function(){
+  'use strict';
+  const TOTAL=11;
+
+  /* --- nav dots --- */
+  const dotsC=document.getElementById('nav-dots');
+  for(let i=1;i<=TOTAL;i++){
+    const d=document.createElement('span');
+    d.className='nav-dot'+(i===1?' active':'');
+    d.dataset.slide=i;
+    d.addEventListener('click',()=>document.getElementById('slide-'+i).scrollIntoView({behavior:'smooth'}));
+    dotsC.appendChild(d);
+  }
+
+  /* --- scroll spy --- */
+  const counter=document.getElementById('slide-counter');
+  const dots=dotsC.querySelectorAll('.nav-dot');
+  const io=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        const n=+e.target.id.split('-')[1];
+        counter.textContent=n+' / '+TOTAL;
+        dots.forEach(d=>d.classList.toggle('active',+d.dataset.slide===n));
+      }
+    });
+  },{threshold:.45});
+  for(let i=1;i<=TOTAL;i++) io.observe(document.getElementById('slide-'+i));
+
+  /* --- keyboard nav --- */
+  let current=1;
+  function goTo(n){
+    n=Math.max(1,Math.min(TOTAL,n));
+    current=n;
+    document.getElementById('slide-'+n).scrollIntoView({behavior:'smooth'});
+  }
+  document.addEventListener('keydown',e=>{
+    if(e.key==='ArrowRight'||e.key==='ArrowDown'){e.preventDefault();goTo(current+1)}
+    if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();goTo(current-1)}
+  });
+
+  /* --- scroll reveal --- */
+  const revealIO=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');revealIO.unobserve(e.target)}});
+  },{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.reveal').forEach((el,i)=>{
+    el.style.transitionDelay=Math.min(i*40,300)+'ms';
+    revealIO.observe(el);
+  });
+
+  /* --- gallery lightbox --- */
+  const lb=document.getElementById('lightbox');
+  const lbImg=lb.querySelector('img');
+  document.querySelectorAll('.gallery-grid img').forEach(img=>{
+    img.addEventListener('click',()=>{lbImg.src=img.src;lb.classList.add('open')});
+  });
+  lb.addEventListener('click',()=>lb.classList.remove('open'));
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')lb.classList.remove('open')});
+})();
+</script>
+</body>
+</html>
