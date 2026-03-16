@@ -76,7 +76,7 @@
 
 // Default API endpoint for telemetry data submission.
 // Can be changed at runtime via the WiFi configuration portal.
-#define DEFAULT_API_ENDPOINT "http://zenithkandel.com.np/sawari/api/gps-device.php"
+#define DEFAULT_API_ENDPOINT "http://zenithkandel.com.np/sawari/app/hardware-api/gps.php"
 
 // Maximum length for API endpoint URL (portal input field)
 #define API_ENDPOINT_MAX_LEN 200
