@@ -1,6 +1,15 @@
 (function () {
     'use strict';
 
+    /* ===== PAGE LOADER ===== */
+    var loader = document.getElementById('pageLoader');
+    if (loader) {
+        window.addEventListener('load', function () {
+            setTimeout(function () { loader.classList.add('loaded'); }, 300);
+            setTimeout(function () { loader.remove(); }, 1000);
+        });
+    }
+
     /* ===== NAVBAR SCROLL EFFECT ===== */
     var navbar = document.querySelector('.navbar');
     var hero = document.getElementById('hero');

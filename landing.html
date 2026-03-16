@@ -18,6 +18,16 @@
 </head>
 
 <body>
+    <!-- ==================== PAGE LOADER ==================== -->
+    <div class="page-loader" id="pageLoader">
+        <div class="loader-inner">
+            <div class="loader-logo">
+                <img src="logo/logo-white.png" alt="Sawari" />
+            </div>
+            <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+        </div>
+    </div>
+
     <!-- ==================== NAVBAR ==================== -->
     <header class="navbar" id="top">
         <div class="navbar-inner">
@@ -65,7 +75,7 @@
                 <p class="hero-eyebrow">Your Kathmandu Transit Companion</p>
                 <h1>Navigate the valley,<br>the <em>smarter</em> way.</h1>
                 <p class="hero-desc">
-                    Find the right bus, know the fare, and discover nearby stops — all in one place.
+                    Find the right bus, know the fare, and discover nearby stops all in one place.
                     Sawari brings AI-powered route planning to Kathmandu, Lalitpur, and Bhaktapur so
                     you never feel lost on public transit again.
                 </p>
@@ -330,58 +340,75 @@
         </section>
 
         <!-- ==================== CONTRIBUTE ==================== -->
-        <section id="contribute" class="section reveal">
-            <div class="section-header">
-                <span class="section-tag">Community</span>
-                <h2>Make Sawari better</h2>
-                <p>Spotted a missing stop or wrong route? Help fellow riders by sharing what you know.</p>
-            </div>
-            <div class="contribute-layout">
-                <form id="suggest-form" class="suggest-form">
-                    <label for="suggest-name">Your Name <span class="label-hint">(optional)</span></label>
-                    <input id="suggest-name" type="text" maxlength="50" placeholder="Anonymous" />
-
-                    <label for="suggest-category">Category</label>
-                    <select id="suggest-category">
-                        <option value="route_correction">Route Correction</option>
-                        <option value="missing_stop">Missing Stop</option>
-                        <option value="fare_issue">Fare Issue</option>
-                        <option value="new_route">New Route Suggestion</option>
-                        <option value="general" selected>General Feedback</option>
-                    </select>
-
-                    <label for="suggest-message">Suggestion</label>
-                    <textarea id="suggest-message" rows="5" maxlength="1000" placeholder="Share what needs correction"
-                        required></textarea>
-                    <div class="char-count"><span id="suggest-chars">0</span> / 1000</div>
-
-                    <button id="suggest-submit" type="submit"><i class="fa-solid fa-paper-plane"></i> Submit
-                        Suggestion</button>
-                    <div id="suggest-feedback" class="suggest-feedback" style="display:none"></div>
-                </form>
-
-                <aside class="contribute-aside">
-                    <div class="contribute-aside-top">
-                        <img src="gallery/mahanagar.jpg" alt="Bus in Kathmandu" loading="lazy" />
-                    </div>
-                    <div class="contribute-aside-body">
-                        <h3>Review flow</h3>
-                        <ol>
-                            <li>Suggestion is parsed and sent for admin review.</li>
-                            <li>Admin verifies details against route data and field behavior.</li>
-                            <li>Approved fixes update the transit dataset.</li>
-                        </ol>
-                        <p>Your name is optional. No email is required.</p>
-                        <div class="contribute-links">
-                            <a href="app/index.php" class="btn-sm">
-                                <i class="fa-solid fa-compass"></i> Navigator
-                            </a>
-                            <a href="app/admin/" class="btn-sm btn-sm-outline">
-                                <i class="fa-solid fa-shield-halved"></i> Admin
-                            </a>
+        <section id="contribute" class="section contribute-section reveal">
+            <div class="contribute-wrapper">
+                <div class="contribute-header">
+                    <span class="section-tag">Community</span>
+                    <h2>Help shape the future of transit</h2>
+                    <p>Spotted a missing stop, wrong fare, or a new route? Your local knowledge keeps Sawari accurate for every rider in the valley.</p>
+                </div>
+                <div class="contribute-layout">
+                    <form id="suggest-form" class="suggest-form">
+                        <div class="form-group">
+                            <label for="suggest-name">Your Name <span class="label-hint">(optional)</span></label>
+                            <input id="suggest-name" type="text" maxlength="50" placeholder="Anonymous" />
                         </div>
-                    </div>
-                </aside>
+
+                        <div class="form-group">
+                            <label for="suggest-category">Category</label>
+                            <select id="suggest-category">
+                                <option value="route_correction">Route Correction</option>
+                                <option value="missing_stop">Missing Stop</option>
+                                <option value="fare_issue">Fare Issue</option>
+                                <option value="new_route">New Route Suggestion</option>
+                                <option value="general" selected>General Feedback</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="suggest-message">Your Suggestion</label>
+                            <textarea id="suggest-message" rows="4" maxlength="1000" placeholder="Describe what needs to be added or corrected…"
+                                required></textarea>
+                            <div class="char-count"><span id="suggest-chars">0</span> / 1000</div>
+                        </div>
+
+                        <button id="suggest-submit" type="submit"><i class="fa-solid fa-paper-plane"></i> Submit Suggestion</button>
+                        <div id="suggest-feedback" class="suggest-feedback" style="display:none"></div>
+                    </form>
+
+                    <aside class="contribute-aside">
+                        <div class="contribute-aside-top">
+                            <img src="gallery/mahanagar.jpg" alt="Bus in Kathmandu" loading="lazy" />
+                            <div class="contribute-aside-badge"><i class="fa-solid fa-shield-check"></i> Verified Process</div>
+                        </div>
+                        <div class="contribute-aside-body">
+                            <h3>How your suggestion gets reviewed</h3>
+                            <div class="review-steps">
+                                <div class="review-step">
+                                    <span class="review-step-num">1</span>
+                                    <p>Your suggestion is parsed and sent to the admin dashboard for review.</p>
+                                </div>
+                                <div class="review-step">
+                                    <span class="review-step-num">2</span>
+                                    <p>Admin verifies the details against route data and real-world conditions.</p>
+                                </div>
+                                <div class="review-step">
+                                    <span class="review-step-num">3</span>
+                                    <p>Approved changes are pushed to the live transit dataset instantly.</p>
+                                </div>
+                            </div>
+                            <p class="contribute-note"><i class="fa-solid fa-lock"></i> No account or email required. Your privacy is respected.</p>
+                            <div class="contribute-links">
+                                <a href="app/index.php" class="btn-sm">
+                                    <i class="fa-solid fa-compass"></i> Open Navigator
+                                </a>
+                                <a href="app/admin/" class="btn-sm btn-sm-outline">
+                                    <i class="fa-solid fa-shield-halved"></i> Admin Panel
+                                </a>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
             </div>
         </section>
     </main>
@@ -389,20 +416,47 @@
     <!-- ==================== FOOTER ==================== -->
     <footer class="footer">
         <div class="footer-inner">
-            <div class="footer-brand">
-                <span class="logo"><img src="logo/logo-white.png" alt="Sawari" class="logo-white" /></span>
-                <p>Navigating Kathmandu Valley, one ride at a time.</p>
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <a href="#top" class="footer-logo">
+                        <img src="logo/logo-white.png" alt="Sawari" />
+                    </a>
+                    <p>Your smart companion for navigating Kathmandu Valley's public transit — buses, tempos, and microbuses.</p>
+                    <div class="footer-social">
+                        <a href="#" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+                        <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Platform</h4>
+                    <a href="app/index.php">Open Navigator</a>
+                    <a href="#features">Features</a>
+                    <a href="#how">How it works</a>
+                    <a href="#ask">Ask AI</a>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Community</h4>
+                    <a href="#contribute">Submit Suggestion</a>
+                    <a href="#gallery">Gallery</a>
+                    <a href="#about">About Sawari</a>
+                    <a href="app/admin/">Admin Panel</a>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Team Spark</h4>
+                    <a href="https://zenithkandel.com.np" target="_blank" rel="noopener">Zenith Kandel</a>
+                    <p class="footer-col-text">Built for the AI Hackathon, designed for every commuter in the valley.</p>
+                </div>
             </div>
-            <div class="footer-links">
-                <a href="#about">About</a>
-                <a href="#how">How it works</a>
-                <a href="#features">Features</a>
-                <a href="#gallery">Gallery</a>
-                <a href="#ask">Ask AI</a>
-                <a href="#contribute">Contribute</a>
-            </div>
+
+            <div class="footer-divider"></div>
+
             <div class="footer-bottom">
                 <p>&copy; <?= date('Y') ?> Sawari by Team Spark. All rights reserved.</p>
+                <p class="footer-made">Made with dedication in Embbarg College</p>
             </div>
         </div>
     </footer>
