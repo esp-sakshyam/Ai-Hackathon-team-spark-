@@ -1,0 +1,28 @@
+# ============================================================
+
+# Sawari - Hardware API .htaccess
+
+# Allows ESP32-CAM file uploads past ModSecurity / Imunify360
+
+# ============================================================
+
+# Disable ModSecurity for this directory (blocks multipart uploads)
+
+<IfModule mod_security2.c>
+    SecRuleEngine Off
+</IfModule>
+
+# Some hosts use this alternative directive
+
+<IfModule mod_security.c>
+    SecFilterEngine Off
+    SecFilterScanPOST Off
+</IfModule>
+
+# Increase limits for image uploads
+
+php_value upload_max_filesize 16M
+php_value post_max_size 20M
+php_value max_execution_time 180
+php_value max_input_time 120
+php_value memory_limit 128M

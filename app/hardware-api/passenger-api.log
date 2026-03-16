@@ -1,0 +1,19 @@
+[2026-03-15 23:23:48] Request received: vehicle_id=1, image_size=12381 bytes
+[2026-03-15 23:23:48] FAIL: All models failed for vehicle_id=1. Last error: [meta-llama/llama-4-scout:free] Missing Authentication header
+[2026-03-15 23:28:24] Request received: vehicle_id=1, image_size=11232 bytes
+[2026-03-15 23:28:24] FAIL: All models failed for vehicle_id=1. Last error: [meta-llama/llama-4-scout:free] Missing Authentication header
+[2026-03-15 23:28:59] Request received: vehicle_id=1, image_size=11123 bytes
+[2026-03-15 23:28:59] FAIL: All models failed for vehicle_id=1. Last error: [meta-llama/llama-4-scout:free] Missing Authentication header
+[2026-03-15 23:43:49] Request received: vehicle_id=1, image_size=695 bytes
+[2026-03-15 23:43:49] FAIL: All models failed for vehicle_id=1. Last error: [meta-llama/llama-4-scout:free] Missing Authentication header
+[2026-03-15 23:44:15] Request received: vehicle_id=1, image_size=695 bytes
+[2026-03-15 23:44:15] FAIL: All models failed for vehicle_id=1. Last error: [meta-llama/llama-4-scout:free] Missing Authentication header
+[2026-03-15 23:44:22] Request received: vehicle_id=1, image_size=695 bytes
+[2026-03-15 23:44:23] FAIL: All models failed for vehicle_id=1. Last error: [meta-llama/llama-4-scout:free] Missing Authentication header
+[2026-03-15 23:47:53] Request received: vehicle_id=1, image_size=163341 bytes
+[2026-03-15 23:47:53] FAIL: All models failed for vehicle_id=1. Last error: [meta-llama/llama-4-scout:free] Missing Authentication header
+[2026-03-15 23:52:33] Request received: vehicle_id=1, image_size=9940 bytes
+[2026-03-15 23:52:33] Model google/gemini-2.0-flash-001 HTTP 401: Missing Authentication header
+[2026-03-15 23:52:33] Model google/gemini-flash-1.5 HTTP 401: Missing Authentication header
+[2026-03-15 23:52:33] Model meta-llama/llama-4-scout:free HTTP 401: Missing Authentication header
+[2026-03-15 23:52:33] FAIL: All models failed for vehicle_id=1. Last error: [meta-llama/llama-4-scout:free] Missing Authentication header

@@ -13,12 +13,15 @@
 // License: MIT
 // ============================================================
 
+// ─── Catch fatal errors (memory exhaustion, etc.) and return JSON ──────────
+ob_start();
+
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
 
-// Log errors to a file for debugging hardware issues
+// ─── Logging ──────────────────────────────────────────────────────────────
 $logDir = dirname(__DIR__) . '/logs';
 if (!is_dir($logDir)) {
     @mkdir($logDir, 0755, true);
@@ -32,6 +35,26 @@ function logMsg(string $msg): void
     @file_put_contents($logFile, "[$ts] $msg\n", FILE_APPEND | LOCK_EX);
 }
 
+// ─── Global error & shutdown handlers — ensure JSON response on any crash ─
+set_error_handler(function ($severity, $message, $file, $line) {
+    logMsg("PHP Error [$severity]: $message in $file:$line");
+    return false;
+});
+
+register_shutdown_function(function () {
+    $error = error_get_last();
+    if ($error && in_array($error['type'], [E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_PARSE])) {
+        ob_end_clean();
+        http_response_code(500);
+        $msg = $error['message'] . ' in ' . $error['file'] . ':' . $error['line'];
+        logMsg("FATAL: $msg");
+        echo json_encode([
+            'error' => 'Internal server error',
+            'detail' => $msg,
+        ]);
+    }
+});
+
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(204);
     exit;
@@ -43,11 +66,46 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-// Load .env for OpenRouter API key
-$rootDir = dirname(__DIR__);
-$envFile = $rootDir . '/.env';
+// ─── Runtime limits ───────────────────────────────────────────────────────
+set_time_limit(180);
+ini_set('memory_limit', '128M');
+
+// ─── Pre-flight: check required PHP extensions ────────────────────────────
+$missing = [];
+if (!extension_loaded('curl'))
+    $missing[] = 'curl';
+if (!extension_loaded('fileinfo'))
+    $missing[] = 'fileinfo';
+if (!extension_loaded('json'))
+    $missing[] = 'json';
+if (!empty($missing)) {
+    http_response_code(500);
+    $msg = 'Missing PHP extensions: ' . implode(', ', $missing);
+    logMsg($msg);
+    echo json_encode(['error' => $msg]);
+    exit;
+}
+
+// ─── Load .env for OpenRouter API key ─────────────────────────────────────
+// Search upward from this script's directory to find .env
+$envFile = null;
+$searchDir = dirname(__DIR__);
+$checkedPaths = [];
+for ($i = 0; $i < 5; $i++) {
+    $candidate = $searchDir . '/.env';
+    $checkedPaths[] = $candidate;
+    if (file_exists($candidate)) {
+        $envFile = $candidate;
+        break;
+    }
+    $parent = dirname($searchDir);
+    if ($parent === $searchDir) break; // reached filesystem root
+    $searchDir = $parent;
+}
+
 $env = [];
-if (file_exists($envFile)) {
+if ($envFile) {
+    logMsg("Found .env at $envFile");
     foreach (file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
         if (str_starts_with(trim($line), '#'))
             continue;
@@ -56,16 +114,24 @@ if (file_exists($envFile)) {
         [$key, $value] = explode('=', $line, 2);
         $env[trim($key)] = trim($value);
     }
+} else {
+    logMsg("WARN: .env file not found. Checked: " . implode(', ', $checkedPaths));
 }
+
+$rootDir = $envFile ? dirname($envFile) : dirname(__DIR__);
 
 $openrouterKey = $env['OPENROUTER_API_KEY'] ?? '';
 if (empty($openrouterKey)) {
     http_response_code(500);
-    echo json_encode(['error' => 'OPENROUTER_API_KEY not configured in .env']);
+    logMsg('ERROR: OPENROUTER_API_KEY not configured');
+    echo json_encode([
+        'error' => 'OPENROUTER_API_KEY not configured in .env',
+        'searched' => $checkedPaths,
+    ]);
     exit;
 }
 
-// Validate vehicle_id
+// ─── Validate vehicle_id ──────────────────────────────────────────────────
 $vehicleId = $_POST['vehicle_id'] ?? null;
 if ($vehicleId === null || !is_numeric($vehicleId)) {
     http_response_code(400);
@@ -75,21 +141,50 @@ if ($vehicleId === null || !is_numeric($vehicleId)) {
 $vehicleId = (int) $vehicleId;
 
 logMsg("Request received: vehicle_id=$vehicleId, image_size=" . ($_FILES['image']['size'] ?? 'N/A') . " bytes");
-if (!isset($_FILES['image']) || $_FILES['image']['error'] !== UPLOAD_ERR_OK) {
+
+// ─── Validate image upload ───────────────────────────────────────────────
+if (!isset($_FILES['image'])) {
     http_response_code(400);
-    echo json_encode(['error' => 'Image file is required']);
+    logMsg("ERROR: No image file in request");
+    echo json_encode(['error' => 'Image file is required (no "image" field in upload)']);
+    exit;
+}
+
+$uploadErr = $_FILES['image']['error'];
+if ($uploadErr !== UPLOAD_ERR_OK) {
+    $uploadErrors = [
+        UPLOAD_ERR_INI_SIZE => 'File exceeds server upload_max_filesize (' . ini_get('upload_max_filesize') . ')',
+        UPLOAD_ERR_FORM_SIZE => 'File exceeds form MAX_FILE_SIZE',
+        UPLOAD_ERR_PARTIAL => 'File was only partially uploaded',
+        UPLOAD_ERR_NO_FILE => 'No file was uploaded',
+        UPLOAD_ERR_NO_TMP_DIR => 'Server missing temp directory',
+        UPLOAD_ERR_CANT_WRITE => 'Server failed to write file to disk',
+        UPLOAD_ERR_EXTENSION => 'A PHP extension stopped the upload',
+    ];
+    $errMsg = $uploadErrors[$uploadErr] ?? "Unknown upload error code: $uploadErr";
+    http_response_code(400);
+    logMsg("Upload error: $errMsg");
+    echo json_encode(['error' => "Image upload failed: $errMsg"]);
     exit;
 }
 
 $file = $_FILES['image'];
-$allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+
+if (!file_exists($file['tmp_name']) || !is_readable($file['tmp_name'])) {
+    http_response_code(500);
+    logMsg("ERROR: Temp file missing or unreadable: " . $file['tmp_name']);
+    echo json_encode(['error' => 'Uploaded temp file is missing or unreadable']);
+    exit;
+}
+
 $finfo = finfo_open(FILEINFO_MIME_TYPE);
 $mimeType = finfo_file($finfo, $file['tmp_name']);
 finfo_close($finfo);
 
+$allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
 if (!in_array($mimeType, $allowedTypes)) {
     http_response_code(400);
-    echo json_encode(['error' => 'Image must be JPEG, PNG, or WebP']);
+    echo json_encode(['error' => "Image must be JPEG, PNG, or WebP (got: $mimeType)"]);
     exit;
 }
 
@@ -99,11 +194,20 @@ if ($file['size'] > 10 * 1024 * 1024) {
     exit;
 }
 
-// Convert image to base64
-$imageData = base64_encode(file_get_contents($file['tmp_name']));
+// ─── Convert image to base64 ─────────────────────────────────────────────
+$imageRaw = file_get_contents($file['tmp_name']);
+if ($imageRaw === false) {
+    http_response_code(500);
+    logMsg("ERROR: Failed to read uploaded image from " . $file['tmp_name']);
+    echo json_encode(['error' => 'Failed to read uploaded image']);
+    exit;
+}
+
+$imageData = base64_encode($imageRaw);
+unset($imageRaw); // Free raw image memory
 $dataUrl = "data:$mimeType;base64,$imageData";
 
-// Call OpenRouter vision API to count people — with model fallback chain
+// ─── OpenRouter vision API — model fallback chain ─────────────────────────
 $prompt = 'Count the number of people visible in this image.
 
 Respond with ONLY a raw JSON object — no markdown, no explanation, nothing else before or after the JSON:
@@ -116,7 +220,6 @@ Rules:
 - count: integer only. Count partial bodies (a visible head or torso) as 1 person.
 - confidence: high = certain, medium = some occlusion, low = very crowded or blurry.';
 
-// Fallback model chain: try each model in order until one succeeds
 $models = [
     ['id' => 'google/gemini-2.0-flash-001', 'timeout' => 30],
     ['id' => 'google/gemini-flash-1.5', 'timeout' => 30],
@@ -128,10 +231,46 @@ $attempts = [];
 $raw = null;
 $parsed = null;
 
+// Build request body once (reuse across models to save memory)
+$requestBody = json_encode([
+    'max_tokens' => 128,
+    'temperature' => 0,
+    'messages' => [
+        [
+            'role' => 'user',
+            'content' => [
+                [
+                    'type' => 'image_url',
+                    'image_url' => ['url' => $dataUrl],
+                ],
+                [
+                    'type' => 'text',
+                    'text' => $prompt,
+                ],
+            ],
+        ],
+    ],
+]);
+
+// Free base64 data now that it's encoded in request body
+unset($imageData, $dataUrl);
+
+if ($requestBody === false) {
+    http_response_code(500);
+    logMsg("ERROR: json_encode failed: " . json_last_error_msg());
+    echo json_encode(['error' => 'Failed to encode API request: ' . json_last_error_msg()]);
+    exit;
+}
+
 foreach ($models as $modelInfo) {
     $modelId = $modelInfo['id'];
     $timeout = $modelInfo['timeout'];
     $attemptStart = microtime(true);
+
+    // Inject model into the pre-built request body
+    $bodyWithModel = json_decode($requestBody, true);
+    $bodyWithModel['model'] = $modelId;
+    $encodedBody = json_encode($bodyWithModel);
 
     $ch = curl_init('https://openrouter.ai/api/v1/chat/completions');
     curl_setopt_array($ch, [
@@ -145,26 +284,8 @@ foreach ($models as $modelInfo) {
             'HTTP-Referer: ' . ($_SERVER['HTTP_HOST'] ?? 'localhost'),
             'X-Title: Sawari Passenger Counter',
         ],
-        CURLOPT_POSTFIELDS => json_encode([
-            'model' => $modelId,
-            'max_tokens' => 128,
-            'temperature' => 0,
-            'messages' => [
-                [
-                    'role' => 'user',
-                    'content' => [
-                        [
-                            'type' => 'image_url',
-                            'image_url' => ['url' => $dataUrl],
-                        ],
-                        [
-                            'type' => 'text',
-                            'text' => $prompt,
-                        ],
-                    ],
-                ],
-            ],
-        ]),
+        CURLOPT_POSTFIELDS => $encodedBody,
+        CURLOPT_SSL_VERIFYPEER => true,
     ]);
 
     $response = curl_exec($ch);
@@ -179,7 +300,7 @@ foreach ($models as $modelInfo) {
         'time_ms' => $totalTime,
     ];
 
-    // Curl-level failure (timeout, DNS, connection refused, etc.)
+    // Curl-level failure
     if ($curlError) {
         $readableError = match ($curlErrno) {
             CURLE_OPERATION_TIMEDOUT, 28
@@ -188,19 +309,22 @@ foreach ($models as $modelInfo) {
             => 'Connection refused',
             CURLE_COULDNT_RESOLVE_HOST
             => 'DNS resolution failed',
-            CURLE_SSL_CONNECT_ERROR
+            CURLE_SSL_CONNECT_ERROR, 35
             => 'SSL handshake failed',
+            60 // CURLE_SSL_CACERT
+            => 'SSL certificate verification failed — server may lack CA bundle',
             default
-            => $curlError,
+            => "cURL error $curlErrno: $curlError",
         };
         $attempt['status'] = 'curl_error';
         $attempt['error'] = $readableError;
         $attempts[] = $attempt;
         $lastError = "[$modelId] $readableError";
-        continue; // try next model
+        logMsg("Model $modelId curl error: $readableError");
+        continue;
     }
 
-    // HTTP-level error (rate limit, server error, etc.)
+    // HTTP-level error
     if ($httpCode !== 200) {
         $errData = json_decode($response, true);
         $errMsg = $errData['error']['message'] ?? "HTTP $httpCode";
@@ -208,7 +332,8 @@ foreach ($models as $modelInfo) {
         $attempt['error'] = $errMsg;
         $attempts[] = $attempt;
         $lastError = "[$modelId] $errMsg";
-        continue; // try next model
+        logMsg("Model $modelId HTTP $httpCode: $errMsg");
+        continue;
     }
 
     // Parse AI response
@@ -221,7 +346,6 @@ foreach ($models as $modelInfo) {
 
     $parsed = json_decode($cleaned, true);
     if (json_last_error() !== JSON_ERROR_NONE) {
-        // Fallback: try to extract JSON from prose
         if (preg_match('/\{[\s\S]*?\}/', $cleaned, $m)) {
             $parsed = json_decode($m[0], true);
         }
@@ -233,12 +357,14 @@ foreach ($models as $modelInfo) {
         $attempt['raw'] = $raw;
         $attempts[] = $attempt;
         $lastError = "[$modelId] Unparseable response";
-        continue; // try next model
+        logMsg("Model $modelId parse error. Raw: $raw");
+        continue;
     }
 
-    // Success — this model worked
+    // Success
     $attempt['status'] = 'ok';
     $attempts[] = $attempt;
+    logMsg("Model $modelId succeeded in {$totalTime}ms");
     break;
 }
 
@@ -258,11 +384,27 @@ $passengerCount = (int) $parsed['count'];
 $confidence = $parsed['confidence'] ?? 'unknown';
 $usedModel = $attempts[count($attempts) - 1]['model'];
 
-// Update vehicle passenger count in vehicles.json
+// ─── Update vehicle passenger count in vehicles.json ──────────────────────
 $vehiclesFile = $rootDir . '/data/vehicles.json';
+
+if (!file_exists($vehiclesFile)) {
+    logMsg("ERROR: vehicles.json not found at $vehiclesFile");
+    http_response_code(500);
+    echo json_encode(['error' => 'Vehicles data file not found', 'path_checked' => $vehiclesFile]);
+    exit;
+}
+
+if (!is_writable($vehiclesFile)) {
+    logMsg("ERROR: vehicles.json not writable at $vehiclesFile");
+    http_response_code(500);
+    echo json_encode(['error' => 'Vehicles data file is not writable (check permissions)']);
+    exit;
+}
+
 $fp = fopen($vehiclesFile, 'c+');
 if (!$fp) {
     http_response_code(500);
+    logMsg("ERROR: fopen failed on $vehiclesFile");
     echo json_encode(['error' => 'Could not open vehicles data file']);
     exit;
 }
@@ -274,6 +416,7 @@ $vehicles = json_decode($rawData, true);
 if (!is_array($vehicles)) {
     flock($fp, LOCK_UN);
     fclose($fp);
+    logMsg("ERROR: vehicles.json corrupt or empty. First 200 chars: " . substr($rawData, 0, 200));
     http_response_code(500);
     echo json_encode(['error' => 'Corrupt vehicles data file']);
     exit;
@@ -283,7 +426,7 @@ $found = false;
 foreach ($vehicles as &$v) {
     if (($v['id'] ?? null) === $vehicleId) {
         $v['passengers'] = $passengerCount;
-        $v['passenger_updated_at'] = date('c'); // ISO 8601 timestamp
+        $v['passenger_updated_at'] = date('c');
         $found = true;
         break;
     }

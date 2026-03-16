@@ -90,7 +90,13 @@ Content-Type: application/json
 
 ## Passenger Counter API — `passenger.php`
 
-Sends a camera image to OpenRouter vision AI to count visible people, then updates the vehicle's `passengers` field in `data/vehicles.json`.
+Sends a camera image to OpenRouter vision AI to count visible people, then updates the vehicle's `passengers` field in `data/vehicles.json`. Uses a model fallback chain — if the primary model times out or errors, it automatically tries the next model.
+
+**Model fallback chain** (tried in order):
+
+1. `google/gemini-2.0-flash-001` (30s timeout)
+2. `google/gemini-flash-1.5` (30s timeout)
+3. `meta-llama/llama-4-scout:free` (45s timeout)
 
 ### Request
 
@@ -111,15 +117,37 @@ Content-Type: multipart/form-data
   "success": true,
   "vehicle_id": 1,
   "passengers": 12,
-  "confidence": "high"
+  "confidence": "high",
+  "model": "google/gemini-2.0-flash-001",
+  "attempts": [
+    { "model": "google/gemini-2.0-flash-001", "time_ms": 2340, "status": "ok" }
+  ]
 }
 ```
 
-| Field      | Type    | Description                                     |
-| ---------- | ------- | ----------------------------------------------- |
-| vehicle_id | integer | The vehicle that was updated                    |
-| passengers | integer | Number of people detected in the image          |
-| confidence | string  | `high`, `medium`, or `low` — AI certainty level |
+**Success with fallback** (first model timed out, second succeeded):
+
+```json
+{
+  "success": true,
+  "vehicle_id": 1,
+  "passengers": 8,
+  "confidence": "medium",
+  "model": "google/gemini-flash-1.5",
+  "attempts": [
+    { "model": "google/gemini-2.0-flash-001", "time_ms": 30012, "status": "curl_error", "error": "Timed out after 30s" },
+    { "model": "google/gemini-flash-1.5", "time_ms": 1890, "status": "ok" }
+  ]
+}
+```
+
+| Field      | Type    | Description                                                  |
+| ---------- | ------- | ------------------------------------------------------------ |
+| vehicle_id | integer | The vehicle that was updated                                 |
+| passengers | integer | Number of people detected in the image                       |
+| confidence | string  | `high`, `medium`, or `low` — AI certainty level              |
+| model      | string  | Which model produced the successful result                   |
+| attempts   | array   | Each model attempt with model name, time in ms, and status   |
 
 ### Response — Errors
 
@@ -149,14 +177,20 @@ Content-Type: multipart/form-data
 ```json
 { "error": "OPENROUTER_API_KEY not configured in .env" }
 { "error": "Could not open vehicles data file" }
-{ "error": "OpenRouter request failed: <curl error>" }
 ```
 
-**502 Bad Gateway** — AI API failure:
+**502 Bad Gateway** — All models failed:
 
 ```json
-{ "error": "OpenRouter API error (HTTP 429)" }
-{ "error": "Could not parse people count from AI response", "raw": "..." }
+{
+  "error": "All vision models failed to count passengers",
+  "last_error": "[meta-llama/llama-4-scout:free] Timed out after 45s",
+  "attempts": [
+    { "model": "google/gemini-2.0-flash-001", "time_ms": 30004, "status": "curl_error", "error": "Timed out after 30s" },
+    { "model": "google/gemini-flash-1.5", "time_ms": 30001, "status": "http_429", "error": "Rate limit exceeded" },
+    { "model": "meta-llama/llama-4-scout:free", "time_ms": 45003, "status": "curl_error", "error": "Timed out after 45s" }
+  ]
+}
 ```
 
 ---
