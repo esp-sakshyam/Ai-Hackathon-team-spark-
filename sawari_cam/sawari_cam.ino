@@ -79,6 +79,11 @@ bool portalParamsAdded          = false;
 int  consecutiveFailures        = 0;
 static const int MAX_CONSECUTIVE_FAILURES = 10;
 
+// WiFi reconnection tracking
+int  wifiReconnectAttempts      = 0;
+static const int WIFI_RECONNECT_SOFT_LIMIT = 3;   // After this, do full disconnect+begin
+static const int WIFI_RECONNECT_HARD_LIMIT = 6;   // After this, restart ESP32
+
 // ═══════════════════════════════════════════════════════════════════════════
 //  FORWARD DECLARATIONS
 // ═══════════════════════════════════════════════════════════════════════════
@@ -168,9 +173,16 @@ void setup() {
         Serial.println(F("[CFG] New settings saved to SPIFFS"));
     }
 
+    // Enable auto-reconnect at WiFi driver level
+    WiFi.setAutoReconnect(true);
+    WiFi.persistent(true);
+
     Serial.print(F("[WIFI] Connected — IP: "));
     Serial.println(WiFi.localIP());
     Serial.printf("[WIFI] Signal strength: %d dBm\n", WiFi.RSSI());
+
+    // Solid red LED ON when WiFi is connected
+    statusLedOn();
 
     // Quick double-blink to signal "ready"
     for (int i = 0; i < 2; i++) {
@@ -202,10 +214,34 @@ void loop() {
     }
 
     // ── 2. Reconnect WiFi if dropped ────────────────────────────────────
-    if (WiFi.status() != WL_CONNECTED && (now - lastWiFiCheckTime >= WIFI_RECONNECT_MS)) {
-        lastWiFiCheckTime = now;
-        Serial.println(F("[WIFI] Disconnected — attempting reconnect..."));
-        WiFi.reconnect();
+    if (WiFi.status() != WL_CONNECTED) {
+        if (now - lastWiFiCheckTime >= WIFI_RECONNECT_MS) {
+            lastWiFiCheckTime = now;
+            wifiReconnectAttempts++;
+            Serial.printf("[WIFI] Disconnected — reconnect attempt %d...\n", wifiReconnectAttempts);
+
+            if (wifiReconnectAttempts <= WIFI_RECONNECT_SOFT_LIMIT) {
+                // Stage 1: simple reconnect
+                WiFi.reconnect();
+            } else if (wifiReconnectAttempts <= WIFI_RECONNECT_HARD_LIMIT) {
+                // Stage 2: full disconnect and re-begin with saved credentials
+                Serial.println(F("[WIFI] Escalating — full disconnect + begin"));
+                WiFi.disconnect(false);
+                delay(1000);
+                WiFi.begin();
+            } else {
+                // Stage 3: restart ESP32 to recover cleanly
+                Serial.println(F("[WIFI] Too many reconnect failures — restarting ESP32"));
+                delay(1000);
+                ESP.restart();
+            }
+        }
+    } else {
+        if (wifiReconnectAttempts > 0) {
+            Serial.print(F("[WIFI] Reconnected — IP: "));
+            Serial.println(WiFi.localIP());
+        }
+        wifiReconnectAttempts = 0;
     }
 
     // ── 3. Capture & upload on interval ─────────────────────────────────
@@ -219,14 +255,17 @@ void loop() {
         }
     }
 
-    // ── 4. Heartbeat on status LED (slow blink = idle, fast = no WiFi) ─
-    static unsigned long hbTimer = 0;
-    int hbInterval = (WiFi.status() == WL_CONNECTED) ? 2000 : 500;
-    if (now - hbTimer >= (unsigned long)hbInterval) {
-        hbTimer = now;
-        static bool hbState = false;
-        hbState = !hbState;
-        hbState ? statusLedOn() : statusLedOff();
+    // ── 4. Red status LED: solid ON = WiFi connected, fast blink = no WiFi
+    if (WiFi.status() == WL_CONNECTED) {
+        statusLedOn();
+    } else {
+        static unsigned long hbTimer = 0;
+        if (now - hbTimer >= 500) {
+            hbTimer = now;
+            static bool hbState = false;
+            hbState = !hbState;
+            hbState ? statusLedOn() : statusLedOff();
+        }
     }
 }
 
@@ -530,10 +569,6 @@ void startConfigPortal() {
     Serial.println(F("[WIFI] Starting config portal..."));
     Serial.println(F("[WIFI] Connect to AP: " WIFI_AP_NAME));
     Serial.println(F("[WIFI] Then open 192.168.4.1 in browser"));
-
-    // Reset WiFiManager to clear old parameters before adding fresh ones
-    // This prevents duplicate parameters on repeated portal opens
-    wifiManager.resetSettings();  // Only resets WiFi credentials, not our SPIFFS config
 
     // Re-create WiFiManager with fresh parameters
     WiFiManager freshManager;
